@@ -14,20 +14,29 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('frontend.beranda.index');
+    return view('user.beranda.index');
 });
 Route::get('/kamar', function () {
-    return view('frontend.kamar.kamar');
+    return view('user.kamar.kamar');
 });
 Route::get('/fasilitas', function () {
-    return view('frontend.fasilitas.fasilitas');
+    return view('user.fasilitas.fasilitas');
 });
 Route::get('/reservasi', function () {
-    return view('frontend.reservasi.reservasi');
+    return view('user.reservasi.reservasi');
 });
 Route::get('/tentang', function () {
-    return view('frontend.tentang.tentang');
+    return view('user.tentang.tentang');
 });
 Route::get('/ulasan', function () {
-    return view('frontend.ulasan.ulasan');
+    return view('user.ulasan.ulasan');
+});
+Route::get('/login', function () {
+    return view('user.login.login');
+});
+Route::get('/login/register', function () {
+    return view('user.login.register');
+});
+Route::get('/beranda/listkamar', function () {
+    return view('user.beranda.listkamar');
 });

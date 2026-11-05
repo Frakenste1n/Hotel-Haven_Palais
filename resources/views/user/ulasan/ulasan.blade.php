@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 
 <html lang="id">
+@extends('user.layouts.app')
+
+@section('title', 'Ulasan')
+
+@section('content')
+
+@endsection
 
 <head>
     <meta charset="utf-8" />
@@ -56,123 +63,6 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
     <div class="">
-        <header
-            class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
-            <div class="w-full h-full px-8 flex items-center justify-between">
-                <div class="flex items-center gap-6"><button aria-label="Menu Navigasi"
-                        class="flex items-center gap-2.5 px-3.5 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary transition-colors cursor-pointer group"
-                        onclick="document.getElementById('mobile-drawer-menu').classList.remove('hidden')"><span
-                            class="material-symbols-outlined text-[22px] group-hover:scale-105 transition-transform">menu</span><span
-                            class="font-label-uppercase text-label-uppercase tracking-widest text-primary">Menu</span></button><a
-                        class="flex items-center gap-3" href="#"><img alt="Haven Palais Luxury Hotel Logo"
-                            class="h-8 w-auto object-contain"
-                            src="https://lh3.googleusercontent.com/aida/AEtjO1VmGhoXmWcVDhYNqJ8JHe8OU-qWjEpJ8Op2_G3-L-mFREQkQA99a5hQQNKi9lefS9pQmekQYnvgZADhK4SDT1ZzHMUHpaQsfhRokm-Eo_zvgj0NB2lHYRT8eIvrmQTHYHAI5KpHxbV3tZGYKHlcdSa6KEHY1Q9qP8aE5H7NfTLz7_oMTdODWycblfJO2cnkvDJzcxQCMAX5FtvrLoHcPjeW6i0wDoEWud30wh8Csj06" />
-                        <div class="flex flex-col"><span
-                                class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">Haven
-                                Palais</span><span
-                                class="font-label-uppercase text-label-uppercase text-secondary tracking-widest text-[10px] mt-0.5">Resort
-                                &amp; Spa</span></div>
-                    </a></div>
-                <div class="flex items-center gap-8">
-                    <nav class="hidden lg:flex items-center gap-6" data-active-classes="text-primary font-semibold"><a
-                            class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
-                            data-path="tentang-kami" href="/tentang">Tentang Kami</a></nav>
-                    <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full"><span
-                            class="material-symbols-outlined text-[18px] text-on-surface-variant">language</span><span
-                            class="font-label-uppercase text-label-uppercase text-primary font-bold">ID</span><span
-                            class="text-outline-variant font-label-md text-label-md">|</span><span
-                            class="font-label-uppercase text-label-uppercase text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors">EN</span>
-                    </div><a
-                        class="hidden md:flex items-center gap-2 text-on-surface-variant hover:text-on-surface transition-colors"
-                        href="tel:+62218800900"><span
-                            class="material-symbols-outlined text-[18px] text-secondary">support_agent</span><span
-                            class="font-label-md text-label-md">Concierge</span></a>
-                    <div class="flex items-center gap-3"><a
-                            class="bg-primary-container text-on-primary px-6 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest hover:bg-primary transition-colors flex items-center gap-2 shadow-sm"
-                            data-path="booking" href="#"><span class="">Pesan Kamar</span><span
-                                class="material-symbols-outlined text-[16px]">north_east</span></a><a
-                            class="border border-outline-variant/60 hover:border-primary text-primary px-5 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all flex items-center gap-2 bg-surface-container-lowest/80 shadow-sm"
-                            href="#"><span class="material-symbols-outlined text-[18px] text-secondary">lock</span><span
-                                class="">Masuk</span></a></div>
-                </div>
-            </div>
-        </header>
-        <div class="hidden fixed inset-0 z-50 bg-primary/80 backdrop-blur-md flex transition-opacity duration-300"
-            id="mobile-drawer-menu">
-            <div
-                class="w-80 max-w-[85vw] h-full bg-surface-container-low flex flex-col justify-between py-8 shadow-2xl relative overflow-y-auto">
-                <div class="flex flex-col">
-                    <div class="px-6 pb-6 flex items-center justify-between border-b border-outline-variant/30">
-                        <div class="flex items-center gap-3"><img alt="Haven Palais Luxury Hotel Logo"
-                                class="h-8 w-auto object-contain"
-                                src="https://lh3.googleusercontent.com/aida/AEtjO1VmGhoXmWcVDhYNqJ8JHe8OU-qWjEpJ8Op2_G3-L-mFREQkQA99a5hQQNKi9lefS9pQmekQYnvgZADhK4SDT1ZzHMUHpaQsfhRokm-Eo_zvgj0NB2lHYRT8eIvrmQTHYHAI5KpHxbV3tZGYKHlcdSa6KEHY1Q9qP8aE5H7NfTLz7_oMTdODWycblfJO2cnkvDJzcxQCMAX5FtvrLoHcPjeW6i0wDoEWud30wh8Csj06" />
-                            <div class="flex flex-col"><span
-                                    class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">Haven
-                                    Palais</span><span
-                                    class="font-label-uppercase text-label-uppercase text-secondary tracking-widest mt-1">Resort
-                                    &amp; Spa</span></div>
-                        </div><button aria-label="Tutup Menu"
-                            class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-variant transition-colors"
-                            onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')"><span
-                                class="material-symbols-outlined text-[20px]">close</span></button>
-                    </div>
-                    <nav class="flex flex-col gap-1.5 px-6 mt-6"
-                        data-active-classes="bg-primary-container text-on-primary font-semibold rounded-lg shadow-sm"><a
-                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
-                            data-path="home" href="/"><span
-                                class="material-symbols-outlined text-[20px]">cottage</span>Home</a><a
-                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
-                            data-path="kamar" href="/kamar"><span
-                                class="material-symbols-outlined text-[20px]">king_bed</span>Kamar &amp; Suites</a><a
-                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
-                            data-path="fasilitas" href="/fasilitas"><span
-                                class="material-symbols-outlined text-[20px]">pool</span>Fasilitas Resor</a><a
-                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
-                            data-path="booking" href="/reservasi"><span
-                                class="material-symbols-outlined text-[20px]">calendar_month</span>Reservasi</a><a
-                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
-                            data-path="ulasan" href="/ulasan"><span
-                                class="material-symbols-outlined text-[20px]">star</span>Ulasan Tamu</a><a
-                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
-                            data-path="tentang-kami" href="/tentang"><span
-                                class="material-symbols-outlined text-[20px]">info</span>Tentang Kami</a></nav>
-                </div>
-                <div class="px-6 flex flex-col gap-4 mt-6">
-                    <div
-                        class="p-4 rounded-xl bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(27,42,50,0.05)] border border-outline-variant/30">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center gap-0.5 text-secondary"><span
-                                    class="material-symbols-outlined text-[16px]">star</span><span
-                                    class="material-symbols-outlined text-[16px]">star</span><span
-                                    class="material-symbols-outlined text-[16px]">star</span><span
-                                    class="material-symbols-outlined text-[16px]">star</span><span
-                                    class="material-symbols-outlined text-[16px]">star</span></div><span
-                                class="font-label-uppercase text-[10px] bg-secondary-fixed/30 text-on-secondary-container px-2 py-0.5 rounded font-semibold">4.9/5
-                                Excellent</span>
-                        </div>
-                        <p class="font-title-editorial text-body-sm text-primary italic leading-snug mb-2">“Pengalaman
-                            liburan yang magis dan tak terlupakan.”</p><span
-                            class="font-label-uppercase text-[10px] text-on-surface-variant block tracking-wider">—
-                            Alexandra D. • Verified Guest</span>
-                    </div>
-                    <div
-                        class="p-4 rounded-xl bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(27,42,50,0.05)]">
-                        <span class="font-label-uppercase text-label-uppercase text-secondary block">Concierge
-                            24/7</span>
-                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Layanan reservasi pribadi dan
-                            asisten tamu VIP.</p><a
-                            class="font-title-editorial text-title-editorial text-primary block mt-2 hover:text-secondary transition-colors"
-                            href="tel:+62218800900">+62 (021) 8800 900</a>
-                    </div>
-                    <div class="flex items-center justify-between px-2 pt-2 text-on-surface-variant"><span
-                            class="font-label-uppercase text-label-uppercase tracking-wider">Est. 1928</span><span
-                            class="font-label-uppercase text-label-uppercase tracking-wider text-secondary">Bali •
-                            Indonesia</span></div>
-                </div>
-            </div>
-            <div class="flex-1 h-full" onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')">
-            </div>
-        </div>
         <main class="relative pt-20 bg-surface min-h-screen">
             <div class="flex flex-col w-full">
                 <!-- BREADCRUMB & INTRO SCENIC HEADER -->
@@ -181,7 +71,7 @@
                         <!-- Breadcrumb -->
                         <nav aria-label="Breadcrumb"
                             class="flex items-center gap-2 text-on-surface-variant font-label-uppercase text-label-uppercase">
-                            <a class="hover:text-primary transition-colors flex items-center gap-1.5" href="#">
+                            <a class="hover:text-primary transition-colors flex items-center gap-1.5" href="/">
                                 <span class="material-symbols-outlined text-[16px]">home</span>
                                 <span>Home</span>
                             </a>
@@ -855,50 +745,6 @@
                 <!-- SHARE YOUR STORY REWARD CALLOUT (Haven Privilege) -->
                 <section class="px-6 lg:px-16 py-12 bg-surface">
                     <div class="max-w-[1320px] mx-auto">
-                        <div
-                            class="relative overflow-hidden rounded-xl bg-primary-container text-on-primary p-8 lg:p-14 shadow-lg">
-                            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                                <div class="lg:col-span-8 flex flex-col gap-4">
-                                    <div class="flex items-center gap-2">
-                                        <span
-                                            class="material-symbols-outlined text-secondary-fixed text-[24px]">card_membership</span>
-                                        <span
-                                            class="font-label-uppercase text-label-uppercase text-secondary-fixed tracking-widest">Haven
-                                            Privilege Program</span>
-                                    </div>
-                                    <h2 class="font-headline-md text-headline-md text-on-primary font-serif">
-                                        Pernah Menginap di Haven Palais? Bagikan Kisah Anda
-                                    </h2>
-                                    <p
-                                        class="font-body-md text-body-md text-on-primary-container max-w-2xl leading-relaxed">
-                                        Tulis ulasan Anda dan unggah potret pengalaman liburan. Dapatkan <span
-                                            class="text-secondary-fixed font-semibold">1.000 Haven Privilege
-                                            Points</span> yang dapat digunakan untuk upgrade suite atau spa credit pada
-                                        reservasi Anda berikutnya.
-                                    </p>
-                                </div>
-                                <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
-                                    <button
-                                        class="bg-secondary hover:bg-secondary/90 text-on-secondary px-6 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all text-center flex items-center justify-center gap-2 shadow-sm"
-                                        onclick="document.getElementById('review-form-modal').classList.remove('hidden')">
-                                        <span class="material-symbols-outlined text-[18px]">add_a_photo</span>
-                                        <span>Kirim Ulasan &amp; Foto</span>
-                                    </button>
-                                    <a class="px-6 py-3 rounded text-center font-label-uppercase text-label-uppercase text-on-primary/80 hover:text-on-primary tracking-widest transition-colors flex items-center justify-center gap-1.5"
-                                        href="#">
-                                        <span>Ketentuan Privilege</span>
-                                        <span class="material-symbols-outlined text-[14px]">north_east</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Ambient decorative shapes within container -->
-                            <div
-                                class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-secondary/10 pointer-events-none blur-3xl">
-                            </div>
-                            <div
-                                class="absolute left-1/2 -top-20 w-64 h-64 rounded-full bg-surface-container-lowest/5 pointer-events-none blur-2xl">
-                            </div>
-                        </div>
                     </div>
                 </section>
                 <!-- DIRECT CONCIERGE & BOOKING ASSISTANCE FOOTNOTE -->
@@ -915,12 +761,12 @@
                         </p>
                         <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
                             <a class="bg-primary text-on-primary px-8 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest hover:bg-primary-container transition-all flex items-center gap-2.5 shadow-md"
-                                href="#">
+                                href="/kamar">
                                 <span>Pesan Kamar Sekarang</span>
                                 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                             </a>
                             <a class="bg-surface-container-lowest hover:bg-surface-container text-primary px-7 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all flex items-center gap-2.5 shadow-sm"
-                                href="https://wa.me/628118800900" rel="noopener noreferrer" target="_blank">
+                                href="https://wa.me/6281386932586" rel="noopener noreferrer" target="_blank">
                                 <span class="material-symbols-outlined text-secondary text-[20px]">chat</span>
                                 <span>Konsultasi via WhatsApp</span>
                             </a>
@@ -950,26 +796,28 @@
                             onsubmit="event.preventDefault(); alert('Terima kasih atas ulasan berharga Anda! Tim Concierge kami akan memverifikasi reservasi Anda.'); document.getElementById('review-form-modal').classList.add('hidden');">
                             <div>
                                 <label
-                                    class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1.5">Rating
-                                    Keseluruhan</label>
-                                <div class="flex items-center gap-1.5 text-secondary cursor-pointer"
-                                    id="modal-star-picker">
-                                    <span
-                                        class="material-symbols-outlined text-[28px] hover:scale-110 transition-transform"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
-                                    <span
-                                        class="material-symbols-outlined text-[28px] hover:scale-110 transition-transform"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
-                                    <span
-                                        class="material-symbols-outlined text-[28px] hover:scale-110 transition-transform"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
-                                    <span
-                                        class="material-symbols-outlined text-[28px] hover:scale-110 transition-transform"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
-                                    <span
-                                        class="material-symbols-outlined text-[28px] hover:scale-110 transition-transform"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
+                                    class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1.5">
+                                    Rating Keseluruhan
+                                </label>
+
+                                <div class="flex items-center gap-1.5 text-secondary" id="modal-star-picker">
+                                    <input type="hidden" name="rating" id="rating-value" value="0">
+
+                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                        data-rating="1">star</span>
+                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                        data-rating="2">star</span>
+                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                        data-rating="3">star</span>
+                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                        data-rating="4">star</span>
+                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                        data-rating="5">star</span>
                                 </div>
+
+                                <p class="text-xs text-on-surface-variant mt-1" id="rating-description">
+                                    Pilih rating 1–5 bintang
+                                </p>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
@@ -1069,6 +917,43 @@
                                         card.style.display = 'none';
                                     }
                                 });
+                            });
+                        });
+                    });
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const starPicker = document.getElementById('modal-star-picker');
+
+                        if (!starPicker) return;
+
+                        const stars = starPicker.querySelectorAll('[data-rating]');
+                        const ratingValue = document.getElementById('rating-value');
+                        const ratingDescription = document.getElementById('rating-description');
+
+                        const descriptions = {
+                            1: 'Sangat Buruk',
+                            2: 'Buruk',
+                            3: 'Cukup',
+                            4: 'Bagus',
+                            5: 'Sangat Bagus'
+                        };
+
+                        function updateStars(rating) {
+                            stars.forEach(star => {
+                                const value = Number(star.dataset.rating);
+
+                                star.classList.toggle('active', value <= rating);
+                            });
+
+                            ratingValue.value = rating;
+
+                            ratingDescription.textContent = rating > 0
+                                ? `${rating} dari 5 bintang - ${descriptions[rating]}`
+                                : 'Pilih rating 1–5 bintang';
+                        }
+
+                        stars.forEach(star => {
+                            star.addEventListener('click', function () {
+                                updateStars(Number(this.dataset.rating));
                             });
                         });
                     });
