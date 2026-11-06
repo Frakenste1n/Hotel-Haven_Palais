@@ -13,6 +13,9 @@
 
 <head>
     <meta charset="utf-8" />
+    @if($site->site_favicon)
+        <link rel="icon" href="{{ $site->fileUrl('site_favicon') }}">
+    @endif
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="web_dashboard" name="shell-type" />
     <link
@@ -59,6 +62,124 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
     <div>
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
+=======
+        <header
+            class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
+            <div class="w-full h-full px-8 flex items-center justify-between">
+                <div class="flex items-center gap-6"><button aria-label="Menu Navigasi"
+                        class="flex items-center gap-2.5 px-3.5 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary transition-colors cursor-pointer group"
+                        onclick="document.getElementById('mobile-drawer-menu').classList.remove('hidden')"><span
+                            class="material-symbols-outlined text-[22px] group-hover:scale-105 transition-transform">menu</span><span
+                            class="font-label-uppercase text-label-uppercase tracking-widest text-primary">Menu</span></button><a
+                        class="flex items-center gap-3" href="#"><img alt="Haven Palais Luxury Hotel Logo"
+                            class="h-8 w-auto object-contain"
+                            src="{{ $site->fileUrl('site_logo', \App\Models\Setting::DEFAULT_LOGO) }}" />
+                        <div class="flex flex-col"><span
+                                class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">{{ $site->site_name ?: 'Haven Palais' }}</span><span
+                                class="font-label-uppercase text-label-uppercase text-secondary tracking-widest text-[10px] mt-0.5">{{ $site->site_tagline ?: 'Resort & Spa' }}</span></div>
+                    </a></div>
+                <div class="flex items-center gap-8">
+                    <nav class="hidden lg:flex items-center gap-6"
+                        data-active-classes="text-primary font-semibold border-b border-primary pb-0.5"><a
+                            class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
+                            data-path="tentang-kami" href="#">Tentang Kami</a></nav>
+                    <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full"><span
+                            class="material-symbols-outlined text-[18px] text-on-surface-variant">language</span><span
+                            class="font-label-uppercase text-label-uppercase text-primary font-bold">ID</span><span
+                            class="text-outline-variant font-label-md text-label-md">|</span><span
+                            class="font-label-uppercase text-label-uppercase text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors">EN</span>
+                    </div><a
+                        class="hidden md:flex items-center gap-2 text-on-surface-variant hover:text-on-surface transition-colors"
+                        href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}"><span
+                            class="material-symbols-outlined text-[18px] text-secondary">support_agent</span><span
+                            class="font-label-md text-label-md">Concierge</span></a>
+                    <div class="flex items-center gap-3"><a
+                            class="bg-primary-container text-on-primary px-6 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest hover:bg-primary transition-colors flex items-center gap-2 shadow-sm"
+                            data-path="booking" href="#"><span class="">Pesan Kamar</span><span
+                                class="material-symbols-outlined text-[16px]">north_east</span></a><a
+                            class="border border-outline-variant/60 hover:border-primary text-primary px-5 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all flex items-center gap-2 bg-surface-container-lowest/80 shadow-sm"
+                            href="#"><span class="material-symbols-outlined text-[18px] text-secondary">lock</span><span
+                                class="">Masuk</span></a></div>
+                </div>
+            </div>
+        </header>
+        <div class="hidden fixed inset-0 z-50 bg-primary/80 backdrop-blur-md flex transition-opacity duration-300"
+            id="mobile-drawer-menu">
+            <div
+                class="w-80 max-w-[85vw] h-full bg-surface-container-low flex flex-col justify-between py-8 shadow-2xl relative overflow-y-auto">
+                <div class="flex flex-col">
+                    <div class="px-6 pb-6 flex items-center justify-between border-b border-outline-variant/30">
+                        <div class="flex items-center gap-3"><img alt="Haven Palais Luxury Hotel Logo"
+                                class="h-8 w-auto object-contain"
+                                src="{{ $site->fileUrl('site_logo', \App\Models\Setting::DEFAULT_LOGO) }}" />
+                            <div class="flex flex-col"><span
+                                    class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">{{ $site->site_name ?: 'Haven Palais' }}</span><span
+                                    class="font-label-uppercase text-label-uppercase text-secondary tracking-widest mt-1">{{ $site->site_tagline ?: 'Resort & Spa' }}</span></div>
+                        </div><button aria-label="Tutup Menu"
+                            class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-variant transition-colors"
+                            onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')"><span
+                                class="material-symbols-outlined text-[20px]">close</span></button>
+                    </div>
+                    <nav class="flex flex-col gap-1.5 px-6 mt-6"
+                        data-active-classes="bg-primary-container text-on-primary font-semibold rounded-lg shadow-sm"><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="home" href="/"><span
+                                class="material-symbols-outlined text-[20px]">cottage</span>Home</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="kamar" href="/kamar"><span
+                                class="material-symbols-outlined text-[20px]">king_bed</span>Kamar</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="fasilitas" href="/fasilitas"><span
+                                class="material-symbols-outlined text-[20px]">pool</span>Fasilitas</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="ulasan" href="/ulasan"><span
+                                class="material-symbols-outlined text-[20px]">star</span>Ulasan</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="booking" href="/reservasi"><span
+                                class="material-symbols-outlined text-[20px]">calendar_month</span>Booking /
+                            Reservasi</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="tentang-kami" href="/tentang"><span
+                                class="material-symbols-outlined text-[20px]">info</span>Tentang Kami</a></nav>
+                </div>
+                <div class="px-6 flex flex-col gap-4 mt-6">
+                    <div
+                        class="p-4 rounded-xl bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(27,42,50,0.05)] border border-outline-variant/30">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-0.5 text-secondary"><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span></div><span
+                                class="font-label-uppercase text-[10px] bg-secondary-fixed/30 text-on-secondary-container px-2 py-0.5 rounded font-semibold">4.9/5
+                                Excellent</span>
+                        </div>
+                        <p class="font-title-editorial text-body-sm text-primary italic leading-snug mb-2">“Pengalaman
+                            liburan yang magis dan tak terlupakan.”</p><span
+                            class="font-label-uppercase text-[10px] text-on-surface-variant block tracking-wider">—
+                            Alexandra D. • Verified Guest</span>
+                    </div>
+                    <div
+                        class="p-4 rounded-xl bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(27,42,50,0.05)]">
+                        <span class="font-label-uppercase text-label-uppercase text-secondary block">Concierge
+                            24/7</span>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Layanan reservasi pribadi dan
+                            asisten tamu VIP.</p><a
+                            class="font-title-editorial text-title-editorial text-primary block mt-2 hover:text-secondary transition-colors"
+                            href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}">+62 (021) 8800 900</a>
+                    </div>
+                    <div class="flex items-center justify-between px-2 pt-2 text-on-surface-variant"><span
+                            class="font-label-uppercase text-label-uppercase tracking-wider">Est. 1928</span><span
+                            class="font-label-uppercase text-label-uppercase tracking-wider text-secondary">Bali •
+                            Indonesia</span></div>
+                </div>
+            </div>
+            <div class="flex-1 h-full" onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')">
+            </div>
+        </div>
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
         <main class="relative pt-20 bg-surface min-h-screen">
             <div class="flex flex-col w-full">
                 <!-- BREADCRUMB & INTRO META BAR -->
@@ -98,12 +219,10 @@
                                 </div>
                                 <h1
                                     class="font-display-hero text-headline-lg md:text-display-hero text-primary font-normal leading-[1.1] tracking-tight">
-                                    Harmoni Keheningan Tebing Uluwatu &amp; Keanggunan Keramahan Abadi
+                                    {{ $site->about_title ?: 'Harmoni Keheningan Tebing Uluwatu & Keanggunan Keramahan Abadi' }}
                                 </h1>
                                 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-                                    Lahir dari penghormatan mendalam terhadap deburan Samudra Hindia dan kearifan lokal
-                                    Bali, Haven Palais adalah tempat perlindungan jiwa di mana kemewahan bertemu
-                                    ketenteraman tanpa batas.
+                                    {{ $site->about_description ?: 'Lahir dari penghormatan mendalam terhadap deburan Samudra Hindia dan kearifan lokal Bali, Haven Palais adalah tempat perlindungan jiwa di mana kemewahan bertemu ketenteraman tanpa batas.' }}
                                 </p>
                                 <!-- Quick Metrics Bar -->
                                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
@@ -149,7 +268,7 @@
                                     class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-xl bg-surface-container">
                                     <img class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                                         data-alt="Photographic vista of a cliffside ultra-luxury resort in Uluwatu Bali perched high above dramatic azure Indian Ocean waves at golden hour, crafted with Indonesian volcanic stone, teak timbers, serene infinity pools, soft natural warm atmospheric sunlight, editorial architectural photography."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuApJPuKkXiz_0v8inNPf0dDH1CMKqX05cctm12eN55GM9ElEvQGkGzdI6-sfr35VKVm9tCvoG1cohxbvSSa2ClhKKHRRJAlC5MNFMUx755BkQj0wLMfVqwQZewTXvP_B1uJcpYDWmNby21patSw4-NJbDvDexXBF8g43JjYTT8KQQJzGYOr3xn2gU6Rsfob9pgTlJb0KeYNuejSwVEKFamK8AhfbJNTtgLIzpUJzQk" />
+                                        src="{{ $site->fileUrl('about_image', \App\Models\Setting::DEFAULT_ABOUT) }}" />
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent">
                                     </div>
@@ -199,18 +318,10 @@
                                 <div
                                     class="flex flex-col gap-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
                                     <p>
-                                        Berakar pada perjumpaan emosional di tebing perawan Uluwatu lebih dari satu
-                                        dekade lalu, Haven Palais diciptakan sebagai penghormatan terhadap kemegahan
-                                        samudra dan kemurnian spiritual Bali Selatan. Topografi tebing karang murni
-                                        bukan dilihat sebagai tantangan lanskap, melainkan kanvas sakral yang menuntut
-                                        perlakuan penuh kehati-hatian.
+                                        {{ $site->sejarah ?: 'Berakar pada perjumpaan emosional di tebing perawan Uluwatu lebih dari satu dekade lalu, Haven Palais diciptakan sebagai penghormatan terhadap kemegahan samudra dan kemurnian spiritual Bali Selatan.' }}
                                     </p>
                                     <p>
-                                        Arsitektur kami merajut keanggunan neoklasik proporsional Eropa dengan kekayaan
-                                        vernakular Nusantara. Kayu ulin reklamasi dari dermaga antik dikurasi
-                                        berdampingan dengan pahatan batu paras vulkanik abu-abu dan atap alang-alang
-                                        berlapis ganda berdaya tahan tinggi, menciptakan atmosfer hunian ningrat yang
-                                        tenang, bersahaja, dan bernyawa.
+                                        {{ $site->asal_usul ?: 'Arsitektur kami merajut keanggunan neoklasik proporsional Eropa dengan kekayaan vernakular Nusantara.' }}
                                     </p>
                                 </div>
                                 <!-- Mini Fact Checklist -->
@@ -285,6 +396,7 @@
                                     setiap hembusan angin laut membawa ketenangan, dan setiap tamu disambut layaknya
                                     bangsawan yang pulang ke kediamannya.”
                                 </blockquote>
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                 <div class="flex items-center gap-4 pt-2">
                                     <div
                                         class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-secondary font-title-editorial text-title-editorial font-bold shadow-sm">
@@ -293,9 +405,21 @@
                                     <div class="flex flex-col">
                                         <span class="font-headline-sm text-body-lg text-primary font-bold">Zidane
                                             Ramdhani S.Si. M.Kom</span>
+=======
+                                    <div class="flex items-center gap-4 pt-2">
+                                    @if($site->founder_image)
+                                        <img src="{{ $site->fileUrl('founder_image') }}" alt="{{ $site->founder_name }}" class="w-12 h-12 rounded-full object-cover shadow-sm">
+                                    @else
+                                        <div
+                                            class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-secondary font-title-editorial text-title-editorial font-bold shadow-sm">
+                                            DW
+                                        </div>
+                                    @endif
+                                    <div class="flex flex-col">
+                                        <span class="font-headline-sm text-body-lg text-primary font-bold">{{ $site->founder_name ?: 'Bapak Dewa Wicaksana' }}</span>
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span
-                                            class="font-label-uppercase text-[11px] text-secondary tracking-wider">Co-Founder
-                                            &amp; Principal Architect</span>
+                                            class="font-label-uppercase text-[11px] text-secondary tracking-wider">{{ $site->founder_position ?: 'Co-Founder & Principal Architect' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -829,7 +953,11 @@
                                         <span class="material-symbols-outlined text-[16px]">calendar_today</span>
                                     </a>
                                     <a class="w-full sm:w-auto bg-primary-container/80 hover:bg-primary-container text-on-primary border-none px-8 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                         href="/konsultasi">
+=======
+                                        href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}">
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span
                                             class="material-symbols-outlined text-[18px] text-secondary-fixed">support_agent</span>
                                         <span>Hubungi Layanan Concierge</span>
@@ -861,12 +989,16 @@
                             <!-- Col 1: Identity & Description (4 cols) -->
                             <div class="lg:col-span-4 flex flex-col gap-6">
                                 <div class="flex items-center gap-3">
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                     <img alt="Haven Palais Logo" class="h-9 w-auto"
                                         src="{{ asset('images/roundlogo.png') }}" />
+=======
+                                    <img alt="Haven Palais Logo" class="h-9 w-auto object-contain filter invert"
+                                        src="{{ $site->fileUrl('site_logo', \App\Models\Setting::DEFAULT_LOGO) }}" />
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                     <div class="flex flex-col">
                                         <span
-                                            class="font-headline-sm text-headline-sm text-on-primary tracking-tight leading-none">Haven
-                                            Palais</span>
+                                            class="font-headline-sm text-headline-sm text-on-primary tracking-tight leading-none">{{ $site->site_name ?: 'Haven Palais' }}</span>
                                         <span
                                             class="font-label-uppercase text-label-uppercase text-secondary-fixed tracking-widest text-[10px] mt-0.5">Resort
                                             &amp; Spa • Uluwatu</span>
@@ -880,17 +1012,29 @@
                                 <div class="flex items-center gap-3 text-secondary-fixed">
                                     <a aria-label="Instagram"
                                         class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-colors"
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                         href="https://www.instagram.com/zidanermdhn18?mdxt=M2Q5ZmM2dWpyZHd2">
+=======
+                                        href="{{ $site->instagram_url ?: '#' }}">
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span class="material-symbols-outlined text-[18px]">photo_camera</span>
                                     </a>
                                     <a aria-label="Facebook"
                                         class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-colors"
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                         href="https://www.facebook.com/share/1Kbzu9bA9w/">
+=======
+                                        href="{{ $site->facebook_url ?: '#' }}">
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span class="material-symbols-outlined text-[18px]">public</span>
                                     </a>
                                     <a aria-label="YouTube"
                                         class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-colors"
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                         href="https://www.youtube.com/@WindahBasudara">
+=======
+                                        href="{{ $site->youtube_url ?: '#' }}">
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span class="material-symbols-outlined text-[18px]">smart_display</span>
                                     </a>
                                 </div>
@@ -947,14 +1091,23 @@
                                     <div class="flex items-center gap-2.5">
                                         <span
                                             class="material-symbols-outlined text-secondary-fixed text-[18px]">call</span>
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                         <a class="hover:text-on-primary transition-colors" href="https://wa.me/6281386932586">+62
                                          8138 6932 586</a>
+=======
+                                        <a class="hover:text-on-primary transition-colors" href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}">+62
+                                            (021) 8800 900</a>
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                     </div>
                                     <div class="flex items-center gap-2.5">
                                         <span
                                             class="material-symbols-outlined text-secondary-fixed text-[18px]">mail</span>
                                         <a class="hover:text-on-primary transition-colors"
+<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
                                             href="ajayzidaneramdhani@gmail.com">ajayzidaneramdhani.com</a>
+=======
+                                            href="mailto:{{ $site->site_email ?: 'concierge@havenpalais.com' }}">{{ $site->site_email ?: 'concierge@havenpalais.com' }}</a>
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                     </div>
                                 </div>
                             </div>

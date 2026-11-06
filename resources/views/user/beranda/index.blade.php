@@ -10,6 +10,9 @@
 
 <head>
     <meta charset="utf-8">
+    @if($site->site_favicon)
+        <link rel="icon" href="{{ $site->fileUrl('site_favicon') }}">
+    @endif
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="web_dashboard" name="shell-type">
     <link
@@ -56,6 +59,123 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
     <div class="">
+<<<<<<< HEAD:resources/views/user/beranda/index.blade.php
+=======
+        <header
+            class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
+            <div class="w-full h-full px-8 flex items-center justify-between">
+                <div class="flex items-center gap-6"><button aria-label="Menu Navigasi"
+                        class="flex items-center gap-2.5 px-3.5 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary transition-colors cursor-pointer group"
+                        onclick="document.getElementById('mobile-drawer-menu').classList.remove('hidden')"><span
+                            class="material-symbols-outlined text-[22px] group-hover:scale-105 transition-transform">menu</span><span
+                            class="font-label-uppercase text-label-uppercase tracking-widest text-primary">Menu</span></button><a
+                        class="flex items-center gap-3" href="#"><img alt="Haven Palais Luxury Hotel Logo"
+                            class="h-8 w-auto object-contain"
+                            src="{{ $site->fileUrl('site_logo', \App\Models\Setting::DEFAULT_LOGO) }}">
+                        <div class="flex flex-col"><span
+                                class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">{{ $site->site_name ?: 'Haven Palais' }}</span><span
+                                class="font-label-uppercase text-label-uppercase text-secondary tracking-widest text-[10px] mt-0.5">{{ $site->site_tagline ?: 'Resort & Spa' }}</span></div>
+                    </a></div>
+                <div class="flex items-center gap-8">
+                    <nav class="hidden lg:flex items-center gap-6" data-active-classes="text-primary font-semibold"><a
+                            class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
+                            data-path="tentang-kami" href="/tentang">Tentang Kami</a></nav>
+                    <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full"><span
+                            class="material-symbols-outlined text-[18px] text-on-surface-variant">language</span><span
+                            class="font-label-uppercase text-label-uppercase text-primary font-bold">ID</span><span
+                            class="text-outline-variant font-label-md text-label-md">|</span><span
+                            class="font-label-uppercase text-label-uppercase text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors">EN</span>
+                    </div><a
+                        class="hidden md:flex items-center gap-2 text-on-surface-variant hover:text-on-surface transition-colors"
+                        href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}"><span
+                            class="material-symbols-outlined text-[18px] text-secondary">support_agent</span><span
+                            class="font-label-md text-label-md">Concierge</span></a>
+                    <div class="flex items-center gap-3"><a
+                            class="bg-primary-container text-on-primary px-6 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest hover:bg-primary transition-colors flex items-center gap-2 shadow-sm"
+                            data-path="booking" href="#"><span class="">Pesan Kamar</span><span
+                                class="material-symbols-outlined text-[16px]">north_east</span></a><a
+                            class="border border-outline-variant/60 hover:border-primary text-primary px-5 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all flex items-center gap-2 bg-surface-container-lowest/80 shadow-sm"
+                            href="#"><span class="material-symbols-outlined text-[18px] text-secondary">lock</span><span
+                                class="">Masuk</span></a></div>
+                </div>
+            </div>
+        </header>
+        <div class="hidden fixed inset-0 z-50 bg-primary/80 backdrop-blur-md flex transition-opacity duration-300"
+            id="mobile-drawer-menu">
+            <div
+                class="w-80 max-w-[85vw] h-full bg-surface-container-low flex flex-col justify-between py-8 shadow-2xl relative overflow-y-auto">
+                <div class="flex flex-col">
+                    <div class="px-6 pb-6 flex items-center justify-between border-b border-outline-variant/30">
+                        <div class="flex items-center gap-3"><img alt="Haven Palais Luxury Hotel Logo"
+                                class="h-8 w-auto object-contain"
+                                src="{{ $site->fileUrl('site_logo', \App\Models\Setting::DEFAULT_LOGO) }}">
+                            <div class="flex flex-col"><span
+                                    class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">{{ $site->site_name ?: 'Haven Palais' }}</span><span
+                                    class="font-label-uppercase text-label-uppercase text-secondary tracking-widest mt-1">{{ $site->site_tagline ?: 'Resort & Spa' }}</span></div>
+                        </div><button aria-label="Tutup Menu"
+                            class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-variant transition-colors"
+                            onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')"><span
+                                class="material-symbols-outlined text-[20px]">close</span></button>
+                    </div>
+                    <nav class="flex flex-col gap-1.5 px-6 mt-6"
+                        data-active-classes="bg-primary-container text-on-primary font-semibold rounded-lg shadow-sm"><a
+                            aria-current="page"
+                            class="flex items-center gap-3.5 px-4 py-3 transition-all bg-primary-container text-on-primary font-semibold rounded-lg shadow-sm"
+                            data-path="home" href="/"><span
+                                class="material-symbols-outlined text-[20px]">cottage</span>Home</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="kamar" href="/kamar"><span
+                                class="material-symbols-outlined text-[20px]">king_bed</span>Kamar &amp; Suites</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="fasilitas" href="/fasilitas"><span
+                                class="material-symbols-outlined text-[20px]">pool</span>Fasilitas Resor</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="booking" href="/reservasi"><span
+                                class="material-symbols-outlined text-[20px]">calendar_month</span>Reservasi</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="ulasan" href="/ulasan"><span
+                                class="material-symbols-outlined text-[20px]">star</span>Ulasan Tamu</a><a
+                            class="flex items-center gap-3.5 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"
+                            data-path="tentang-kami" href="/tentang"><span
+                                class="material-symbols-outlined text-[20px]">info</span>Tentang Kami</a></nav>
+                </div>
+                <div class="px-6 flex flex-col gap-4 mt-6">
+                    <div
+                        class="p-4 rounded-xl bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(27,42,50,0.05)] border border-outline-variant/30">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-0.5 text-secondary"><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span><span
+                                    class="material-symbols-outlined text-[16px]">star</span></div><span
+                                class="font-label-uppercase text-[10px] bg-secondary-fixed/30 text-on-secondary-container px-2 py-0.5 rounded font-semibold">4.9/5
+                                Excellent</span>
+                        </div>
+                        <p class="font-title-editorial text-body-sm text-primary italic leading-snug mb-2">“Pengalaman
+                            liburan yang magis dan tak terlupakan.”</p><span
+                            class="font-label-uppercase text-[10px] text-on-surface-variant block tracking-wider">—
+                            Alexandra D. • Verified Guest</span>
+                    </div>
+                    <div
+                        class="p-4 rounded-xl bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(27,42,50,0.05)]">
+                        <span class="font-label-uppercase text-label-uppercase text-secondary block">Concierge
+                            24/7</span>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Layanan reservasi pribadi dan
+                            asisten tamu VIP.</p><a
+                            class="font-title-editorial text-title-editorial text-primary block mt-2 hover:text-secondary transition-colors"
+                            href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}">+62 (021) 8800 900</a>
+                    </div>
+                    <div class="flex items-center justify-between px-2 pt-2 text-on-surface-variant"><span
+                            class="font-label-uppercase text-label-uppercase tracking-wider">Est. 1928</span><span
+                            class="font-label-uppercase text-label-uppercase tracking-wider text-secondary">Bali •
+                            Indonesia</span></div>
+                </div>
+            </div>
+            <div class="flex-1 h-full" onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')">
+            </div>
+        </div>
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/beranda/index.blade.php
         <main class="relative pt-20 bg-surface min-h-screen">
             <div class="flex flex-col w-full">
                 <!-- HERO SECTION WITH NEGATIVE MARGIN TO BLEED UNDER TRANSLUCENT HEADER -->
@@ -63,8 +183,14 @@
                     class="relative w-full -mt-20 overflow-hidden bg-primary text-on-primary min-h-[92vh] flex flex-col justify-between">
                     <!-- Ambient Backdrop Image -->
                     <div class="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-40 scale-105 transition-transform duration-1000 ease-out"
+<<<<<<< HEAD:resources/views/user/beranda/index.blade.php
                         data-alt="Ultra luxury cliffside oceanfront resort in Bali at golden hour" id="hero-bg"
                         style="background-image: url({{ asset('images/hero.png') }});">
+=======
+                        data-alt="Ultra luxury cliffside oceanfront resort in Bali at golden hour with infinity pool reflecting warm pastel sky, calm turquoise sea, modernist stone architecture with warm ambient lighting, elegant palm trees, high-end editorial architectural photography"
+                        id="hero-bg"
+                        style="background-image: url('{{ $site->fileUrl('hero_image', \App\Models\Setting::DEFAULT_HERO) }}')">
+>>>>>>> 47ac69b (backend finish):resources/views/frontend/beranda/index.blade.php
                     </div>
                     <!-- Radiant Gradient Scrims -->
                     <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-primary/30"></div>
@@ -88,13 +214,12 @@
                             </div>
                             <h1
                                 class="font-display-hero text-display-hero text-on-primary leading-tight tracking-tight mb-6">
-                                Kemewahan Abadi <br>
-                                <span class="italic font-normal text-secondary-fixed">di Tepi Samudra</span>
+                                {{ $site->hero_title ?: 'Kemewahan Abadi' }} <br>
+                                <span class="italic font-normal text-secondary-fixed">{{ $site->hero_subtitle ?: 'di Tepi Samudra' }}</span>
                             </h1>
                             <p
                                 class="font-body-lg text-body-lg text-on-primary/85 max-w-2xl mb-10 leading-relaxed font-light">
-                                Nikmati ketenangan eksklusif, panorama pesisir spektakuler, dan keramahan kelas dunia
-                                bintang lima yang dipadukan dengan kemegahan arsitektur tropis kontemporer.
+                                {{ $site->hero_description ?: 'Nikmati ketenangan eksklusif, panorama pesisir spektakuler, dan keramahan kelas dunia bintang lima yang dipadukan dengan kemegahan arsitektur tropis kontemporer.' }}
                             </p>
                             <!-- CTA Cluster -->
                             <div class="flex flex-wrap items-center gap-5">
