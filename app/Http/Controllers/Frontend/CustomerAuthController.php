@@ -20,7 +20,7 @@ class CustomerAuthController extends Controller
             return $redirect;
         }
 
-        return view('frontend.customer.login');
+        return view('frontend.login.login');
     }
 
     public function login(Request $request): RedirectResponse
@@ -73,7 +73,7 @@ class CustomerAuthController extends Controller
             return $redirect;
         }
 
-        return view('frontend.customer.register');
+        return view('frontend.login.register');
     }
 
     public function register(Request $request): RedirectResponse

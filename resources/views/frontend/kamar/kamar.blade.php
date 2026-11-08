@@ -1,71 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="id">
-@extends('user.layouts.app')
 
-@section('title', 'Kamar & Suites')
-
-@section('content')
-
-@push('scripts')
-<script>
-    // Simpan urutan awal kartu kamar
-    document.addEventListener('DOMContentLoaded', function () {
-        const container = document.getElementById('room-card-container');
-
-        if (!container) return;
-
-        const cards = container.querySelectorAll('.room-card');
-
-        cards.forEach((card, index) => {
-            card.dataset.originalIndex = index;
-        });
-    });
-
-    // Fungsi sorting kartu kamar
-    function sortCards(sortType) {
-        const container = document.getElementById('room-card-container');
-
-        if (!container) return;
-
-        const cards = Array.from(
-            container.querySelectorAll('.room-card')
-        );
-
-        cards.sort((a, b) => {
-            const priceA = Number(a.dataset.price);
-            const priceB = Number(b.dataset.price);
-
-            const capacityA = Number(a.dataset.capacity);
-            const capacityB = Number(b.dataset.capacity);
-
-            switch (sortType) {
-
-                case 'terendah':
-                    return priceA - priceB;
-
-                case 'tertinggi':
-                    return priceB - priceA;
-
-                case 'kapasitas':
-                    return capacityB - capacityA;
-
-                case 'rekomendasi':
-                default:
-                    return Number(a.dataset.originalIndex)
-                        - Number(b.dataset.originalIndex);
-            }
-        });
-
-        // Susun ulang kartu berdasarkan hasil sorting
-        cards.forEach(card => {
-            container.appendChild(card);
-        });
-    }
-</script>
-@endpush
-
-@endsection
 <head>
     <meta charset="utf-8" />
     @if($site->site_favicon)
@@ -120,8 +56,6 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
     <div class="">
-<<<<<<< HEAD:resources/views/user/kamar/kamar.blade.php
-=======
         <header
             class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
             <div class="w-full h-full px-8 flex items-center justify-between">
@@ -235,7 +169,6 @@
             <div class="flex-1 h-full" onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')">
             </div>
         </div>
->>>>>>> 47ac69b (backend finish):resources/views/frontend/kamar/kamar.blade.php
         <main class="relative pt-20 bg-surface min-h-screen">
             <div class="flex flex-col w-full">
                 <!-- INTRO & BREADCRUMB SECTION -->

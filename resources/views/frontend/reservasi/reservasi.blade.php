@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="id">
-@extends('user.layouts.app')
-
-@section('title', 'Reservasi')
-
-@section('content')
-
-    <h1>Selamat Datang di Haven Palais</h1>
-
-@endsection
 
 <head>
     <meta charset="utf-8" />
@@ -65,8 +56,6 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
     <div class="">
-<<<<<<< HEAD:resources/views/user/reservasi/reservasi.blade.php
-=======
         <header
             class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
             <div class="w-full h-full px-8 flex items-center justify-between">
@@ -180,7 +169,6 @@
             <div class="flex-1 h-full" onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')">
             </div>
         </div>
->>>>>>> 47ac69b (backend finish):resources/views/frontend/reservasi/reservasi.blade.php
         <main class="relative pt-20 bg-surface min-h-screen">
             <div class="flex flex-col w-full">
                 <div class="w-full max-w-[1320px] mx-auto px-6 lg:px-12 py-10 lg:py-16">

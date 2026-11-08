@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="id">
-@extends('user.layouts.app')
-
-@section('title', 'Tentang')
-
-@section('content')
-
-    <h1>Selamat Datang di Haven Palais</h1>
-
-@endsection
 
 <head>
     <meta charset="utf-8" />
@@ -62,8 +53,6 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
     <div>
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-=======
         <header
             class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
             <div class="w-full h-full px-8 flex items-center justify-between">
@@ -179,7 +168,6 @@
             <div class="flex-1 h-full" onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')">
             </div>
         </div>
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
         <main class="relative pt-20 bg-surface min-h-screen">
             <div class="flex flex-col w-full">
                 <!-- BREADCRUMB & INTRO META BAR -->
@@ -396,16 +384,6 @@
                                     setiap hembusan angin laut membawa ketenangan, dan setiap tamu disambut layaknya
                                     bangsawan yang pulang ke kediamannya.”
                                 </blockquote>
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                <div class="flex items-center gap-4 pt-2">
-                                    <div
-                                        class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-secondary font-title-editorial text-title-editorial font-bold shadow-sm">
-                                        ZR
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <span class="font-headline-sm text-body-lg text-primary font-bold">Zidane
-                                            Ramdhani S.Si. M.Kom</span>
-=======
                                     <div class="flex items-center gap-4 pt-2">
                                     @if($site->founder_image)
                                         <img src="{{ $site->fileUrl('founder_image') }}" alt="{{ $site->founder_name }}" class="w-12 h-12 rounded-full object-cover shadow-sm">
@@ -417,7 +395,6 @@
                                     @endif
                                     <div class="flex flex-col">
                                         <span class="font-headline-sm text-body-lg text-primary font-bold">{{ $site->founder_name ?: 'Bapak Dewa Wicaksana' }}</span>
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span
                                             class="font-label-uppercase text-[11px] text-secondary tracking-wider">{{ $site->founder_position ?: 'Co-Founder & Principal Architect' }}</span>
                                     </div>
@@ -953,11 +930,7 @@
                                         <span class="material-symbols-outlined text-[16px]">calendar_today</span>
                                     </a>
                                     <a class="w-full sm:w-auto bg-primary-container/80 hover:bg-primary-container text-on-primary border-none px-8 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                        href="/konsultasi">
-=======
                                         href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}">
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span
                                             class="material-symbols-outlined text-[18px] text-secondary-fixed">support_agent</span>
                                         <span>Hubungi Layanan Concierge</span>
@@ -989,13 +962,8 @@
                             <!-- Col 1: Identity & Description (4 cols) -->
                             <div class="lg:col-span-4 flex flex-col gap-6">
                                 <div class="flex items-center gap-3">
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                    <img alt="Haven Palais Logo" class="h-9 w-auto"
-                                        src="{{ asset('images/roundlogo.png') }}" />
-=======
                                     <img alt="Haven Palais Logo" class="h-9 w-auto object-contain filter invert"
                                         src="{{ $site->fileUrl('site_logo', \App\Models\Setting::DEFAULT_LOGO) }}" />
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                     <div class="flex flex-col">
                                         <span
                                             class="font-headline-sm text-headline-sm text-on-primary tracking-tight leading-none">{{ $site->site_name ?: 'Haven Palais' }}</span>
@@ -1012,29 +980,17 @@
                                 <div class="flex items-center gap-3 text-secondary-fixed">
                                     <a aria-label="Instagram"
                                         class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-colors"
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                        href="https://www.instagram.com/zidanermdhn18?mdxt=M2Q5ZmM2dWpyZHd2">
-=======
                                         href="{{ $site->instagram_url ?: '#' }}">
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span class="material-symbols-outlined text-[18px]">photo_camera</span>
                                     </a>
                                     <a aria-label="Facebook"
                                         class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-colors"
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                        href="https://www.facebook.com/share/1Kbzu9bA9w/">
-=======
                                         href="{{ $site->facebook_url ?: '#' }}">
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span class="material-symbols-outlined text-[18px]">public</span>
                                     </a>
                                     <a aria-label="YouTube"
                                         class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-colors"
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                        href="https://www.youtube.com/@WindahBasudara">
-=======
                                         href="{{ $site->youtube_url ?: '#' }}">
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                         <span class="material-symbols-outlined text-[18px]">smart_display</span>
                                     </a>
                                 </div>
@@ -1091,23 +1047,14 @@
                                     <div class="flex items-center gap-2.5">
                                         <span
                                             class="material-symbols-outlined text-secondary-fixed text-[18px]">call</span>
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                        <a class="hover:text-on-primary transition-colors" href="https://wa.me/6281386932586">+62
-                                         8138 6932 586</a>
-=======
                                         <a class="hover:text-on-primary transition-colors" href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}">+62
                                             (021) 8800 900</a>
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                     </div>
                                     <div class="flex items-center gap-2.5">
                                         <span
                                             class="material-symbols-outlined text-secondary-fixed text-[18px]">mail</span>
                                         <a class="hover:text-on-primary transition-colors"
-<<<<<<< HEAD:resources/views/user/tentang/tentang.blade.php
-                                            href="ajayzidaneramdhani@gmail.com">ajayzidaneramdhani.com</a>
-=======
                                             href="mailto:{{ $site->site_email ?: 'concierge@havenpalais.com' }}">{{ $site->site_email ?: 'concierge@havenpalais.com' }}</a>
->>>>>>> 47ac69b (backend finish):resources/views/frontend/tentang/tentang.blade.php
                                     </div>
                                 </div>
                             </div>

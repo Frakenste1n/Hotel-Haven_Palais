@@ -2,13 +2,6 @@
 
 <html lang="id">
 
-@extends('user.layouts.app')
-
-@section('title', 'List Kamar')
-
-@section('content')
-
-@endsection
 
 <head>
     <meta charset="utf-8" />

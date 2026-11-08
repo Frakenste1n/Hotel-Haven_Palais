@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-@extends('user.layouts.app')
-
-@section('title', 'Beranda')
-
-@section('content')
-
-@endsection
 
 <head>
     <meta charset="utf-8">
@@ -59,8 +52,6 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
     <div class="">
-<<<<<<< HEAD:resources/views/user/beranda/index.blade.php
-=======
         <header
             class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
             <div class="w-full h-full px-8 flex items-center justify-between">
@@ -175,7 +166,6 @@
             <div class="flex-1 h-full" onclick="document.getElementById('mobile-drawer-menu').classList.add('hidden')">
             </div>
         </div>
->>>>>>> 47ac69b (backend finish):resources/views/frontend/beranda/index.blade.php
         <main class="relative pt-20 bg-surface min-h-screen">
             <div class="flex flex-col w-full">
                 <!-- HERO SECTION WITH NEGATIVE MARGIN TO BLEED UNDER TRANSLUCENT HEADER -->
@@ -183,14 +173,9 @@
                     class="relative w-full -mt-20 overflow-hidden bg-primary text-on-primary min-h-[92vh] flex flex-col justify-between">
                     <!-- Ambient Backdrop Image -->
                     <div class="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-40 scale-105 transition-transform duration-1000 ease-out"
-<<<<<<< HEAD:resources/views/user/beranda/index.blade.php
-                        data-alt="Ultra luxury cliffside oceanfront resort in Bali at golden hour" id="hero-bg"
-                        style="background-image: url({{ asset('images/hero.png') }});">
-=======
                         data-alt="Ultra luxury cliffside oceanfront resort in Bali at golden hour with infinity pool reflecting warm pastel sky, calm turquoise sea, modernist stone architecture with warm ambient lighting, elegant palm trees, high-end editorial architectural photography"
                         id="hero-bg"
                         style="background-image: url('{{ $site->fileUrl('hero_image', \App\Models\Setting::DEFAULT_HERO) }}')">
->>>>>>> 47ac69b (backend finish):resources/views/frontend/beranda/index.blade.php
                     </div>
                     <!-- Radiant Gradient Scrims -->
                     <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-primary/30"></div>

@@ -39,16 +39,16 @@ Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->na
 Route::post('/register', [CustomerAuthController::class, 'register'])->name('customer.register.submit');
 Route::post('/logout', [CustomerAuthController::class, 'logout'])->middleware('auth')->name('customer.logout');
 Route::get('/kamar', function () {
-    return view('user.kamar.kamar');
+    return view('frontend.kamar.kamar');
 });
 Route::get('/fasilitas', function () {
-    return view('user.fasilitas.fasilitas');
+    return view('frontend.fasilitas.fasilitas');
 });
 Route::get('/reservasi', function () {
-    return view('user.reservasi.reservasi');
+    return view('frontend.reservasi.reservasi');
 });
 Route::get('/tentang', function () {
-    return view('user.tentang.tentang');
+    return view('frontend.tentang.tentang');
 });
 Route::get('/ulasan', function () {
     return view('frontend.ulasan.ulasan');
