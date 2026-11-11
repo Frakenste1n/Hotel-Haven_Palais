@@ -13,6 +13,9 @@
 
 <head>
     <meta charset="utf-8" />
+    @if($site->site_favicon)
+        <link rel="icon" href="{{ $site->fileUrl('site_favicon') }}">
+    @endif
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="web_dashboard" name="shell-type" />
     <link
@@ -98,12 +101,10 @@
                                 </div>
                                 <h1
                                     class="font-display-hero text-headline-lg md:text-display-hero text-primary font-normal leading-[1.1] tracking-tight">
-                                    Harmoni Keheningan Tebing Uluwatu &amp; Keanggunan Keramahan Abadi
+                                    {{ $site->about_title ?: 'Harmoni Keheningan Tebing Uluwatu & Keanggunan Keramahan Abadi' }}
                                 </h1>
                                 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-                                    Lahir dari penghormatan mendalam terhadap deburan Samudra Hindia dan kearifan lokal
-                                    Bali, Haven Palais adalah tempat perlindungan jiwa di mana kemewahan bertemu
-                                    ketenteraman tanpa batas.
+                                    {{ $site->about_description ?: 'Lahir dari penghormatan mendalam terhadap deburan Samudra Hindia dan kearifan lokal Bali, Haven Palais adalah tempat perlindungan jiwa di mana kemewahan bertemu ketenteraman tanpa batas.' }}
                                 </p>
                                 <!-- Quick Metrics Bar -->
                                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
@@ -149,7 +150,7 @@
                                     class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-xl bg-surface-container">
                                     <img class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                                         data-alt="Photographic vista of a cliffside ultra-luxury resort in Uluwatu Bali perched high above dramatic azure Indian Ocean waves at golden hour, crafted with Indonesian volcanic stone, teak timbers, serene infinity pools, soft natural warm atmospheric sunlight, editorial architectural photography."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuApJPuKkXiz_0v8inNPf0dDH1CMKqX05cctm12eN55GM9ElEvQGkGzdI6-sfr35VKVm9tCvoG1cohxbvSSa2ClhKKHRRJAlC5MNFMUx755BkQj0wLMfVqwQZewTXvP_B1uJcpYDWmNby21patSw4-NJbDvDexXBF8g43JjYTT8KQQJzGYOr3xn2gU6Rsfob9pgTlJb0KeYNuejSwVEKFamK8AhfbJNTtgLIzpUJzQk" />
+                                        src="{{ $site->fileUrl('about_image', \App\Models\Setting::DEFAULT_ABOUT) }}" />
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent">
                                     </div>
@@ -199,18 +200,10 @@
                                 <div
                                     class="flex flex-col gap-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
                                     <p>
-                                        Berakar pada perjumpaan emosional di tebing perawan Uluwatu lebih dari satu
-                                        dekade lalu, Haven Palais diciptakan sebagai penghormatan terhadap kemegahan
-                                        samudra dan kemurnian spiritual Bali Selatan. Topografi tebing karang murni
-                                        bukan dilihat sebagai tantangan lanskap, melainkan kanvas sakral yang menuntut
-                                        perlakuan penuh kehati-hatian.
+                                        {{ $site->sejarah ?: 'Berakar pada perjumpaan emosional di tebing perawan Uluwatu lebih dari satu dekade lalu, Haven Palais diciptakan sebagai penghormatan terhadap kemegahan samudra dan kemurnian spiritual Bali Selatan.' }}
                                     </p>
                                     <p>
-                                        Arsitektur kami merajut keanggunan neoklasik proporsional Eropa dengan kekayaan
-                                        vernakular Nusantara. Kayu ulin reklamasi dari dermaga antik dikurasi
-                                        berdampingan dengan pahatan batu paras vulkanik abu-abu dan atap alang-alang
-                                        berlapis ganda berdaya tahan tinggi, menciptakan atmosfer hunian ningrat yang
-                                        tenang, bersahaja, dan bernyawa.
+                                        {{ $site->asal_usul ?: 'Arsitektur kami merajut keanggunan neoklasik proporsional Eropa dengan kekayaan vernakular Nusantara.' }}
                                     </p>
                                 </div>
                                 <!-- Mini Fact Checklist -->
@@ -294,8 +287,7 @@
                                         <span class="font-headline-sm text-body-lg text-primary font-bold">Zidane
                                             Ramdhani S.Si. M.Kom</span>
                                         <span
-                                            class="font-label-uppercase text-[11px] text-secondary tracking-wider">Co-Founder
-                                            &amp; Principal Architect</span>
+                                            class="font-label-uppercase text-[11px] text-secondary tracking-wider">{{ $site->founder_position ?: 'Co-Founder & Principal Architect' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -865,8 +857,7 @@
                                         src="{{ asset('images/roundlogo.png') }}" />
                                     <div class="flex flex-col">
                                         <span
-                                            class="font-headline-sm text-headline-sm text-on-primary tracking-tight leading-none">Haven
-                                            Palais</span>
+                                            class="font-headline-sm text-headline-sm text-on-primary tracking-tight leading-none">{{ $site->site_name ?: 'Haven Palais' }}</span>
                                         <span
                                             class="font-label-uppercase text-label-uppercase text-secondary-fixed tracking-widest text-[10px] mt-0.5">Resort
                                             &amp; Spa • Uluwatu</span>

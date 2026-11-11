@@ -11,6 +11,9 @@
 @endsection
 <head>
     <meta charset="utf-8" />
+    @if($site->site_favicon)
+        <link rel="icon" href="{{ $site->fileUrl('site_favicon') }}">
+    @endif
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="web_dashboard" name="shell-type" />
     <link
@@ -1054,7 +1057,7 @@
                                 <div class="flex items-center gap-3">
                                     <img alt="Haven Palais Luxury Hotel Logo Crest"
                                         class="h-9 w-auto brightness-0 invert object-contain"
-                                        src="https://lh3.googleusercontent.com/aida/AEtjO1VmGhoXmWcVDhYNqJ8JHe8OU-qWjEpJ8Op2_G3-L-mFREQkQA99a5hQQNKi9lefS9pQmekQYnvgZADhK4SDT1ZzHMUHpaQsfhRokm-Eo_zvgj0NB2lHYRT8eIvrmQTHYHAI5KpHxbV3tZGYKHlcdSa6KEHY1Q9qP8aE5H7NfTLz7_oMTdODWycblfJO2cnkvDJzcxQCMAX5FtvrLoHcPjeW6i0wDoEWud30wh8Csj06" />
+                                        src="{{ $site->fileUrl('site_logo', \App\Models\Setting::DEFAULT_LOGO) }}" />
                                     <div>
                                         <p
                                             class="font-headline-sm text-headline-sm text-on-primary tracking-tight leading-none">

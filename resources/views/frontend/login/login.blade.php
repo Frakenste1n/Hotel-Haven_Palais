@@ -4,6 +4,9 @@
 
 <head>
     <meta charset="utf-8" />
+    @if($site->site_favicon)
+        <link rel="icon" href="{{ $site->fileUrl('site_favicon') }}">
+    @endif
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Haven Palais - Masuk Akun Tamu</title>
     <!-- Tailwind CSS CDN -->

@@ -10,6 +10,9 @@
 
 <head>
     <meta charset="utf-8">
+    @if($site->site_favicon)
+        <link rel="icon" href="{{ $site->fileUrl('site_favicon') }}">
+    @endif
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="web_dashboard" name="shell-type">
     <link
@@ -88,13 +91,12 @@
                             </div>
                             <h1
                                 class="font-display-hero text-display-hero text-on-primary leading-tight tracking-tight mb-6">
-                                Kemewahan Abadi <br>
-                                <span class="italic font-normal text-secondary-fixed">di Tepi Samudra</span>
+                                {{ $site->hero_title ?: 'Kemewahan Abadi' }} <br>
+                                <span class="italic font-normal text-secondary-fixed">{{ $site->hero_subtitle ?: 'di Tepi Samudra' }}</span>
                             </h1>
                             <p
                                 class="font-body-lg text-body-lg text-on-primary/85 max-w-2xl mb-10 leading-relaxed font-light">
-                                Nikmati ketenangan eksklusif, panorama pesisir spektakuler, dan keramahan kelas dunia
-                                bintang lima yang dipadukan dengan kemegahan arsitektur tropis kontemporer.
+                                {{ $site->hero_description ?: 'Nikmati ketenangan eksklusif, panorama pesisir spektakuler, dan keramahan kelas dunia bintang lima yang dipadukan dengan kemegahan arsitektur tropis kontemporer.' }}
                             </p>
                             <!-- CTA Cluster -->
                             <div class="flex flex-wrap items-center gap-5">

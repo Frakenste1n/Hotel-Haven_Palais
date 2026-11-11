@@ -68,6 +68,9 @@
 @endsection
 <head>
     <meta charset="utf-8" />
+    @if($site->site_favicon)
+        <link rel="icon" href="{{ $site->fileUrl('site_favicon') }}">
+    @endif
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="web_dashboard" name="shell-type" />
     <link
@@ -979,7 +982,7 @@
                                     <span>WhatsApp Concierge</span>
                                 </a>
                                 <a class="w-full sm:w-auto px-6 py-3.5 bg-white/10 hover:bg-white/15 text-on-primary rounded font-label-uppercase text-label-uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
-                                    href="tel:+62218800900">
+                                    href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62218800900') }}">
                                     <span class="material-symbols-outlined text-[20px]">phone_in_talk</span>
                                     <span>+62 (021) 8800 900</span>
                                 </a>
