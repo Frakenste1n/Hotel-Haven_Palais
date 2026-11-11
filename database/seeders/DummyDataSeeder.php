@@ -39,10 +39,10 @@ class DummyDataSeeder extends Seeder
 
         $this->fillBranding($image);
 
-        $customer = User::query()->where('email', 'customer@havenpalais.test')->firstOrFail();
-        $finance = User::query()->where('email', 'finance@havenpalais.test')->firstOrFail();
-        $housekeeper = User::query()->where('email', 'housekeeping@havenpalais.test')->firstOrFail();
-        $admin = User::query()->where('email', 'admin@havenpalais.test')->firstOrFail();
+        $customer = User::query()->where('email', 'customer@havenpalais.com')->firstOrFail();
+        $finance = User::query()->where('email', 'finance@havenpalais.com')->firstOrFail();
+        $housekeeper = User::query()->where('email', 'housekeeping@havenpalais.com')->firstOrFail();
+        $admin = User::query()->where('email', 'admin@havenpalais.com')->firstOrFail();
 
         Banner::updateOrCreate(
             ['title' => 'Selamat datang di Haven Palais'],
