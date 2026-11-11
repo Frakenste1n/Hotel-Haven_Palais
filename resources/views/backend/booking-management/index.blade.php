@@ -52,7 +52,7 @@
         @endallows
         @allows('front_desk.view')
         <button onclick="switchTab('front-desk')" class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'front-desk' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">front_desk</span>
+            <span class="material-symbols-outlined text-[18px] align-middle mr-1">room_service</span>
             Front Desk
         </button>
         @endallows
