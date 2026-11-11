@@ -79,7 +79,9 @@
             </span>
             <a class="text-brand-navy hover:text-brand-gold transition-colors font-medium flex items-center gap-1"
                 href="#">
-                <span>← Kembali ke Beranda</span>
+                <a href="/" class="cursor-pointer">
+                    ← Kembali ke Beranda
+                </a>
             </a>
         </div>
     </header>
@@ -177,7 +179,7 @@
                                 <input
                                     class="w-full pl-10 pr-4 py-3 bg-[#faf9f7] border border-brand-border rounded-lg text-sm text-brand-navy placeholder:text-brand-muted/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold transition-all"
                                     id="email" name="email" placeholder="contoh: raden.arya@havenpalais.com" required=""
-                                    type="email" value="raden.arya@havenpalais.com" />
+                                    type="email" />
                             </div>
                         </div>
                         <!-- Kata Sandi -->
@@ -204,7 +206,7 @@
                                 <input
                                     class="w-full pl-10 pr-10 py-3 bg-[#faf9f7] border border-brand-border rounded-lg text-sm text-brand-navy placeholder:text-brand-muted/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold transition-all"
                                     id="password" name="password" placeholder="Masukkan kata sandi akun Anda"
-                                    required="" type="password" value="••••••••••••" />
+                                    required="" type="password" />
                                 <button
                                     class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-brand-muted hover:text-brand-navy"
                                     type="button">
@@ -221,7 +223,7 @@
                         <!-- Ingat Saya & Akses Kode Booking -->
                         <div class="flex items-center justify-between pt-1">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input checked=""
+                                <input
                                     class="w-4 h-4 rounded border-brand-border text-brand-navy focus:ring-brand-gold focus:ring-offset-0 accent-brand-navy"
                                     type="checkbox" />
                                 <span class="text-xs text-brand-muted">Ingat saya di perangkat ini</span>
@@ -265,7 +267,7 @@
                     <div class="mt-8 text-center text-xs text-brand-muted">
                         Belum memiliki keanggotaan Haven Privilege?
                         <a class="font-semibold text-brand-navy hover:text-brand-gold underline decoration-brand-border hover:decoration-brand-gold transition-colors ml-1"
-                            href="#">
+                            href="/login/register">
                             Daftar Sekarang
                         </a>
                     </div>

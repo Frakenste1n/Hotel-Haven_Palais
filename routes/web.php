@@ -31,3 +31,12 @@ Route::get('/tentang', function () {
 Route::get('/ulasan', function () {
     return view('frontend.ulasan.ulasan');
 });
+Route::get('/login', function () {
+    return view('frontend.login.login');
+});
+Route::get('/login/register', function () {
+    return view('frontend.login.register');
+});
+Route::get('/beranda/listkamar', function () {
+    return view('frontend.beranda.listkamar');
+});
