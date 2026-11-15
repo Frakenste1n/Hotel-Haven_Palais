@@ -41,4 +41,8 @@ class ResortFacility extends Model
     {
         return $this->hasMany(FacilityImage::class);
     }
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(FacilityReservation::class, 'resort_facility_id');
+    }
 }

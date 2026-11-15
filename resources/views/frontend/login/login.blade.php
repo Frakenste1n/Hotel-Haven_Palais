@@ -163,7 +163,8 @@
                         </p>
                     </div>
                     <!-- Form Input -->
-                    <form class="space-y-5" onsubmit="event.preventDefault();">
+                    <form class="space-y-5" action="{{ route('customer.login.submit') }}" method="POST">
+                        @csrf
                         <!-- Email / ID Tamu -->
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-brand-navy mb-2"
@@ -181,8 +182,8 @@
                                 </div>
                                 <input
                                     class="w-full pl-10 pr-4 py-3 bg-[#faf9f7] border border-brand-border rounded-lg text-sm text-brand-navy placeholder:text-brand-muted/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold transition-all"
-                                    id="email" name="email" placeholder="contoh: raden.arya@havenpalais.com" required=""
-                                    type="email" />
+                                    id="email" name="email" value="{{ old('email') }}"
+                                    placeholder="contoh: raden.arya@havenpalais.com" required type="email" />
                             </div>
                         </div>
                         <!-- Kata Sandi -->
@@ -228,7 +229,7 @@
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input
                                     class="w-4 h-4 rounded border-brand-border text-brand-navy focus:ring-brand-gold focus:ring-offset-0 accent-brand-navy"
-                                    type="checkbox" />
+                                    type="checkbox" name="remember" value="1" />
                                 <span class="text-xs text-brand-muted">Ingat saya di perangkat ini</span>
                             </label>
                         </div>
@@ -270,7 +271,8 @@
                     <div class="mt-8 text-center text-xs text-brand-muted">
                         Belum memiliki keanggotaan Haven Privilege?
                         <a class="font-semibold text-brand-navy hover:text-brand-gold underline decoration-brand-border hover:decoration-brand-gold transition-colors ml-1"
-                            href="/login/register">
+                            href="{{ route('customer.register') }}">
+                        </a>
                             Daftar Sekarang
                         </a>
                     </div>

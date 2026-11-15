@@ -14,12 +14,8 @@ use Illuminate\View\View;
 
 class CustomerAuthController extends Controller
 {
-    public function showLoginForm(): View|RedirectResponse
+    public function showLoginForm(): View
     {
-        if ($redirect = $this->redirectAuthenticated()) {
-            return $redirect;
-        }
-
         return view('frontend.login.login');
     }
 
@@ -38,7 +34,7 @@ class CustomerAuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
             return back()
                 ->withErrors(['email' => 'Email atau password tidak valid.'])
                 ->onlyInput('email');
@@ -46,7 +42,7 @@ class CustomerAuthController extends Controller
 
         $user = Auth::user();
 
-        if (! $user->is_active) {
+        if (!$user->is_active) {
             Auth::logout();
 
             return back()
@@ -54,11 +50,13 @@ class CustomerAuthController extends Controller
                 ->onlyInput('email');
         }
 
-        if ($user->isStaff() || ! $user->hasRole('customer')) {
+        if ($user->isStaff() || !$user->hasRole('customer')) {
             Auth::logout();
 
             return back()
-                ->withErrors(['email' => 'Akun ini tidak dapat masuk melalui halaman customer.'])
+                ->withErrors([
+                    'email' => 'Akun ini tidak dapat masuk melalui halaman customer.'
+                ])
                 ->onlyInput('email');
         }
 
@@ -93,9 +91,12 @@ class CustomerAuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $role = Role::query()->where('slug', 'customer')->where('is_active', true)->first();
+        $role = Role::query()
+            ->where('slug', 'customer')
+            ->where('is_active', true)
+            ->first();
 
-        if (! $role) {
+        if (!$role) {
             throw ValidationException::withMessages([
                 'email' => 'Registrasi customer belum tersedia.',
             ]);
@@ -118,6 +119,7 @@ class CustomerAuthController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+        
 
         return redirect()
             ->route('home')
@@ -127,6 +129,7 @@ class CustomerAuthController extends Controller
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -137,7 +140,7 @@ class CustomerAuthController extends Controller
     {
         $user = Auth::user();
 
-        if (! $user) {
+        if (!$user) {
             return null;
         }
 
@@ -145,12 +148,20 @@ class CustomerAuthController extends Controller
             return redirect()->route('backend.dashboard');
         }
 
-        return redirect()->route('home');
+        if ($user->hasRole('customer')) {
+            return redirect()->route('home');
+        }
+
+        Auth::logout();
+
+        return null;
     }
 
     private function redirectAfterLogin(): RedirectResponse
     {
-        $target = redirect()->intended(route('home'))->getTargetUrl();
+        $target = redirect()
+            ->intended(route('home'))
+            ->getTargetUrl();
 
         if (str_contains($target, '/admin')) {
             return redirect()->route('home');

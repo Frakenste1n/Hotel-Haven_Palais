@@ -158,28 +158,31 @@
                         <!-- LEFT COLUMN: Booking Form Flow -->
                         <div class="lg:col-span-7 flex flex-col gap-10">
                             <!-- Privilege Member Invitation Card -->
-                            <div
-                                class="bg-primary-container text-on-primary p-6 lg:p-7 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-sm">
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="w-11 h-11 rounded-lg bg-surface-container-lowest/10 flex items-center justify-center shrink-0 text-secondary-fixed">
-                                        <span class="material-symbols-outlined text-[24px]">stars</span>
-                                    </div>
-                                    <div>
-                                        <h2
-                                            class="font-title-editorial text-title-editorial text-surface-container-lowest">
-                                            Haven Privilege Member</h2>
-                                        <p class="font-body-sm text-body-sm text-surface-container-highest/80 mt-1">
-                                            Masuk untuk menikmati <span class="text-secondary-fixed">complimentary
-                                                private limousine airport transfer</span> dan 4.500 poin reward
-                                            menginap.</p>
-                                    </div>
-                                </div>
-                                <a href="/login"
-                                    class="shrink-0 px-5 py-2.5 bg-secondary-fixed text-on-secondary-fixed font-label-uppercase text-label-uppercase rounded hover:bg-secondary-fixed-dim transition-colors uppercase tracking-wider inline-flex items-center justify-center">
-                                    Masuk Akun
-                                </a>
-                            </div>
+@guest
+<div
+    class="bg-primary-container text-on-primary p-6 lg:p-7 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-sm">
+    <div class="flex items-start gap-4">
+        <div
+            class="w-11 h-11 rounded-lg bg-surface-container-lowest/10 flex items-center justify-center shrink-0 text-secondary-fixed">
+            <span class="material-symbols-outlined text-[24px]">stars</span>
+        </div>
+        <div>
+            <h2 class="font-title-editorial text-title-editorial text-surface-container-lowest">
+                Haven Privilege Member
+            </h2>
+            <p class="font-body-sm text-body-sm text-surface-container-highest/80 mt-1">
+                Masuk untuk menikmati <span class="text-secondary-fixed">complimentary
+                    private limousine airport transfer</span> dan 4.500 poin reward
+                menginap.
+            </p>
+        </div>
+    </div>
+    <a href="/login"
+        class="shrink-0 px-5 py-2.5 bg-secondary-fixed text-on-secondary-fixed font-label-uppercase text-label-uppercase rounded hover:bg-secondary-fixed-dim transition-colors uppercase tracking-wider inline-flex items-center justify-center">
+        Masuk Akun
+    </a>
+</div>
+@endguest
                             <!-- Section A: Data Tamu -->
                             <section
                                 class="bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-sm flex flex-col gap-8">
@@ -194,106 +197,138 @@
                                         class="font-label-uppercase text-[11px] text-secondary tracking-widest uppercase">Identitas
                                         Resmi</span>
                                 </div>
-                                <form class="grid grid-cols-1 md:grid-cols-2 gap-6" onsubmit="event.preventDefault();">
-                                    <!-- Title / Sapaan -->
-                                    <div class="flex flex-col gap-2">
-                                        <label
-                                            class="font-label-uppercase text-label-uppercase text-on-surface-variant">Gelar
-                                            Tamu</label>
-                                        <select
-                                            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:bg-surface-container transition-colors">
-                                            <option value="Bpk">Bpk. (Mr.)</option>
-                                            <option value="Ibu">Ibu (Mrs. / Ms.)</option>
-                                            <option value="Dr">Dr. / Prof.</option>
-                                        </select>
+                                @if ($errors->any())
+                                    <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+                                        @foreach ($errors->all() as $error)
+                                            <p>{{ $error }}</p>
+                                        @endforeach
                                     </div>
-                                    <!-- Full Name -->
-                                    <div class="flex flex-col gap-2">
-                                        <label
-                                            class="font-label-uppercase text-label-uppercase text-on-surface-variant">Nama
-                                            Lengkap (Sesuai Paspor / KTP)</label>
-                                        <input
-                                            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:bg-surface-container transition-colors"
-                                            type="text" value="Raden Aria Wirasubrata" />
-                                    </div>
-                                    <!-- Email Address -->
-                                    <div class="flex flex-col gap-2">
-                                        <label
-                                            class="font-label-uppercase text-label-uppercase text-on-surface-variant">Alamat
-                                            Email Konfirmasi</label>
-                                        <input
-                                            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:bg-surface-container transition-colors"
-                                            type="email" value="aria.wirasubrata@havenpalais.com" />
-                                    </div>
-                                    <!-- WhatsApp / Phone -->
-                                    <div class="flex flex-col gap-2">
-                                        <label
-                                            class="font-label-uppercase text-label-uppercase text-on-surface-variant">Nomor
-                                            WhatsApp / Seluler</label>
-                                        <div class="flex">
-                                            <span
-                                                class="h-12 px-3.5 bg-surface-container flex items-center font-label-md text-on-surface-variant rounded-l">+62</span>
-                                            <input
-                                                class="h-12 px-4 w-full rounded-r bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:bg-surface-container transition-colors"
-                                                type="tel" value="811-9820-4401" />
-                                        </div>
-                                    </div>
-                                    <!-- Nationality -->
-                                    <div class="flex flex-col gap-2">
-                                        <label
-                                            class="font-label-uppercase text-label-uppercase text-on-surface-variant">Kewarganegaraan</label>
-                                        <select
-                                            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:bg-surface-container transition-colors">
-                                            <option selected="" value="ID">Indonesia (WNI)</option>
-                                            <option value="SG">Singapura</option>
-                                            <option value="AU">Australia</option>
-                                            <option value="UK">United Kingdom</option>
-                                            <option value="US">United States</option>
-                                        </select>
-                                    </div>
-                                    <!-- Arrival Time -->
-                                    <div class="flex flex-col gap-2">
-                                        <label
-                                            class="font-label-uppercase text-label-uppercase text-on-surface-variant">Perkiraan
-                                            Waktu Tiba (Check-In)</label>
-                                        <select
-                                            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:bg-surface-container transition-colors">
-                                            <option value="14:00">14:00 - 15:00 WITA (Waktu Standar)</option>
-                                            <option value="15:00">15:00 - 17:00 WITA</option>
-                                            <option value="17:00">17:00 - 20:00 WITA (Evening Arrival)</option>
-                                            <option selected="" value="early">Early Check-in Priority (11:30 WITA)
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <!-- Special Requests -->
-                                    <div class="flex flex-col gap-2 md:col-span-2">
-                                        <div class="flex items-center justify-between">
-                                            <label
-                                                class="font-label-uppercase text-label-uppercase text-on-surface-variant">Permintaan
-                                                Khusus &amp; Preferensi Butler</label>
-                                            <span
-                                                class="font-label-uppercase text-[10px] text-on-surface-variant/70">Opsional</span>
-                                        </div>
-                                        <textarea
-                                            class="p-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:bg-surface-container transition-colors resize-none"
-                                            placeholder="Contoh: Pengaturan bunga segar peringatan pernikahan di kamar tidur utama, alergi kacang/seafood, kamar di lantai tertinggi, non-smoking, bantal hypoallergenic."
-                                            rows="3">Anniversary setup dengan champagne di teras infinity pool saat kedatangan. Tamu vegetarian untuk sarapan pagi.</textarea>
-                                        <div class="flex flex-wrap gap-2 mt-2">
-                                            <span
-                                                class="px-2.5 py-1 rounded bg-surface-container text-primary font-label-uppercase text-[10px] cursor-pointer hover:bg-surface-variant">High
-                                                Floor Suite</span>
-                                            <span
-                                                class="px-2.5 py-1 rounded bg-surface-container text-primary font-label-uppercase text-[10px] cursor-pointer hover:bg-surface-variant">Late
-                                                Check-Out VIP</span>
-                                            <span
-                                                class="px-2.5 py-1 rounded bg-surface-container text-primary font-label-uppercase text-[10px] cursor-pointer hover:bg-surface-variant">Bantal
-                                                Bulu Angsa Ekstra</span>
-                                            <span
-                                                class="px-2.5 py-1 rounded bg-surface-container text-primary font-label-uppercase text-[10px] cursor-pointer hover:bg-surface-variant">Silent
-                                                Air-Con Mode</span>
-                                        </div>
-                                    </div>
-                                </form>
+                                @endif
+<form id="reservation-form"
+    action="{{ route('customer.booking.store') }}"
+    method="POST"
+    class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    @csrf
+
+    <!-- Tipe Kamar -->
+    <div class="flex flex-col gap-2 md:col-span-2">
+        <label class="font-label-uppercase text-label-uppercase text-on-surface-variant">
+            Tipe Kamar
+        </label>
+
+        <select
+            name="room_type_id"
+            id="room_type_id"
+            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none"
+            required
+        >
+            <option value="">Pilih tipe kamar</option>
+
+@foreach ($roomTypes as $roomType)
+    @php
+        $roomImage = $roomType->images->firstWhere('is_primary', true)
+            ?? $roomType->images->first();
+    @endphp
+
+    <option
+        value="{{ $roomType->id }}"
+        data-max-occupancy="{{ $roomType->max_occupancy }}"
+        data-price="{{ $roomType->base_price }}"
+        data-image="{{ $roomImage ? asset('storage/' . $roomImage->image_path) : '' }}"
+        {{ old('room_type_id') == $roomType->id ? 'selected' : '' }}
+    >
+        {{ $roomType->name }}
+    </option>
+@endforeach
+        </select>
+    </div>
+
+    <!-- Tanggal Check-In -->
+    <div class="flex flex-col gap-2">
+        <label class="font-label-uppercase text-label-uppercase text-on-surface-variant">
+            Tanggal Check-In
+        </label>
+
+<input
+    type="date"
+    name="check_in"
+    id="check_in"
+    value="{{ old('check_in') }}"
+            min="{{ date('Y-m-d') }}"
+            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none"
+            required
+        >
+    </div>
+
+    <!-- Tanggal Check-Out -->
+    <div class="flex flex-col gap-2">
+        <label class="font-label-uppercase text-label-uppercase text-on-surface-variant">
+            Tanggal Check-Out
+        </label>
+
+<input
+    type="date"
+    name="check_out"
+    id="check_out"
+    value="{{ old('check_out') }}"
+            min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none"
+            required
+        >
+    </div>
+
+    <!-- Jumlah Tamu -->
+    <div class="flex flex-col gap-2">
+        <label class="font-label-uppercase text-label-uppercase text-on-surface-variant">
+            Jumlah Tamu
+        </label>
+
+        <input
+            type="number"
+            name="guests_count"
+            id="guests_count"
+            min="1"
+            value="{{ old('guests_count', 1) }}"
+            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none"
+            required
+            disabled
+        >
+        <span class="text-xs text-on-surface-variant" id="guest-limit-info">
+            Pilih tipe kamar terlebih dahulu.
+        </span>
+    </div>
+
+    <!-- Nama Lengkap -->
+    <div class="flex flex-col gap-2">
+        <label class="font-label-uppercase text-label-uppercase text-on-surface-variant">
+            Nama Lengkap Tamu
+        </label>
+
+        <input
+            type="text"
+            name="guest_name"
+            value="{{ old('guest_name', auth()->user()->name ?? '') }}"
+            class="h-12 px-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none"
+            required
+        >
+    </div>
+
+    <!-- Permintaan Khusus -->
+    <div class="flex flex-col gap-2 md:col-span-2">
+        <label class="font-label-uppercase text-label-uppercase text-on-surface-variant">
+            Permintaan Khusus
+        </label>
+
+        <textarea
+            name="special_requests"
+            rows="3"
+            class="p-4 rounded bg-surface-container-low text-on-surface font-body-md focus:outline-none resize-none"
+            placeholder="Tuliskan permintaan khusus Anda"
+        >{{ old('special_requests') }}</textarea>
+    </div>
+
+</form>
                             </section>
                             <!-- Section B: Metode Pembayaran -->
                             <section
@@ -366,7 +401,7 @@
                                                 Tertera pada Kartu</label>
                                             <input
                                                 class="h-12 px-4 rounded bg-surface-container-lowest text-on-surface font-body-md focus:outline-none"
-                                                type="text" value="RADEN ARIA WIRASUBRATA" />
+                                                type="text" />
                                         </div>
                                         <div class="md:col-span-2 flex flex-col gap-2">
                                             <label
@@ -375,7 +410,7 @@
                                             <div class="relative">
                                                 <input
                                                     class="h-12 pl-4 pr-12 w-full rounded bg-surface-container-lowest text-on-surface font-body-md focus:outline-none tracking-widest"
-                                                    type="text" value="•••• •••• •••• 8829" />
+                                                    type="text" />
                                                 <span
                                                     class="material-symbols-outlined absolute right-3 top-3 text-[22px] text-secondary">credit_card</span>
                                             </div>
@@ -385,7 +420,7 @@
                                                 Berlaku (BB/TT)</label>
                                             <input
                                                 class="h-12 px-4 rounded bg-surface-container-lowest text-on-surface font-body-md focus:outline-none text-center"
-                                                type="text" value="09 / 28" />
+                                                type="text" />
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <div class="flex items-center justify-between">
@@ -401,7 +436,7 @@
                                             </div>
                                             <input
                                                 class="h-12 px-4 rounded bg-surface-container-lowest text-on-surface font-body-md focus:outline-none text-center tracking-widest"
-                                                type="password" value="•••" />
+                                                type="password"  />
                                         </div>
                                     </div>
                                 </div>
@@ -441,146 +476,27 @@
                                     </div>
                                 </div>
                             </section>
-                            <!-- Section C: Konfirmasi & Voucher Tiket Resmi -->
-                            <section
-                                class="bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-sm flex flex-col gap-8">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <span
-                                            class="w-8 h-8 rounded-full bg-surface-container-low text-primary flex items-center justify-center font-bold text-sm">C</span>
-                                        <h2 class="font-headline-sm text-headline-sm text-primary">Kode Booking Resmi
-                                            &amp; Tiket</h2>
-                                    </div>
-                                    <span
-                                        class="px-3 py-1 rounded bg-secondary-fixed/50 text-on-secondary-container font-label-uppercase text-[11px] font-bold">Siap
-                                        Konfirmasi</span>
-                                </div>
-                                <!-- Luxury Official Ticket Card -->
-                                <div
-                                    class="bg-primary text-on-primary rounded-xl p-8 relative overflow-hidden shadow-lg">
-                                    <!-- Background Decorative Watermark -->
-                                    <div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none">
-                                        <span class="material-symbols-outlined text-[240px]">apartment</span>
-                                    </div>
-                                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6">
-                                        <div>
-                                            <span
-                                                class="font-label-uppercase text-secondary-fixed text-[11px] tracking-widest uppercase block mb-1">Haven
-                                                Palais Luxury Electronic Voucher</span>
-                                            <h3 class="font-headline-md text-headline-md text-surface-container-lowest">
-                                                #HVP-BALI-882914</h3>
-                                            <p class="font-body-sm text-surface-container-high/80 text-sm mt-1">Status:
-                                                <span class="text-secondary-fixed font-semibold">Terkonfirmasi Sementara
-                                                    (Hold 45 Menit)</span>
-                                            </p>
-                                        </div>
-                                        <!-- Barcode & Copy Button -->
-                                        <div
-                                            class="flex flex-col sm:flex-row items-start sm:items-center gap-3 shrink-0">
-                                            <div
-                                                class="bg-surface-container-lowest p-2.5 rounded-lg flex items-center justify-center">
-                                                <!-- SVG Elegant QR Placeholder -->
-                                                <svg class="text-primary" fill="none" height="60" viewbox="0 0 60 60"
-                                                    width="60">
-                                                    <rect fill="none" height="20" rx="3" stroke="currentColor"
-                                                        stroke-width="3" width="20" x="4" y="4"></rect>
-                                                    <rect fill="currentColor" height="10" width="10" x="9" y="9"></rect>
-                                                    <rect fill="none" height="20" rx="3" stroke="currentColor"
-                                                        stroke-width="3" width="20" x="36" y="4"></rect>
-                                                    <rect fill="currentColor" height="10" width="10" x="41" y="9">
-                                                    </rect>
-                                                    <rect fill="none" height="20" rx="3" stroke="currentColor"
-                                                        stroke-width="3" width="20" x="4" y="36"></rect>
-                                                    <rect fill="currentColor" height="10" width="10" x="9" y="41">
-                                                    </rect>
-                                                    <rect fill="currentColor" height="6" width="6" x="30" y="30"></rect>
-                                                    <rect fill="currentColor" height="12" width="5" x="42" y="32">
-                                                    </rect>
-                                                    <rect fill="currentColor" height="6" width="14" x="32" y="46">
-                                                    </rect>
-                                                    <rect fill="currentColor" height="8" width="8" x="48" y="46"></rect>
-                                                </svg>
-                                            </div>
-                                            <button
-                                                class="px-4 py-2.5 rounded bg-surface-container-lowest/15 hover:bg-surface-container-lowest/25 text-surface-container-lowest font-label-uppercase text-[11px] uppercase tracking-wider flex items-center gap-2 transition-colors"
-                                                onclick="navigator.clipboard?.writeText('#HVP-BALI-882914'); alert('Kode booking #HVP-BALI-882914 berhasil disalin');"
-                                                type="button">
-                                                <span class="material-symbols-outlined text-[16px]">content_copy</span>
-                                                Salin Kode
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- Ticket Metadata Grid -->
-                                    <div
-                                        class="pt-6 grid grid-cols-2 md:grid-cols-4 gap-4 bg-primary-container/60 -mx-8 -mb-8 px-8 py-6">
-                                        <div>
-                                            <span
-                                                class="font-label-uppercase text-[10px] text-on-primary-container block uppercase">Nama
-                                                Pemesan</span>
-                                            <span
-                                                class="font-label-md text-label-md font-semibold text-surface-container-lowest">Raden
-                                                Aria W.</span>
-                                        </div>
-                                        <div>
-                                            <span
-                                                class="font-label-uppercase text-[10px] text-on-primary-container block uppercase">Waktu
-                                                Check-In</span>
-                                            <span
-                                                class="font-label-md text-label-md font-semibold text-surface-container-lowest">14
-                                                Des 2025</span>
-                                        </div>
-                                        <div>
-                                            <span
-                                                class="font-label-uppercase text-[10px] text-on-primary-container block uppercase">Waktu
-                                                Check-Out</span>
-                                            <span
-                                                class="font-label-md text-label-md font-semibold text-surface-container-lowest">16
-                                                Des 2025</span>
-                                        </div>
-                                        <div>
-                                            <span
-                                                class="font-label-uppercase text-[10px] text-on-primary-container block uppercase">Total
-                                                Nilai</span>
-                                            <span
-                                                class="font-label-md text-label-md font-semibold text-secondary-fixed">Rp
-                                                29.500.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="flex items-center gap-3 p-4 rounded-lg bg-surface-container-low text-on-surface-variant">
-                                    <span
-                                        class="material-symbols-outlined text-secondary text-[22px]">mark_email_read</span>
-                                    <p class="font-body-sm text-body-sm leading-snug">Salinan e-voucher PDF dan
-                                        instruksi check-in butler akan otomatis dikirimkan ke <strong
-                                            class="text-primary">aria.wirasubrata@havenpalais.com</strong> setelah
-                                        otorisasi selesai.</p>
-                                </div>
-                                <!-- Call To Actions -->
-                                <div class="flex flex-col sm:flex-row items-center gap-4 pt-2">
-                                    <button
-                                        class="w-full sm:flex-1 h-14 bg-primary hover:bg-primary-container text-on-primary font-label-uppercase text-label-uppercase uppercase tracking-widest rounded flex items-center justify-center gap-3 shadow-md transition-all"
-                                        type="button">
-                                        <span>Konfirmasi &amp; Bayar Sekarang</span>
-                                        <span class="material-symbols-outlined text-[18px]">lock</span>
-                                    </button>
-                                    <button
-                                        class="w-full sm:w-auto h-14 px-6 bg-surface-container hover:bg-surface-variant text-primary font-label-uppercase text-label-uppercase uppercase tracking-wider rounded flex items-center justify-center gap-2 transition-colors"
-                                        type="button">
-                                        <span class="material-symbols-outlined text-[18px]">download</span>
-                                        <span>Unduh Ringkasan PDF</span>
-                                    </button>
-                                </div>
-                            </section>
+<section class="pt-2">
+    <button
+        class="w-full h-14 bg-primary hover:bg-primary-container text-on-primary font-label-uppercase text-label-uppercase uppercase tracking-widest rounded flex items-center justify-center gap-3 shadow-md transition-all"
+        type="submit"
+        form="reservation-form">
+        <span>Konfirmasi &amp; Bayar Sekarang</span>
+        <span class="material-symbols-outlined text-[18px]">lock</span>
+    </button>
+</section>
                         </div>
                         <!-- RIGHT COLUMN: Sticky Luxury Booking Summary -->
                         <aside class="lg:col-span-5 sticky top-28 flex flex-col gap-6">
                             <div class="bg-surface-container-lowest rounded-xl shadow-md overflow-hidden">
                                 <!-- Room Preview Imagery -->
                                 <div class="relative h-64 w-full overflow-hidden">
-                                    <img class="w-full h-full object-cover"
-                                        data-alt="Expansive panoramic view of the Royal Ocean Penthouse Villa at Haven Palais in Bali. High ceiling timber suite opening onto a private cantilevered infinity plunge pool overlooking the turquoise Indian Ocean during a serene golden sunset. Soft linen loungers, champagne bucket on marble table, tranquil tropical resort architecture."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuChD-CI615rUws995-69h1TkY_M2aDhe_CiYJw0Jr7_8B60FbBFxlg_xjxzAOmRmgVkCrPYBXIlMl0nU3TUzOx55VkuI1IBzIm9csX6a3q_6V1yoW04GXCxJ44fJAbJ9h8d4qpw06rFAGecngmYldxv6qKzcn38GzKpb-f3XZKw3z4vATlTE66R9GwzXsQOdms562k-4-408gvn5-T2HmkvVC9Ylx5r3xJb7KC9VeY" />
+<img
+    id="summary-room-image"
+    class="w-full h-full object-cover"
+    data-alt="Expansive panoramic view of the Royal Ocean Penthouse Villa at Haven Palais in Bali."
+    src="https://lh3.googleusercontent.com/aida-public/AB6AXuChD-CI615rUws995-69h1TkY_M2aDhe_CiYJw0Jr7_8B60FbBFxlg_xjxzAOmRmgVkCrPYBXIlMl0nU3TUzOx55VkuI1IBzIm9csX6a3q_6V1yoW04GXCxJ44fJAbJ9h8d4qpw06rFAGecngmYldxv6qKzcn38GzKpb-f3XZKw3z4vATlTE66R9GwzXsQOdms562k-4-408gvn5-T2HmkvVC9Ylx5r3xJb7KC9VeY"
+/>
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent">
                                     </div>
@@ -589,8 +505,9 @@
                                             <span
                                                 class="px-2.5 py-1 bg-surface-container-lowest/90 backdrop-blur-md rounded text-primary font-label-uppercase text-[10px] tracking-wider font-bold uppercase inline-block mb-1.5">Penawaran
                                                 Eksklusif</span>
-                                            <h3 class="font-headline-sm text-headline-sm text-on-primary">Royal Ocean
-                                                Penthouse Villa</h3>
+<h3 id="summary-room-name" class="font-headline-sm text-headline-sm text-on-primary">
+    Pilih Tipe Kamar
+</h3>
                                         </div>
                                         <span
                                             class="font-label-uppercase text-[11px] text-secondary-fixed font-bold tracking-wider">320
@@ -605,18 +522,20 @@
                                             <span
                                                 class="font-label-uppercase text-[10px] text-on-surface-variant block uppercase">Jadwal
                                                 Menginap</span>
-                                            <span class="font-label-md text-label-md font-bold text-primary">14 – 16 Des
-                                                2025</span>
-                                            <span
-                                                class="font-body-sm text-[12px] text-on-surface-variant block mt-0.5">2
-                                                Malam Menginap</span>
+<span id="summary-dates" class="font-label-md text-label-md font-bold text-primary">
+    Belum dipilih
+</span>
+<span id="summary-nights" class="font-body-sm text-[12px] text-on-surface-variant block mt-0.5">
+    0 Malam Menginap
+</span>
                                         </div>
                                         <div>
                                             <span
                                                 class="font-label-uppercase text-[10px] text-on-surface-variant block uppercase">Kapasitas
                                                 Tamu</span>
-                                            <span class="font-label-md text-label-md font-bold text-primary">2 Tamu
-                                                Dewasa</span>
+<span id="summary-guests" class="font-label-md text-label-md font-bold text-primary">
+    1 Tamu
+</span>
                                             <span
                                                 class="font-body-sm text-[12px] text-on-surface-variant block mt-0.5">1
                                                 King Bed Sanctuary</span>
@@ -650,42 +569,42 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <!-- Price Breakdown Calculation -->
-                                    <div class="pt-6 flex flex-col gap-3">
-                                        <span
-                                            class="font-label-uppercase text-label-uppercase text-on-surface-variant tracking-wider uppercase">Rincian
-                                            Tarif Transparan</span>
-                                        <div
-                                            class="flex justify-between items-center font-body-sm text-body-sm text-on-surface-variant">
-                                            <span>Tarif Kamar (2 Malam × Rp 12.500.000)</span>
-                                            <span class="font-label-md font-semibold text-primary">Rp 25.000.000</span>
-                                        </div>
-                                        <div
-                                            class="flex justify-between items-center font-body-sm text-body-sm text-on-surface-variant">
-                                            <span class="flex items-center gap-1">
-                                                Pajak Daerah &amp; Service Charge (18%)
-                                                <span class="material-symbols-outlined text-[14px]">info</span>
-                                            </span>
-                                            <span class="font-label-md font-semibold text-primary">Rp 4.500.000</span>
-                                        </div>
-                                        <div
-                                            class="flex justify-between items-center font-body-sm text-body-sm text-secondary font-medium">
-                                            <span>Diskon Privilege Membership Welcome</span>
-                                            <span class="font-label-md font-semibold">- Rp 0</span>
-                                        </div>
-                                        <div
-                                            class="p-4 bg-surface-container rounded-lg flex items-center justify-between mt-2">
-                                            <div>
-                                                <span
-                                                    class="font-label-uppercase text-[11px] uppercase tracking-wider text-on-surface-variant block">Total
-                                                    Pembayaran Akhir</span>
-                                                <span class="font-body-sm text-[11px] text-on-surface-variant">Termasuk
-                                                    semua pajak &amp; layanan</span>
-                                            </div>
-                                            <span class="font-headline-sm text-headline-sm text-primary">Rp
-                                                29.500.000</span>
-                                        </div>
-                                    </div>
+
+<!-- Price Breakdown Calculation -->
+<div class="pt-6 flex flex-col gap-3">
+    <span class="font-label-uppercase text-label-uppercase text-on-surface-variant tracking-wider uppercase">
+        Rincian Tarif Transparan
+    </span>
+
+    <div class="flex justify-between items-center font-body-sm text-body-sm text-on-surface-variant">
+        <span>Harga per Malam</span>
+        <span id="summary-price" class="font-label-md font-semibold text-primary">
+            Rp 0
+        </span>
+    </div>
+
+    <div class="flex justify-between items-center font-body-sm text-body-sm text-on-surface-variant">
+        <span id="summary-calculation">0 Malam × Rp 0</span>
+        <span id="summary-subtotal" class="font-label-md font-semibold text-primary">
+            Rp 0
+        </span>
+    </div>
+
+    <div class="p-4 bg-surface-container rounded-lg flex items-center justify-between mt-2">
+        <div>
+            <span class="font-label-uppercase text-[11px] uppercase tracking-wider text-on-surface-variant block">
+                Total Pembayaran
+            </span>
+            <span class="font-body-sm text-[11px] text-on-surface-variant">
+                Berdasarkan lama menginap
+            </span>
+        </div>
+
+        <span id="summary-total" class="font-headline-sm text-headline-sm text-primary">
+            Rp 0
+        </span>
+    </div>
+</div>
                                 </div>
                             </div>
                             <!-- VIP Direct Concierge Help Box -->
@@ -713,6 +632,105 @@
             </div>
         </main>
     </div>
-</body>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const roomTypeSelect = document.getElementById('room_type_id');
+    const guestsInput = document.getElementById('guests_count');
+    const guestLimitInfo = document.getElementById('guest-limit-info');
+
+    const checkInInput = document.getElementById('check_in');
+    const checkOutInput = document.getElementById('check_out');
+
+    const formatRupiah = (number) => {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0
+        }).format(number);
+    };
+
+    function updateSummary() {
+        const option = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+
+        const roomName = option.value ? option.text.trim() : 'Pilih Tipe Kamar';
+        const price = parseFloat(option.dataset.price) || 0;
+        const image = option.dataset.image;
+const roomImage = document.getElementById('summary-room-image');
+
+if (image) {
+    roomImage.src = image;
+}
+
+        const checkIn = checkInInput.value;
+        const checkOut = checkOutInput.value;
+
+        let nights = 0;
+
+        if (checkIn && checkOut) {
+            const start = new Date(checkIn + 'T00:00:00');
+            const end = new Date(checkOut + 'T00:00:00');
+
+            nights = Math.round((end - start) / (1000 * 60 * 60 * 24));
+
+            if (nights < 0) nights = 0;
+        }
+
+        const guests = guestsInput.value || 1;
+        const subtotal = price * nights;
+
+        document.getElementById('summary-room-name').textContent = roomName;
+        document.getElementById('summary-dates').textContent =
+            checkIn && checkOut ? `${checkIn} – ${checkOut}` : 'Belum dipilih';
+
+        document.getElementById('summary-nights').textContent =
+            `${nights} Malam Menginap`;
+
+        document.getElementById('summary-guests').textContent =
+            `${guests} Tamu`;
+
+        document.getElementById('summary-price').textContent = formatRupiah(price);
+        document.getElementById('summary-calculation').textContent =
+            `${nights} Malam × ${formatRupiah(price)}`;
+
+        document.getElementById('summary-subtotal').textContent = formatRupiah(subtotal);
+        document.getElementById('summary-total').textContent = formatRupiah(subtotal);
+    }
+
+    function updateGuestLimit() {
+        const option = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+        const maxOccupancy = parseInt(option.dataset.maxOccupancy);
+
+        if (!maxOccupancy || isNaN(maxOccupancy)) {
+            guestsInput.disabled = true;
+            guestsInput.value = 1;
+            guestsInput.removeAttribute('max');
+            guestLimitInfo.textContent = 'Pilih tipe kamar terlebih dahulu.';
+        } else {
+            guestsInput.disabled = false;
+            guestsInput.max = maxOccupancy;
+
+            if (parseInt(guestsInput.value) > maxOccupancy) {
+                guestsInput.value = maxOccupancy;
+            }
+
+            if (!guestsInput.value || parseInt(guestsInput.value) < 1) {
+                guestsInput.value = 1;
+            }
+
+            guestLimitInfo.textContent =
+                `Maksimal ${maxOccupancy} tamu untuk tipe kamar ini.`;
+        }
+
+        updateSummary();
+    }
+
+    roomTypeSelect.addEventListener('change', updateGuestLimit);
+    guestsInput.addEventListener('input', updateSummary);
+    checkInInput.addEventListener('change', updateSummary);
+    checkOutInput.addEventListener('change', updateSummary);
+
+    updateGuestLimit();
+});
+</script>
 
 </html>

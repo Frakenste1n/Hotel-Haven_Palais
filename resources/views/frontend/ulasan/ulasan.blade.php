@@ -115,28 +115,25 @@
                                 <div
                                     class="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left gap-4 bg-surface-container-lowest p-8 rounded-xl shadow-sm">
                                     <div class="flex items-center gap-1 text-secondary">
-                                        <span class="material-symbols-outlined text-[26px]"
-                                            style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-[26px]"
-                                            style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-[26px]"
-                                            style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-[26px]"
-                                            style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-[26px]"
-                                            style="font-variation-settings: 'FILL' 1;">star</span>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <span class="material-symbols-outlined text-[26px]"
+                                                style="font-variation-settings: 'FILL' {{ $i <= round($averageRating) ? 1 : 0 }};">
+                                                star
+                                            </span>
+                                        @endfor
                                     </div>
                                     <div class="flex items-baseline gap-2">
                                         <span
-                                            class="font-headline-lg text-display-hero leading-none text-primary font-serif">4.95</span>
+                                            class="font-headline-lg text-display-hero leading-none text-primary font-serif">{{ number_format($averageRating, 1) }}</span>
                                         <span
                                             class="font-title-editorial text-title-editorial text-on-surface-variant">/
                                             5.0</span>
                                     </div>
                                     <p
                                         class="font-label-uppercase text-label-uppercase tracking-wider text-on-surface-variant">
-                                        Berdasarkan <span class="text-primary font-bold">1.280+ Ulasan
-                                            Terverifikasi</span>
+                                        Berdasarkan <span class="text-primary font-bold">
+                                            {{ number_format($reviewCount, 0, ',', '.') }} Ulasan Terverifikasi
+                                        </span>
                                     </p>
                                     <!-- Recognition Badges -->
                                     <div class="w-full flex flex-col gap-2.5 pt-4 mt-2">
@@ -183,12 +180,20 @@
                                                 <span
                                                     class="material-symbols-outlined absolute right-2.5 top-2.5 text-[20px] pointer-events-none text-on-surface-variant">expand_more</span>
                                             </div>
-                                            <button
-                                                class="bg-primary-container hover:bg-primary text-on-primary px-5 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all shadow-sm flex items-center gap-2"
-                                                onclick="document.getElementById('review-form-modal').classList.remove('hidden')">
-                                                <span class="material-symbols-outlined text-[16px]">edit_note</span>
-                                                <span>Tulis Ulasan</span>
-                                            </button>
+                                            @if (auth()->check() && $eligibleReservations->isNotEmpty())
+                                                <button type="button"
+                                                    class="bg-primary-container hover:bg-primary text-on-primary px-5 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all shadow-sm flex items-center gap-2"
+                                                    onclick="document.getElementById('review-form-modal').classList.remove('hidden')">
+                                                    <span class="material-symbols-outlined text-[16px]">edit_note</span>
+                                                    <span>Tulis Ulasan</span>
+                                                </button>
+                                            @elseif (!auth()->check())
+                                                <a href="{{ route('login') }}"
+                                                    class="bg-primary-container hover:bg-primary text-on-primary px-5 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all shadow-sm flex items-center gap-2">
+                                                    <span class="material-symbols-outlined text-[16px]">login</span>
+                                                    <span>Masuk untuk Mengulas</span>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                     <!-- Aspect Bars -->
@@ -433,536 +438,331 @@
                 </section>
                 <!-- CURATED DETAILED GUEST REVIEWS -->
                 <section class="px-6 lg:px-16 py-20 bg-surface">
-                    <div class="max-w-[1320px] mx-auto flex flex-col gap-10">
-                        <!-- Category Tabs & Counter -->
-                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-4">
-                            <div>
-                                <span
-                                    class="font-label-uppercase text-label-uppercase text-secondary tracking-widest block">Kesaksian
-                                    Berharga</span>
-                                <h2 class="font-headline-md text-headline-md text-primary mt-1">Ulasan Pilihan Tamu Kami
-                                </h2>
-                            </div>
-                            <!-- Category Pills -->
-                            <div class="flex flex-wrap items-center gap-2" id="filter-pill-container">
-                                <button
-                                    class="review-tab-btn active px-4 py-2 rounded-full font-label-uppercase text-[11px] tracking-wider transition-all bg-primary text-on-primary shadow-sm"
-                                    data-category="all">
-                                    Semua (1.280)
-                                </button>
-                                <button
-                                    class="review-tab-btn px-4 py-2 rounded-full font-label-uppercase text-[11px] tracking-wider transition-all bg-surface-container-low hover:bg-surface-container text-on-surface-variant"
-                                    data-category="butler">
-                                    Layanan Butler (412)
-                                </button>
-                                <button
-                                    class="review-tab-btn px-4 py-2 rounded-full font-label-uppercase text-[11px] tracking-wider transition-all bg-surface-container-low hover:bg-surface-container text-on-surface-variant"
-                                    data-category="dining">
-                                    Kuliner &amp; Dining (368)
-                                </button>
-                                <button
-                                    class="review-tab-btn px-4 py-2 rounded-full font-label-uppercase text-[11px] tracking-wider transition-all bg-surface-container-low hover:bg-surface-container text-on-surface-variant"
-                                    data-category="views">
-                                    Pemandangan &amp; Suite (504)
-                                </button>
-                                <button
-                                    class="review-tab-btn px-4 py-2 rounded-full font-label-uppercase text-[11px] tracking-wider transition-all bg-surface-container-low hover:bg-surface-container text-on-surface-variant"
-                                    data-category="spa">
-                                    Spa &amp; Wellness (290)
-                                </button>
-                            </div>
+                    <!-- Category Tabs & Counter -->
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-4">
+                        <div>
+                            <span
+                                class="font-label-uppercase text-label-uppercase text-secondary tracking-widest block">Kesaksian
+                                Berharga</span>
+                            <h2 class="font-headline-md text-headline-md text-primary mt-1">Ulasan Pilihan Tamu Kami
+                            </h2>
                         </div>
-                        <!-- Reviews Grid (2 Columns Desktop) -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="reviews-grid">
-                            <!-- Review 1: Raden Arya W. -->
-                            <div class="review-card bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-[0_12px_32px_-4px_rgba(27,42,50,0.04)] flex flex-col justify-between gap-6"
-                                data-category="butler views">
-                                <div class="flex flex-col gap-4">
-                                    <!-- Header with Rating and Verified Tag -->
-                                    <div class="flex flex-wrap items-center justify-between gap-3">
-                                        <div class="flex items-center gap-1 text-secondary">
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span
-                                                class="font-label-uppercase text-[12px] text-primary font-bold ml-1.5">5.0</span>
-                                        </div>
-                                        <div
-                                            class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary-fixed/30 text-on-secondary-container font-label-uppercase text-[10px] font-semibold">
-                                            <span class="material-symbols-outlined text-[14px]">verified</span>
-                                            <span>Tamu Terverifikasi</span>
-                                        </div>
-                                    </div>
-                                    <!-- Title & Quote Content -->
-                                    <h3 class="font-title-editorial text-title-editorial text-primary font-semibold">
-                                        “Layanan Butler yang Mengerti Keinginan Kami Bahkan Sebelum Terucap.”
-                                    </h3>
-                                    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                                        Kami memilih Haven Palais untuk merayakan ulang tahun pernikahan ke-10 kami di
-                                        Royal Ocean Penthouse Villa. Dedicated Butler kami, Bapak Dewa, menunjukkan
-                                        tingkat perhatian yang luar biasa. Dari menyiapkan kelopak mawar di bathtub
-                                        dengan wewangian melati hingga reservasi private cabana yang sangat tenang tanpa
-                                        gangguan sedikitpun. Privasi di sini benar-benar mutlak. Ini adalah standar
-                                        perhotelan tertinggi di Asia Tenggara.
-                                    </p>
-                                </div>
-                                <!-- Guest Meta & Room Details -->
-                                <div
-                                    class="flex items-center justify-between pt-6 bg-surface-container-low/50 -mx-8 -mb-8 lg:-mx-10 lg:-mb-10 p-6 rounded-b-xl">
-                                    <div class="flex items-center gap-3.5">
-                                        <div
-                                            class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm font-serif">
-                                            R
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-label-md text-label-md font-bold text-primary">Raden Arya
-                                                W.</span>
-                                            <span class="font-body-sm text-body-sm text-on-surface-variant">Jakarta,
-                                                Indonesia</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-bold block">Royal
-                                            Ocean Penthouse</span>
-                                        <span class="font-label-uppercase text-[10px] text-on-surface-variant">Menginap
-                                            Nov 2024</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Review 2: Claire & Thomas Beauchamp -->
-                            <div class="review-card bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-[0_12px_32px_-4px_rgba(27,42,50,0.04)] flex flex-col justify-between gap-6"
-                                data-category="dining views">
-                                <div class="flex flex-col gap-4">
-                                    <div class="flex flex-wrap items-center justify-between gap-3">
-                                        <div class="flex items-center gap-1 text-secondary">
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span
-                                                class="font-label-uppercase text-[12px] text-primary font-bold ml-1.5">5.0</span>
-                                        </div>
-                                        <div
-                                            class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary-fixed/30 text-on-secondary-container font-label-uppercase text-[10px] font-semibold">
-                                            <span class="material-symbols-outlined text-[14px]">verified</span>
-                                            <span>Tamu Terverifikasi</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="font-title-editorial text-title-editorial text-primary font-semibold">
-                                        “Kombinasi Haute Cuisine dan Arsitektur Tebing yang Tiada Duanya.”
-                                    </h3>
-                                    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                                        Arsitektur Deluxe Ocean Cliff Villa mengalir selaras dengan batu karang alami
-                                        Uluwatu. Duduk di kolam renang tanpa batas sembari memandangi matahari terbenam
-                                        terasa seperti di nirwana. Sorotan utama kami adalah bersantap di Palais Haute
-                                        Cuisine; sentuhan kuliner Prancis modern berpadu rempah Nusantara hasil racikan
-                                        Chef Eksekutif sangat menakjubkan bagi selera gastronomi kami.
-                                    </p>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between pt-6 bg-surface-container-low/50 -mx-8 -mb-8 lg:-mx-10 lg:-mb-10 p-6 rounded-b-xl">
-                                    <div class="flex items-center gap-3.5">
-                                        <div
-                                            class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline-sm text-headline-sm font-serif">
-                                            C
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-label-md text-label-md font-bold text-primary">Claire
-                                                &amp; Thomas B.</span>
-                                            <span class="font-body-sm text-body-sm text-on-surface-variant">Paris,
-                                                Prancis</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-bold block">Deluxe
-                                            Ocean Cliff Villa</span>
-                                        <span class="font-label-uppercase text-[10px] text-on-surface-variant">Menginap
-                                            Des 2024</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Review 3: Hiroshi Tanaka -->
-                            <div class="review-card bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-[0_12px_32px_-4px_rgba(27,42,50,0.04)] flex flex-col justify-between gap-6"
-                                data-category="spa">
-                                <div class="flex flex-col gap-4">
-                                    <div class="flex flex-wrap items-center justify-between gap-3">
-                                        <div class="flex items-center gap-1 text-secondary">
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span
-                                                class="font-label-uppercase text-[12px] text-primary font-bold ml-1.5">5.0</span>
-                                        </div>
-                                        <div
-                                            class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary-fixed/30 text-on-secondary-container font-label-uppercase text-[10px] font-semibold">
-                                            <span class="material-symbols-outlined text-[14px]">verified</span>
-                                            <span>Tamu Terverifikasi</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="font-title-editorial text-title-editorial text-primary font-semibold">
-                                        “Ketenangan Zen yang Memulihkan Raga dan Jiwa Secara Menyeluruh.”
-                                    </h3>
-                                    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                                        Sebagai pelancong solo dari Tokyo yang membutuhkan pemulihan, Garden Botanical
-                                        Bungalow memberikan ketenteraman yang saya cari. Perawatan Thalasso di Serenity
-                                        Spa menggunakan air laut murni dan ramuan botani tradisional sangat menyehatkan.
-                                        Suasana hijau yang rimbun dengan hembusan angin laut menghasilkan harmoni yang
-                                        jarang saya jumpai di tempat lain.
-                                    </p>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between pt-6 bg-surface-container-low/50 -mx-8 -mb-8 lg:-mx-10 lg:-mb-10 p-6 rounded-b-xl">
-                                    <div class="flex items-center gap-3.5">
-                                        <div
-                                            class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-headline-sm text-headline-sm font-serif">
-                                            H
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-label-md text-label-md font-bold text-primary">Hiroshi
-                                                Tanaka</span>
-                                            <span class="font-body-sm text-body-sm text-on-surface-variant">Tokyo,
-                                                Jepang</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-bold block">Botanical
-                                            Bungalow</span>
-                                        <span class="font-label-uppercase text-[10px] text-on-surface-variant">Menginap
-                                            Jan 2025</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Review 4: Sophie Montgomery -->
-                            <div class="review-card bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-[0_12px_32px_-4px_rgba(27,42,50,0.04)] flex flex-col justify-between gap-6"
-                                data-category="views butler">
-                                <div class="flex flex-col gap-4">
-                                    <div class="flex flex-wrap items-center justify-between gap-3">
-                                        <div class="flex items-center gap-1 text-secondary">
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-[18px]"
-                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span
-                                                class="font-label-uppercase text-[12px] text-primary font-bold ml-1.5">5.0</span>
-                                        </div>
-                                        <div
-                                            class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary-fixed/30 text-on-secondary-container font-label-uppercase text-[10px] font-semibold">
-                                            <span class="material-symbols-outlined text-[14px]">verified</span>
-                                            <span>Tamu Terverifikasi</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="font-title-editorial text-title-editorial text-primary font-semibold">
-                                        “Matahari Terbenam Paling Spektakuler dan Kedatangan Helipad yang Mulus.”
-                                    </h3>
-                                    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                                        Pemandangan cakrawala dari Grand Sunset Horizon Suite tiada tandingannya.
-                                        Kedatangan kami via helipad resor disambut hangat oleh General Manager dan tim
-                                        concierge pribadi. Keramahan tulus masyarakat Bali terasa kental dalam setiap
-                                        senyuman staf, disajikan dengan keanggunan hotel bintang lima kelas dunia. Kami
-                                        pasti akan kembali setiap musim dingin.
-                                    </p>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between pt-6 bg-surface-container-low/50 -mx-8 -mb-8 lg:-mx-10 lg:-mb-10 p-6 rounded-b-xl">
-                                    <div class="flex items-center gap-3.5">
-                                        <div
-                                            class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm font-serif">
-                                            S
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-label-md text-label-md font-bold text-primary">Sophie
-                                                Montgomery</span>
-                                            <span class="font-body-sm text-body-sm text-on-surface-variant">Sydney,
-                                                Australia</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-bold block">Sunset
-                                            Horizon Suite</span>
-                                        <span class="font-label-uppercase text-[10px] text-on-surface-variant">Menginap
-                                            Feb 2025</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Elegant Pagination -->
-                        <div class="flex items-center justify-center gap-3 pt-6">
-                            <button
-                                class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors">
-                                <span class="material-symbols-outlined text-[20px]">chevron_left</span>
-                            </button>
-                            <button
-                                class="w-10 h-10 rounded-full bg-primary text-on-primary font-label-md text-label-md font-bold flex items-center justify-center shadow-sm">
-                                1
-                            </button>
-                            <button
-                                class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center transition-colors">
-                                2
-                            </button>
-                            <button
-                                class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center transition-colors">
-                                3
-                            </button>
-                            <span class="text-on-surface-variant px-1 font-serif">...</span>
-                            <button
-                                class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center transition-colors">
-                                12
-                            </button>
-                            <button
-                                class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors">
-                                <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-                            </button>
-                        </div>
+                        <!-- Category Pills -->
+<div class="flex flex-wrap items-center gap-2" id="filter-pill-container">
+    <button
+        class="review-tab-btn active px-4 py-2 rounded-full font-label-uppercase text-[11px] tracking-wider transition-all bg-primary text-on-primary shadow-sm"
+        data-category="all">
+        Semua ({{ $reviewCount }})
+    </button>
+</div>
                     </div>
-                </section>
-                <!-- SHARE YOUR STORY REWARD CALLOUT (Haven Privilege) -->
-                <section class="px-6 lg:px-16 py-12 bg-surface">
-                    <div class="max-w-[1320px] mx-auto">
-                    </div>
-                </section>
-                <!-- DIRECT CONCIERGE & BOOKING ASSISTANCE FOOTNOTE -->
-                <section class="px-6 lg:px-16 py-16 bg-surface-container-low">
-                    <div class="max-w-[1320px] mx-auto text-center flex flex-col items-center gap-6">
-                        <span class="font-label-uppercase text-label-uppercase text-secondary tracking-widest">Wujudkan
-                            Kenangan Anda</span>
-                        <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-primary max-w-2xl">
-                            Ingin Merasakan Pengalaman Serupa di Puncak Tebing Uluwatu?
-                        </h2>
-                        <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
-                            Konsultasikan preferensi villa, penjemputan VIP helipad, serta perayaan pribadi Anda bersama
-                            staf Concierge berdedikasi kami kapan saja.
-                        </p>
-                        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-                            <a class="bg-primary text-on-primary px-8 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest hover:bg-primary-container transition-all flex items-center gap-2.5 shadow-md"
-                                href="/kamar">
-                                <span>Pesan Kamar Sekarang</span>
-                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                            </a>
-                            <a class="bg-surface-container-lowest hover:bg-surface-container text-primary px-7 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all flex items-center gap-2.5 shadow-sm"
-                                href="https://wa.me/6281386932586" rel="noopener noreferrer" target="_blank">
-                                <span class="material-symbols-outlined text-secondary text-[20px]">chat</span>
-                                <span>Konsultasi via WhatsApp</span>
-                            </a>
-                        </div>
-                    </div>
-                </section>
-                <!-- REVIEW SUBMISSION POPUP MODAL -->
-                <div class="hidden fixed inset-0 z-50 bg-primary/80 backdrop-blur-md flex items-center justify-center p-4"
-                    id="review-form-modal">
-                    <div
-                        class="bg-surface-container-lowest w-full max-w-xl rounded-xl p-8 shadow-2xl relative max-h-[921px] overflow-y-auto">
-                        <!-- Close button -->
-                        <button aria-label="Tutup Formulir"
-                            class="absolute top-6 right-6 w-9 h-9 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-surface-container transition-colors"
-                            onclick="document.getElementById('review-form-modal').classList.add('hidden')">
-                            <span class="material-symbols-outlined text-[20px]">close</span>
-                        </button>
-                        <div class="flex flex-col gap-2 mb-6">
-                            <span class="font-label-uppercase text-label-uppercase text-secondary tracking-widest">Haven
-                                Privilege Reward</span>
-                            <h3 class="font-headline-sm text-headline-sm text-primary">Tulis Ulasan &amp; Cerita Anda
-                            </h3>
-                            <p class="font-body-sm text-body-sm text-on-surface-variant">Bagikan pengalaman otentik Anda
-                                untuk menginspirasi sesama pelancong dan dapatkan 1.000 Privilege Points.</p>
-                        </div>
-                        <form class="flex flex-col gap-4"
-                            onsubmit="event.preventDefault(); alert('Terima kasih atas ulasan berharga Anda! Tim Concierge kami akan memverifikasi reservasi Anda.'); document.getElementById('review-form-modal').classList.add('hidden');">
-                            <div>
-                                <label
-                                    class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1.5">
-                                    Rating Keseluruhan
-                                </label>
+                    @forelse ($approvedReviews as $review)
+                        <div class="review-card">
+                            <div class="flex items-center gap-1 text-secondary">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' {{ $i <= $review->rating ? 1 : 0 }};">
+                                        star
+                                    </span>
+                                @endfor
+                            </div>
 
-                                <div class="flex items-center gap-1.5 text-secondary" id="modal-star-picker">
-                                    <input type="hidden" name="rating" id="rating-value" value="0">
+                            <p class="mt-3">
+                                {{ $review->comment ?: 'Tidak ada komentar.' }}
+                            </p>
 
-                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
-                                        data-rating="1">star</span>
-                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
-                                        data-rating="2">star</span>
-                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
-                                        data-rating="3">star</span>
-                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
-                                        data-rating="4">star</span>
-                                    <span class="material-symbols-outlined text-[28px] cursor-pointer"
-                                        data-rating="5">star</span>
-                                </div>
+                            @if ($review->photo_path)
+                                <img src="{{ asset('storage/' . $review->photo_path) }}" alt="Foto ulasan"
+                                    class="mt-3 w-full rounded-xl object-cover">
+                            @endif
 
-                                <p class="text-xs text-on-surface-variant mt-1" id="rating-description">
-                                    Pilih rating 1–5 bintang
+                            <div class="mt-4">
+                                <p class="font-semibold">
+                                    {{ $review->user->name ?? 'Customer' }}
+                                </p>
+                                <p class="text-sm text-gray-500">
+                                    {{ $review->created_at->format('d M Y') }}
                                 </p>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label
-                                        class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1">Nama
-                                        Lengkap</label>
-                                    <input
-                                        class="w-full bg-surface-container-low rounded p-3 font-body-sm text-body-sm text-primary focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
-                                        placeholder="Contoh: Raden Arya" required="" type="text" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1">Nomor
-                                        Konfirmasi Reservasi</label>
-                                    <input
-                                        class="w-full bg-surface-container-low rounded p-3 font-body-sm text-body-sm text-primary focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
-                                        placeholder="HVN-2025-XXXX" required="" type="text" />
-                                </div>
-                            </div>
-                            <div>
-                                <label
-                                    class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1">Tipe
-                                    Villa / Suite</label>
-                                <select
-                                    class="w-full bg-surface-container-low rounded p-3 font-body-sm text-body-sm text-primary focus:outline-none cursor-pointer">
-                                    <option>Royal Ocean Penthouse Villa</option>
-                                    <option>Deluxe Ocean Cliff Villa</option>
-                                    <option>Grand Sunset Horizon Suite</option>
-                                    <option>Garden Botanical Bungalow</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label
-                                    class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1">Judul
-                                    Ulasan</label>
-                                <input
-                                    class="w-full bg-surface-container-low rounded p-3 font-body-sm text-body-sm text-primary focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
-                                    placeholder="Ringkasan pengalaman Anda" required="" type="text" />
-                            </div>
-                            <div>
-                                <label
-                                    class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1">Detail
-                                    Kisah Menginap</label>
-                                <textarea
-                                    class="w-full bg-surface-container-low rounded p-3 font-body-sm text-body-sm text-primary focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary resize-none"
-                                    placeholder="Ceritakan tentang momen favorit Anda, kehangatan butler, hidangan santap, atau spa..."
-                                    required="" rows="4"></textarea>
-                            </div>
-                            <div class="p-4 rounded-lg bg-surface-container-low flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-[24px] text-secondary">image</span>
-                                    <div class="flex flex-col">
-                                        <span class="font-label-md text-label-md text-primary font-medium">Unggah Foto
-                                            Momen Liburan</span>
-                                        <span class="font-body-sm text-[12px] text-on-surface-variant">Format JPG/PNG
-                                            hingga 15MB</span>
-                                    </div>
-                                </div>
-                                <button
-                                    class="bg-surface-container-lowest text-primary font-label-uppercase text-[11px] px-3 py-1.5 rounded shadow-sm hover:bg-surface-container"
-                                    type="button">Pilih File</button>
-                            </div>
-                            <div class="pt-2 flex items-center justify-end gap-3">
-                                <button
-                                    class="px-5 py-2.5 rounded font-label-uppercase text-label-uppercase text-on-surface-variant hover:text-primary"
-                                    onclick="document.getElementById('review-form-modal').classList.add('hidden')"
-                                    type="button">Batal</button>
-                                <button
-                                    class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-colors shadow-sm"
-                                    type="submit">Kirim Ulasan</button>
-                            </div>
-                        </form>
+                        </div>
+                    @empty
+                        <p class="col-span-full text-center text-gray-500 py-10">
+                            Belum ada ulasan yang dipublikasikan.
+                        </p>
+                    @endforelse
+                    <!-- Elegant Pagination -->
+<div class="flex items-center justify-center gap-2 pt-6">
+    @if ($approvedReviews->onFirstPage())
+        <span class="w-10 h-10 rounded-full bg-surface-container-low text-gray-400 flex items-center justify-center">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        </span>
+    @else
+        <a href="{{ $approvedReviews->previousPageUrl() }}"
+            class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        </a>
+    @endif
+
+    <span class="w-10 h-10 rounded-full bg-primary text-on-primary font-bold flex items-center justify-center shadow-sm">
+        {{ $approvedReviews->currentPage() }}
+    </span>
+
+    @if ($approvedReviews->hasMorePages())
+        <a href="{{ $approvedReviews->nextPageUrl() }}"
+            class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+        </a>
+    @else
+        <span class="w-10 h-10 rounded-full bg-surface-container-low text-gray-400 flex items-center justify-center">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+        </span>
+    @endif
+</div>
+            </div>
+            </section>
+            <!-- SHARE YOUR STORY REWARD CALLOUT (Haven Privilege) -->
+            <section class="px-6 lg:px-16 py-12 bg-surface">
+                <div class="max-w-[1320px] mx-auto">
+                </div>
+            </section>
+            <!-- DIRECT CONCIERGE & BOOKING ASSISTANCE FOOTNOTE -->
+            <section class="px-6 lg:px-16 py-16 bg-surface-container-low">
+                <div class="max-w-[1320px] mx-auto text-center flex flex-col items-center gap-6">
+                    <span class="font-label-uppercase text-label-uppercase text-secondary tracking-widest">Wujudkan
+                        Kenangan Anda</span>
+                    <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-primary max-w-2xl">
+                        Ingin Merasakan Pengalaman Serupa di Puncak Tebing Uluwatu?
+                    </h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+                        Konsultasikan preferensi villa, penjemputan VIP helipad, serta perayaan pribadi Anda bersama
+                        staf Concierge berdedikasi kami kapan saja.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+                        <a class="bg-primary text-on-primary px-8 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest hover:bg-primary-container transition-all flex items-center gap-2.5 shadow-md"
+                            href="/kamar">
+                            <span>Pesan Kamar Sekarang</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                        <a class="bg-surface-container-lowest hover:bg-surface-container text-primary px-7 py-3.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all flex items-center gap-2.5 shadow-sm"
+                            href="https://wa.me/6281386932586" rel="noopener noreferrer" target="_blank">
+                            <span class="material-symbols-outlined text-secondary text-[20px]">chat</span>
+                            <span>Konsultasi via WhatsApp</span>
+                        </a>
                     </div>
                 </div>
-                <!-- INTERACTIVE FILTER LOGIC SCRIPT -->
-                <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const tabBtns = document.querySelectorAll('.review-tab-btn');
-                        const reviewCards = document.querySelectorAll('.review-card');
+            </section>
+            <!-- REVIEW SUBMISSION POPUP MODAL -->
+            <div class="hidden fixed inset-0 z-50 bg-primary/80 backdrop-blur-md flex items-center justify-center p-4"
+                id="review-form-modal">
+                <div
+                    class="bg-surface-container-lowest w-full max-w-xl rounded-xl p-8 shadow-2xl relative max-h-[921px] overflow-y-auto">
+                    <!-- Close button -->
+                    <button aria-label="Tutup Formulir"
+                        class="absolute top-6 right-6 w-9 h-9 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-surface-container transition-colors"
+                        onclick="document.getElementById('review-form-modal').classList.add('hidden')">
+                        <span class="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                    <div class="flex flex-col gap-2 mb-6">
+                        <span class="font-label-uppercase text-label-uppercase text-secondary tracking-widest">Haven
+                            Privilege Reward</span>
+                        <h3 class="font-headline-sm text-headline-sm text-primary">Tulis Ulasan &amp; Cerita Anda
+                        </h3>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant">Bagikan pengalaman otentik Anda
+                            untuk menginspirasi sesama pelancong dan dapatkan 1.000 Privilege Points.</p>
+                    </div>
+                    <form class="flex flex-col gap-4" id="reviewForm" action="{{ route('reviews.store') }}"
+                        method="POST" enctype="multipart/form-data">
+                        @csrf
 
-                        tabBtns.forEach(btn => {
-                            btn.addEventListener('click', () => {
-                                tabBtns.forEach(b => {
-                                    b.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
-                                    b.classList.add('bg-surface-container-low', 'text-on-surface-variant');
-                                });
-                                btn.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
-                                btn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+                        <div>
+                            <label
+                                class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1.5">
+                                Rating Keseluruhan
+                            </label>
 
-                                const category = btn.getAttribute('data-category');
+                            <div class="flex items-center gap-1.5 text-secondary" id="modal-star-picker">
+                                <input type="hidden" name="rating" id="rating-value" value="0">
 
-                                reviewCards.forEach(card => {
-                                    const cardCategories = card.getAttribute('data-category') || '';
-                                    if (category === 'all' || cardCategories.includes(category)) {
-                                        card.style.display = 'flex';
-                                    } else {
-                                        card.style.display = 'none';
-                                    }
-                                });
-                            });
-                        });
-                    });
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const starPicker = document.getElementById('modal-star-picker');
+                                <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                    data-rating="1">star</span>
+                                <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                    data-rating="2">star</span>
+                                <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                    data-rating="3">star</span>
+                                <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                    data-rating="4">star</span>
+                                <span class="material-symbols-outlined text-[28px] cursor-pointer"
+                                    data-rating="5">star</span>
+                            </div>
 
-                        if (!starPicker) return;
+                            <p class="text-xs text-on-surface-variant mt-1" id="rating-description">
+                                Pilih rating 1–5 bintang
+                            </p>
+                        </div>
 
-                        const stars = starPicker.querySelectorAll('[data-rating]');
-                        const ratingValue = document.getElementById('rating-value');
-                        const ratingDescription = document.getElementById('rating-description');
+                        <div>
+                            <label class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1">
+                                Nomor Konfirmasi Reservasi
+                            </label>
 
-                        const descriptions = {
-                            1: 'Sangat Buruk',
-                            2: 'Buruk',
-                            3: 'Cukup',
-                            4: 'Bagus',
-                            5: 'Sangat Bagus'
-                        };
+                            <select name="booking_code" required
+                                class="w-full bg-surface-container-low rounded p-3 font-body-sm text-body-sm text-primary focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary">
+                                <option value="">Pilih Nomor Reservasi</option>
 
-                        function updateStars(rating) {
-                            stars.forEach(star => {
-                                const value = Number(star.dataset.rating);
+                                @foreach ($eligibleReservations as $reservation)
+                                    <option value="{{ $reservation->booking_code }}">
+                                        {{ $reservation->booking_code }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                                star.classList.toggle('active', value <= rating);
-                            });
+                        <div>
+                            <label class="font-label-uppercase text-label-uppercase text-on-surface-variant block mb-1">
+                                Detail Kisah Menginap
+                            </label>
 
-                            ratingValue.value = rating;
+                            <textarea
+                                class="w-full bg-surface-container-low rounded p-3 font-body-sm text-body-sm text-primary focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary resize-none"
+                                name="comment" placeholder="Ceritakan pengalaman menginap Anda..." rows="4"
+                                maxlength="2000"></textarea>
+                        </div>
 
-                            ratingDescription.textContent = rating > 0
-                                ? `${rating} dari 5 bintang - ${descriptions[rating]}`
-                                : 'Pilih rating 1–5 bintang';
-                        }
+                        <div class="p-4 rounded-lg bg-surface-container-low flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-[24px] text-secondary">image</span>
 
-                        stars.forEach(star => {
-                            star.addEventListener('click', function () {
-                                updateStars(Number(this.dataset.rating));
-                            });
-                        });
-                    });
-                </script>
+                                <div class="flex flex-col">
+                                    <span class="font-label-md text-label-md text-primary font-medium">
+                                        Unggah Foto Momen Liburan
+                                    </span>
+
+                                    <span class="font-body-sm text-[12px] text-on-surface-variant">
+                                        Format JPG, JPEG, PNG, WEBP hingga 4MB
+                                    </span>
+                                </div>
+                            </div>
+
+                            <label for="review-photo"
+                                class="bg-surface-container-lowest text-primary font-label-uppercase text-[11px] px-3 py-1.5 rounded shadow-sm hover:bg-surface-container cursor-pointer">
+                                Pilih File
+                            </label>
+
+                            <input type="file" name="photo" id="review-photo" accept=".jpg,.jpeg,.png,.webp"
+                                class="hidden" />
+                            <span id="review-photo-name" class="text-xs text-on-surface-variant mt-2">
+                            </span>
+                        </div>
+
+                        <div class="pt-2 flex items-center justify-end gap-3">
+                            <button
+                                class="px-5 py-2.5 rounded font-label-uppercase text-label-uppercase text-on-surface-variant hover:text-primary"
+                                onclick="document.getElementById('review-form-modal').classList.add('hidden')"
+                                type="button">
+                                Batal
+                            </button>
+
+                            <button
+                                class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-colors shadow-sm"
+                                type="submit">
+                                Kirim Ulasan
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </main>
+            <!-- INTERACTIVE FILTER LOGIC SCRIPT -->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const tabBtns = document.querySelectorAll('.review-tab-btn');
+                    const reviewCards = document.querySelectorAll('.review-card');
+
+                    tabBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            tabBtns.forEach(b => {
+                                b.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+                                b.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+                            });
+                            btn.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+                            btn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+
+                            const category = btn.getAttribute('data-category');
+
+                            reviewCards.forEach(card => {
+                                const cardCategories = card.getAttribute('data-category') || '';
+                                if (category === 'all' || cardCategories.includes(category)) {
+                                    card.style.display = 'flex';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        });
+                    });
+                });
+                document.addEventListener('DOMContentLoaded', function () {
+                    const starPicker = document.getElementById('modal-star-picker');
+
+                    if (!starPicker) return;
+
+                    const stars = starPicker.querySelectorAll('[data-rating]');
+                    const ratingValue = document.getElementById('rating-value');
+                    const ratingDescription = document.getElementById('rating-description');
+                    const photoInput = document.getElementById('review-photo');
+                    const photoName = document.getElementById('review-photo-name');
+
+                    if (photoInput && photoName) {
+                        photoInput.addEventListener('change', function () {
+                            photoName.textContent = this.files.length > 0
+                                ? this.files[0].name
+                                : '';
+                        });
+                    }
+
+                    const descriptions = {
+                        1: 'Sangat Buruk',
+                        2: 'Buruk',
+                        3: 'Cukup',
+                        4: 'Bagus',
+                        5: 'Sangat Bagus'
+                    };
+
+                    function updateStars(rating) {
+                        stars.forEach(star => {
+                            const value = Number(star.dataset.rating);
+
+                            star.classList.toggle('active', value <= rating);
+                        });
+
+                        ratingValue.value = rating;
+
+                        ratingDescription.textContent = rating > 0
+                            ? `${rating} dari 5 bintang - ${descriptions[rating]}`
+                            : 'Pilih rating 1–5 bintang';
+                    }
+
+                    stars.forEach(star => {
+                        star.addEventListener('click', function () {
+                            updateStars(Number(this.dataset.rating));
+                        });
+                    });
+                    const reviewForm = document.getElementById('reviewForm');
+
+                    if (reviewForm) {
+                        reviewForm.addEventListener('submit', function (event) {
+                            if (Number(ratingValue.value) < 1 || Number(ratingValue.value) > 5) {
+                                event.preventDefault();
+
+                                ratingDescription.textContent = 'Silakan pilih rating terlebih dahulu.';
+                                ratingDescription.classList.add('text-red-600');
+
+                                return;
+                            }
+                        });
+                    }
+                });
+            </script>
+    </div>
+    </main>
     </div>
 </body>
 

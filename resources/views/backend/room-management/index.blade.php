@@ -9,18 +9,20 @@
 @endsection
 
 @push('styles')
-<style>
-    .tab-btn.active {
-        background-color: #1b2a32;
-        color: white;
-    }
-    .tab-content {
-        display: none;
-    }
-    .tab-content.active {
-        display: block;
-    }
-</style>
+    <style>
+        .tab-btn.active {
+            background-color: #1b2a32;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -33,31 +35,36 @@
     <!-- Tabs Navigation -->
     <div class="flex flex-wrap gap-2 border-b border-outline-variant/40 pb-1">
         @allows('room_categories.view')
-        <button onclick="switchTab('categories')" class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'categories' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <button onclick="switchTab('categories')"
+            class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'categories' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[18px] align-middle mr-1">category</span>
             Categories
         </button>
         @endallows
         @allows('room_types.view')
-        <button onclick="switchTab('types')" class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'types' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <button onclick="switchTab('types')"
+            class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'types' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[18px] align-middle mr-1">bed</span>
             Room Types
         </button>
         @endallows
         @allows('rooms.view')
-        <button onclick="switchTab('units')" class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'units' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <button onclick="switchTab('units')"
+            class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'units' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[18px] align-middle mr-1">meeting_room</span>
             Room Units
         </button>
         @endallows
         @allows('room_facilities.view')
-        <button onclick="switchTab('facilities')" class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'facilities' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <button onclick="switchTab('facilities')"
+            class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'facilities' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[18px] align-middle mr-1">kitchen</span>
             Facilities
         </button>
         @endallows
         @allows('room_types.view')
-        <button type="button" onclick="switchTab('photos')" class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'photos' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <button type="button" onclick="switchTab('photos')"
+            class="tab-btn rounded-t-lg px-4 py-2.5 text-sm font-medium transition {{ $activeTab === 'photos' ? 'active' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[18px] align-middle mr-1">photo_library</span>
             Foto Kamar
         </button>
@@ -70,7 +77,8 @@
         <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-soft">
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Room Categories</h3>
-                <button type="button" data-fi-create data-modal="category-modal" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
+                <button type="button" data-fi-create data-modal="category-modal"
+                    class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     Tambah Kategori
                 </button>
@@ -97,18 +105,29 @@
                                 <td class="px-4 py-3 text-on-surface">{{ $category->sort_order }}</td>
                                 <td class="px-4 py-3">
                                     @if($category->is_active)
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800">Aktif</span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800">Aktif</span>
                                     @else
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs font-semibold text-on-surface-variant">Nonaktif</span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs font-semibold text-on-surface-variant">Nonaktif</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <button type="button" data-fi-edit data-modal="category-modal" data-action="{{ route('backend.room-management.update-category', $category) }}" data-title="Edit Kategori Kamar" data-record='{!! json_encode(["name" => $category->name, "slug" => $category->slug, "description" => $category->description, "sort_order" => $category->sort_order, "is_active" => (bool) $category->is_active], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}' class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
-                                        <form method="POST" action="{{ route('backend.room-management.destroy-category', $category) }}" data-confirm="Kategori akan dihapus permanen." data-confirm-title="Hapus kategori?" data-confirm-text="Hapus" class="inline">
+                                        <button type="button" data-fi-edit data-modal="category-modal"
+                                            data-action="{{ route('backend.room-management.update-category', $category) }}"
+                                            data-title="Edit Kategori Kamar"
+                                            data-record='{!! json_encode(["name" => $category->name, "slug" => $category->slug, "description" => $category->description, "sort_order" => $category->sort_order, "is_active" => (bool) $category->is_active], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}'
+                                            class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span
+                                                class="material-symbols-outlined text-[18px]">edit</span></button>
+                                        <form method="POST"
+                                            action="{{ route('backend.room-management.destroy-category', $category) }}"
+                                            data-confirm="Kategori akan dihapus permanen."
+                                            data-confirm-title="Hapus kategori?" data-confirm-text="Hapus" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="rounded-lg p-2 text-error hover:bg-error-container">
+                                            <button type="submit"
+                                                class="rounded-lg p-2 text-error hover:bg-error-container">
                                                 <span class="material-symbols-outlined text-[18px]">delete</span>
                                             </button>
                                         </form>
@@ -117,7 +136,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-4 py-8 text-center text-on-surface-variant">Belum ada kategori kamar.</td>
+                                <td colspan="6" class="px-4 py-8 text-center text-on-surface-variant">Belum ada kategori
+                                    kamar.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -137,7 +157,8 @@
         <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-soft">
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Room Types</h3>
-                <button type="button" data-fi-create data-modal="type-modal" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
+                <button type="button" data-fi-create data-modal="type-modal"
+                    class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     Tambah Tipe Kamar
                 </button>
@@ -162,27 +183,42 @@
                                 <td class="px-4 py-3">
                                     <p class="font-medium text-on-surface">{{ $type->name }}</p>
                                     @if($type->is_featured)
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-secondary-container px-2 py-0.5 text-[10px] font-semibold text-on-secondary-container">Featured</span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-secondary-container px-2 py-0.5 text-[10px] font-semibold text-on-secondary-container">Featured</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 text-on-surface-variant">{{ $type->category->name ?? '-' }}</td>
-                                <td class="px-4 py-3 text-on-surface">Rp {{ number_format($type->base_price, 0, ',', '.') }}</td>
-                                <td class="px-4 py-3 text-on-surface">{{ $type->capacity_adults }} Dewasa, {{ $type->capacity_children }} Anak</td>
+                                <td class="px-4 py-3 text-on-surface">Rp {{ number_format($type->base_price, 0, ',', '.') }}
+                                </td>
+                                <td class="px-4 py-3 text-on-surface">{{ $type->capacity_adults }} Dewasa,
+                                    {{ $type->capacity_children }} Anak
+                                </td>
                                 <td class="px-4 py-3 text-on-surface">{{ $type->rooms_count }}</td>
                                 <td class="px-4 py-3">
                                     @if($type->is_active)
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800">Aktif</span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800">Aktif</span>
                                     @else
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs font-semibold text-on-surface-variant">Nonaktif</span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs font-semibold text-on-surface-variant">Nonaktif</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <button type="button" data-fi-edit data-modal="type-modal" data-action="{{ route('backend.room-management.update-type', $type) }}" data-title="Edit Tipe Kamar" data-record='{!! json_encode(["room_category_id" => $type->room_category_id, "name" => $type->name, "slug" => $type->slug, "base_price" => $type->base_price, "capacity_adults" => $type->capacity_adults, "capacity_children" => $type->capacity_children, "bed_type" => $type->bed_type, "room_size" => $type->room_size, "max_occupancy" => $type->max_occupancy, "description" => $type->description, "summary" => $type->summary, "is_featured" => (bool) $type->is_featured, "is_active" => (bool) $type->is_active, "facility_ids" => $type->facilities->pluck("id")], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}' class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
-                                        <form method="POST" action="{{ route('backend.room-management.destroy-type', $type) }}" data-confirm="Tipe kamar akan dihapus permanen." data-confirm-title="Hapus tipe kamar?" data-confirm-text="Hapus" class="inline">
+                                        <button type="button" data-fi-edit data-modal="type-modal"
+                                            data-action="{{ route('backend.room-management.update-type', $type) }}"
+                                            data-title="Edit Tipe Kamar"
+                                            data-record='{!! json_encode(["room_category_id" => $type->room_category_id, "name" => $type->name, "slug" => $type->slug, "base_price" => $type->base_price, "capacity_adults" => $type->capacity_adults, "capacity_children" => $type->capacity_children, "bed_type" => $type->bed_type, "room_size" => $type->room_size, "max_occupancy" => $type->max_occupancy, "description" => $type->description, "summary" => $type->summary, "is_featured" => (bool) $type->is_featured, "is_active" => (bool) $type->is_active, "facility_ids" => $type->facilities->pluck("id")], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}'
+                                            class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span
+                                                class="material-symbols-outlined text-[18px]">edit</span></button>
+                                        <form method="POST"
+                                            action="{{ route('backend.room-management.destroy-type', $type) }}"
+                                            data-confirm="Tipe kamar akan dihapus permanen."
+                                            data-confirm-title="Hapus tipe kamar?" data-confirm-text="Hapus" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="rounded-lg p-2 text-error hover:bg-error-container">
+                                            <button type="submit"
+                                                class="rounded-lg p-2 text-error hover:bg-error-container">
                                                 <span class="material-symbols-outlined text-[18px]">delete</span>
                                             </button>
                                         </form>
@@ -191,7 +227,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-4 py-8 text-center text-on-surface-variant">Belum ada tipe kamar.</td>
+                                <td colspan="7" class="px-4 py-8 text-center text-on-surface-variant">Belum ada tipe kamar.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -211,23 +248,30 @@
         <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-soft">
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Room Units</h3>
-                <button type="button" data-fi-create data-modal="room-modal" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
+                <button type="button" data-fi-create data-modal="room-modal"
+                    class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     Tambah Unit Kamar
                 </button>
             </div>
 
             <div class="mb-4 flex flex-wrap gap-3">
-                <form method="GET" action="{{ route('backend.room-management.index') }}" class="flex flex-1 items-center gap-2">
+                <form method="GET" action="{{ route('backend.room-management.index') }}"
+                    class="flex flex-1 items-center gap-2">
                     <input type="hidden" name="tab" value="units">
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nomor kamar..." class="flex-1 rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
-                    <button type="submit" class="rounded-lg bg-primary-container px-4 py-2 text-sm font-semibold text-on-primary hover:bg-primary">Cari</button>
+                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nomor kamar..."
+                        class="flex-1 rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                    <button type="submit"
+                        class="rounded-lg bg-primary-container px-4 py-2 text-sm font-semibold text-on-primary hover:bg-primary">Cari</button>
                 </form>
-                <select onchange="window.location.href='{{ route('backend.room-management.index') }}?tab=units&status='+this.value" class="rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                <select
+                    onchange="window.location.href='{{ route('backend.room-management.index') }}?tab=units&status='+this.value"
+                    class="rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
                     <option value="">Semua Status</option>
                     <option value="available" {{ request('status') === 'available' ? 'selected' : '' }}>Available</option>
                     <option value="occupied" {{ request('status') === 'occupied' ? 'selected' : '' }}>Occupied</option>
-                    <option value="maintenance" {{ request('status') === 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                    <option value="maintenance" {{ request('status') === 'maintenance' ? 'selected' : '' }}>Maintenance
+                    </option>
                     <option value="cleaning" {{ request('status') === 'cleaning' ? 'selected' : '' }}>Cleaning</option>
                 </select>
             </div>
@@ -266,17 +310,27 @@
                                             'cleaning' => 'Cleaning',
                                         ];
                                     @endphp
-                                    <span class="inline-flex items-center gap-1 rounded-full {{ $statusColors[$room->status] ?? 'bg-gray-100 text-gray-800' }} px-2.5 py-1 text-xs font-semibold">
+                                    <span
+                                        class="inline-flex items-center gap-1 rounded-full {{ $statusColors[$room->status] ?? 'bg-gray-100 text-gray-800' }} px-2.5 py-1 text-xs font-semibold">
                                         {{ $statusLabel[$room->status] ?? $room->status }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <button type="button" data-fi-edit data-modal="room-modal" data-action="{{ route('backend.room-management.update-room', $room) }}" data-title="Edit Unit Kamar" data-record='{!! json_encode(["room_type_id" => $room->room_type_id, "room_number" => $room->room_number, "floor" => $room->floor, "status" => $room->status, "notes" => $room->notes, "is_active" => (bool) $room->is_active], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}' class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
-                                        <form method="POST" action="{{ route('backend.room-management.destroy-room', $room) }}" data-confirm="Unit kamar akan dihapus permanen." data-confirm-title="Hapus unit kamar?" data-confirm-text="Hapus" class="inline">
+                                        <button type="button" data-fi-edit data-modal="room-modal"
+                                            data-action="{{ route('backend.room-management.update-room', $room) }}"
+                                            data-title="Edit Unit Kamar"
+                                            data-record='{!! json_encode(["room_type_id" => $room->room_type_id, "room_number" => $room->room_number, "floor" => $room->floor, "status" => $room->status, "notes" => $room->notes, "is_active" => (bool) $room->is_active], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}'
+                                            class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span
+                                                class="material-symbols-outlined text-[18px]">edit</span></button>
+                                        <form method="POST"
+                                            action="{{ route('backend.room-management.destroy-room', $room) }}"
+                                            data-confirm="Unit kamar akan dihapus permanen."
+                                            data-confirm-title="Hapus unit kamar?" data-confirm-text="Hapus" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="rounded-lg p-2 text-error hover:bg-error-container">
+                                            <button type="submit"
+                                                class="rounded-lg p-2 text-error hover:bg-error-container">
                                                 <span class="material-symbols-outlined text-[18px]">delete</span>
                                             </button>
                                         </form>
@@ -285,7 +339,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-8 text-center text-on-surface-variant">Belum ada unit kamar.</td>
+                                <td colspan="5" class="px-4 py-8 text-center text-on-surface-variant">Belum ada unit kamar.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -305,7 +360,8 @@
         <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-soft">
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Room Facilities</h3>
-                <button type="button" data-fi-create data-modal="facility-modal" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
+                <button type="button" data-fi-create data-modal="facility-modal"
+                    class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     Tambah Fasilitas
                 </button>
@@ -330,18 +386,29 @@
                                 <td class="px-4 py-3 text-on-surface-variant">{{ $facility->description ?? '-' }}</td>
                                 <td class="px-4 py-3">
                                     @if($facility->is_active)
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800">Aktif</span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800">Aktif</span>
                                     @else
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs font-semibold text-on-surface-variant">Nonaktif</span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs font-semibold text-on-surface-variant">Nonaktif</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <button type="button" data-fi-edit data-modal="facility-modal" data-action="{{ route('backend.room-management.update-facility', $facility) }}" data-title="Edit Fasilitas Kamar" data-record='{!! json_encode(["name" => $facility->name, "icon" => $facility->icon, "description" => $facility->description, "is_active" => (bool) $facility->is_active], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}' class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
-                                        <form method="POST" action="{{ route('backend.room-management.destroy-facility', $facility) }}" data-confirm="Fasilitas akan dihapus permanen." data-confirm-title="Hapus fasilitas?" data-confirm-text="Hapus" class="inline">
+                                        <button type="button" data-fi-edit data-modal="facility-modal"
+                                            data-action="{{ route('backend.room-management.update-facility', $facility) }}"
+                                            data-title="Edit Fasilitas Kamar"
+                                            data-record='{!! json_encode(["name" => $facility->name, "icon" => $facility->icon, "description" => $facility->description, "is_active" => (bool) $facility->is_active], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}'
+                                            class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"><span
+                                                class="material-symbols-outlined text-[18px]">edit</span></button>
+                                        <form method="POST"
+                                            action="{{ route('backend.room-management.destroy-facility', $facility) }}"
+                                            data-confirm="Fasilitas akan dihapus permanen."
+                                            data-confirm-title="Hapus fasilitas?" data-confirm-text="Hapus" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="rounded-lg p-2 text-error hover:bg-error-container">
+                                            <button type="submit"
+                                                class="rounded-lg p-2 text-error hover:bg-error-container">
                                                 <span class="material-symbols-outlined text-[18px]">delete</span>
                                             </button>
                                         </form>
@@ -350,7 +417,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-8 text-center text-on-surface-variant">Belum ada fasilitas kamar.</td>
+                                <td colspan="5" class="px-4 py-8 text-center text-on-surface-variant">Belum ada fasilitas
+                                    kamar.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -365,63 +433,84 @@
     @endallows
 </div>
 
-    @allows('room_types.view')
-    <div id="tab-photos" class="tab-content {{ $activeTab === 'photos' ? 'active' : '' }}">
-        <div class="fi-section">
-            <div class="fi-section-head">
-                <div>
-                    <h3 class="text-lg font-semibold text-primary">Foto tipe kamar</h3>
-                    <p class="fi-help">Unggah galeri untuk setiap tipe kamar. Tetap di halaman ini.</p>
-                </div>
-                <button type="button" data-fi-create data-modal="room-image-modal" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white">
-                    <span class="material-symbols-outlined text-[18px]">add</span> Tambah Foto
-                </button>
+@allows('room_types.view')
+<div id="tab-photos" class="tab-content {{ $activeTab === 'photos' ? 'active' : '' }}">
+    <div class="fi-section">
+        <div class="fi-section-head">
+            <div>
+                <h3 class="text-lg font-semibold text-primary">Foto tipe kamar</h3>
+                <p class="fi-help">Unggah galeri untuk setiap tipe kamar. Tetap di halaman ini.</p>
             </div>
-            <div class="p-4">
-                <input data-table-filter="#room-image-table" type="search" placeholder="Cari tipe atau keterangan" class="fi-input mb-4 max-w-sm">
-                <div class="overflow-x-auto rounded-xl border border-outline-variant/40">
-                    <table id="room-image-table" class="w-full text-sm">
-                        <thead><tr>
+            <button type="button" data-fi-create data-modal="room-image-modal"
+                class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white">
+                <span class="material-symbols-outlined text-[18px]">add</span> Tambah Foto
+            </button>
+        </div>
+        <div class="p-4">
+            <input data-table-filter="#room-image-table" type="search" placeholder="Cari tipe atau keterangan"
+                class="fi-input mb-4 max-w-sm">
+            <div class="overflow-x-auto rounded-xl border border-outline-variant/40">
+                <table id="room-image-table" class="w-full text-sm">
+                    <thead>
+                        <tr>
                             <th class="px-4 py-3 text-left">Foto</th>
                             <th class="px-4 py-3 text-left">Tipe</th>
                             <th class="px-4 py-3 text-left">Keterangan</th>
                             <th class="px-4 py-3 text-left">Utama</th>
                             <th class="px-4 py-3 text-right">Aksi</th>
-                        </tr></thead>
-                        <tbody>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @forelse($roomImages as $image)
                             <tr>
-                                <td class="px-4 py-3"><img src="{{ asset('storage/'.$image->image_path) }}" alt="" class="h-12 w-16 rounded-lg object-cover"></td>
+                                <td class="px-4 py-3"><img src="{{ asset('storage/' . $image->image_path) }}" alt=""
+                                        class="h-12 w-16 rounded-lg object-cover"></td>
                                 <td class="px-4 py-3">{{ $image->roomType->name ?? '-' }}</td>
                                 <td class="px-4 py-3">{{ $image->caption ?: '-' }}</td>
                                 <td class="px-4 py-3">{{ $image->is_primary ? 'Ya' : 'Tidak' }}</td>
                                 <td class="px-4 py-3 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <button type="button" data-fi-edit data-modal="room-image-modal" data-title="Edit Foto Kamar" data-action="{{ route('backend.room-management.update-image', $image) }}" data-record='{!! json_encode(["room_type_id" => $image->room_type_id, "caption" => $image->caption, "sort_order" => $image->sort_order, "is_primary" => (bool) $image->is_primary], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}' class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container"><span class="material-symbols-outlined text-[18px]">edit</span></button>
-                                        <form method="POST" action="{{ route('backend.room-management.destroy-image', $image) }}" data-confirm="Foto akan dihapus." data-confirm-title="Hapus foto?" class="inline">@csrf @method('DELETE')<button class="rounded-lg p-2 text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></form>
+                                        <button type="button" data-fi-edit data-modal="room-image-modal"
+                                            data-title="Edit Foto Kamar"
+                                            data-action="{{ route('backend.room-management.update-image', $image) }}"
+                                            data-record='{!! json_encode(["room_type_id" => $image->room_type_id, "caption" => $image->caption, "sort_order" => $image->sort_order, "is_primary" => (bool) $image->is_primary], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}'
+                                            class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container"><span
+                                                class="material-symbols-outlined text-[18px]">edit</span></button>
+                                        <form method="POST"
+                                            action="{{ route('backend.room-management.destroy-image', $image) }}"
+                                            data-confirm="Foto akan dihapus." data-confirm-title="Hapus foto?"
+                                            class="inline">@csrf @method('DELETE')<button
+                                                class="rounded-lg p-2 text-error"><span
+                                                    class="material-symbols-outlined text-[18px]">delete</span></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="5" class="px-4 py-8 text-center text-on-surface-variant">Belum ada foto kamar.</td></tr>
+                            <tr>
+                                <td colspan="5" class="px-4 py-8 text-center text-on-surface-variant">Belum ada foto kamar.
+                                </td>
+                            </tr>
                         @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-4">{{ $roomImages->links() }}</div>
+                    </tbody>
+                </table>
             </div>
+            <div class="mt-4">{{ $roomImages->links() }}</div>
         </div>
     </div>
-    @endallows
+</div>
+@endallows
 
 @allows('room_types.view')
 <div id="room-image-modal" class="fi-modal fixed inset-0 z-50 hidden items-center justify-center bg-primary/50 p-4">
     <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-card">
         <div class="mb-4 flex items-center justify-between">
             <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Tambah Foto Kamar</h3>
-            <button type="button" data-fi-close class="rounded-lg p-2"><span class="material-symbols-outlined">close</span></button>
+            <button type="button" data-fi-close class="rounded-lg p-2"><span
+                    class="material-symbols-outlined">close</span></button>
         </div>
-        <form method="POST" action="{{ route('backend.room-management.store-image') }}" enctype="multipart/form-data" data-loading>
+        <form method="POST" action="{{ route('backend.room-management.store-image') }}" enctype="multipart/form-data"
+            data-loading>
             @csrf
             <div class="space-y-4">
                 <div>
@@ -436,7 +525,8 @@
                 <div class="fi-upload space-y-2">
                     <label class="fi-label">Gambar</label>
                     <img data-fi-preview alt="" class="fi-upload-preview hidden">
-                    <input type="file" name="image" data-fi-file data-required-on-create required accept="image/*" class="fi-input">
+                    <input type="file" name="image" data-fi-file data-required-on-create required accept="image/*"
+                        class="fi-input">
                     <p class="fi-help">JPG, PNG, atau WEBP. Maksimal 4 MB.</p>
                 </div>
                 <div>
@@ -448,7 +538,12 @@
                         <label class="fi-label">Urutan</label>
                         <input type="number" name="sort_order" value="0" min="0" class="fi-input">
                     </div>
-                    <label class="mt-7 flex items-center gap-2 text-sm"><input type="checkbox" name="is_primary" class="rounded"> Foto utama</label>
+                    <input type="hidden" name="is_primary" value="0">
+
+                    <label class="mt-7 flex items-center gap-2 text-sm">
+                        <input type="checkbox" name="is_primary" value="1" class="rounded">
+                        Foto utama
+                    </label>
                 </div>
             </div>
             <div class="mt-6 flex justify-end gap-3">
@@ -463,10 +558,12 @@
 @allows('room_categories.view')
 <!-- Category Modal -->
 <div id="category-modal" class="fi-modal fixed inset-0 z-50 hidden items-center justify-center bg-primary/50 p-4">
-    <div class="m-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
+    <div
+        class="m-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
         <div class="mb-4 flex items-center justify-between">
             <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Tambah Kategori Kamar</h3>
-            <button onclick="document.getElementById('category-modal').classList.add('hidden')" class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
+            <button onclick="document.getElementById('category-modal').classList.add('hidden')"
+                class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
@@ -474,31 +571,42 @@
             @csrf
             <div class="space-y-4">
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-on-surface">Nama <span class="text-error">*</span></label>
-                    <input type="text" name="name" required class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Nama kategori">
+                    <label class="block text-sm font-medium text-on-surface">Nama <span
+                            class="text-error">*</span></label>
+                    <input type="text" name="name" required
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Nama kategori">
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Slug</label>
-                    <input type="text" name="slug" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="URL-friendly slug">
+                    <input type="text" name="slug"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="URL-friendly slug">
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Deskripsi</label>
-                    <textarea name="description" rows="3" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Deskripsi kategori"></textarea>
+                    <textarea name="description" rows="3"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Deskripsi kategori"></textarea>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div class="space-y-1.5">
                         <label class="block text-sm font-medium text-on-surface">Urutan</label>
-                        <input type="number" name="sort_order" value="0" min="0" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                        <input type="number" name="sort_order" value="0" min="0"
+                            class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
                     </div>
                     <div class="flex items-center gap-2 pt-6">
-                        <input type="checkbox" name="is_active" id="cat_is_active" checked class="rounded border-outline-variant text-primary focus:ring-primary">
+                        <input type="checkbox" name="is_active" id="cat_is_active" checked
+                            class="rounded border-outline-variant text-primary focus:ring-primary">
                         <label for="cat_is_active" class="text-sm font-medium text-on-surface">Aktif</label>
                     </div>
                 </div>
             </div>
             <div class="mt-6 flex justify-end gap-3">
-                <button type="button" onclick="document.getElementById('category-modal').classList.add('hidden')" class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
-                <button type="submit" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
+                <button type="button" onclick="document.getElementById('category-modal').classList.add('hidden')"
+                    class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
+                <button type="submit"
+                    class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
             </div>
         </form>
     </div>
@@ -508,10 +616,12 @@
 @allows('room_types.view')
 <!-- Type Modal -->
 <div id="type-modal" class="fi-modal fixed inset-0 z-50 hidden items-center justify-center bg-primary/50 p-4">
-    <div class="m-4 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
+    <div
+        class="m-4 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
         <div class="mb-4 flex items-center justify-between">
             <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Tambah Tipe Kamar</h3>
-            <button onclick="document.getElementById('type-modal').classList.add('hidden')" class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
+            <button onclick="document.getElementById('type-modal').classList.add('hidden')"
+                class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
@@ -519,8 +629,10 @@
             @csrf
             <div class="space-y-4">
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-on-surface">Kategori <span class="text-error">*</span></label>
-                    <select name="room_category_id" required class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                    <label class="block text-sm font-medium text-on-surface">Kategori <span
+                            class="text-error">*</span></label>
+                    <select name="room_category_id" required
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
                         <option value="">Pilih kategori</option>
                         @allows('room_categories.view')
                         @foreach(\App\Models\RoomCategory::where('is_active', true)->orderBy('name')->get() as $cat)
@@ -542,22 +654,30 @@
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div class="space-y-1.5">
-                        <label class="block text-sm font-medium text-on-surface">Harga Dasar <span class="text-error">*</span></label>
-                        <input type="number" name="base_price" required min="0" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="0">
+                        <label class="block text-sm font-medium text-on-surface">Harga Dasar <span
+                                class="text-error">*</span></label>
+                        <input type="number" name="base_price" required min="0"
+                            class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                            placeholder="0">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="block text-sm font-medium text-on-surface">Kapasitas Dewasa <span class="text-error">*</span></label>
-                        <input type="number" name="capacity_adults" required min="1" value="2" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                        <label class="block text-sm font-medium text-on-surface">Kapasitas Dewasa <span
+                                class="text-error">*</span></label>
+                        <input type="number" name="capacity_adults" required min="1" value="2"
+                            class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
                     </div>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-3">
                     <div class="space-y-1.5">
                         <label class="block text-sm font-medium text-on-surface">Kapasitas Anak</label>
-                        <input type="number" name="capacity_children" min="0" value="0" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                        <input type="number" name="capacity_children" min="0" value="0"
+                            class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block text-sm font-medium text-on-surface">Tipe Bed</label>
-                        <input type="text" name="bed_type" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="King, Queen, Twin">
+                        <input type="text" name="bed_type"
+                            class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                            placeholder="King, Queen, Twin">
                     </div>
                     <div class="space-y-1.5">
                         <label class="fi-label">Ukuran (m²)</label>
@@ -573,8 +693,10 @@
                     <div class="grid gap-2 sm:grid-cols-2">
                         @allows('room_facilities.view')
                         @foreach(\App\Models\RoomFacility::orderBy('name')->get() as $facilityOption)
-                            <label class="flex items-center gap-2 rounded-lg border border-outline-variant px-3 py-2 text-sm">
-                                <input type="checkbox" name="facility_ids[]" value="{{ $facilityOption->id }}" class="rounded border-outline-variant text-primary focus:ring-primary">
+                            <label
+                                class="flex items-center gap-2 rounded-lg border border-outline-variant px-3 py-2 text-sm">
+                                <input type="checkbox" name="facility_ids[]" value="{{ $facilityOption->id }}"
+                                    class="rounded border-outline-variant text-primary focus:ring-primary">
                                 <span>{{ $facilityOption->name }}</span>
                             </label>
                         @endforeach
@@ -583,26 +705,37 @@
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Deskripsi</label>
-                    <textarea name="description" rows="3" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Deskripsi tipe kamar"></textarea>
+                    <textarea name="description" rows="3"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Deskripsi tipe kamar"></textarea>
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Summary</label>
-                    <textarea name="summary" rows="2" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Ringkasan singkat"></textarea>
+                    <textarea name="summary" rows="2"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Ringkasan singkat"></textarea>
                 </div>
                 <div class="flex items-center gap-4">
+                    <input type="hidden" name="is_featured" value="0">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" name="is_featured" class="rounded border-outline-variant text-primary focus:ring-primary">
+                        <input type="checkbox" name="is_featured" value="1"
+                            class="rounded border-outline-variant text-primary focus:ring-primary">
                         <span class="text-sm font-medium text-on-surface">Featured</span>
                     </label>
+
+                    <input type="hidden" name="is_active" value="0">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" name="is_active" checked class="rounded border-outline-variant text-primary focus:ring-primary">
+                        <input type="checkbox" name="is_active" value="1" checked
+                            class="rounded border-outline-variant text-primary focus:ring-primary">
                         <span class="text-sm font-medium text-on-surface">Aktif</span>
                     </label>
                 </div>
             </div>
             <div class="mt-6 flex justify-end gap-3">
-                <button type="button" onclick="document.getElementById('type-modal').classList.add('hidden')" class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
-                <button type="submit" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
+                <button type="button" onclick="document.getElementById('type-modal').classList.add('hidden')"
+                    class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
+                <button type="submit"
+                    class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
             </div>
         </form>
     </div>
@@ -612,10 +745,12 @@
 @allows('rooms.view')
 <!-- Room Modal -->
 <div id="room-modal" class="fi-modal fixed inset-0 z-50 hidden items-center justify-center bg-primary/50 p-4">
-    <div class="m-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
+    <div
+        class="m-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
         <div class="mb-4 flex items-center justify-between">
             <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Tambah Unit Kamar</h3>
-            <button onclick="document.getElementById('room-modal').classList.add('hidden')" class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
+            <button onclick="document.getElementById('room-modal').classList.add('hidden')"
+                class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
@@ -623,8 +758,10 @@
             @csrf
             <div class="space-y-4">
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-on-surface">Tipe Kamar <span class="text-error">*</span></label>
-                    <select name="room_type_id" required class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                    <label class="block text-sm font-medium text-on-surface">Tipe Kamar <span
+                            class="text-error">*</span></label>
+                    <select name="room_type_id" required
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
                         <option value="">Pilih tipe kamar</option>
                         @foreach(\App\Models\RoomType::where('is_active', true)->orderBy('name')->get() as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -632,16 +769,23 @@
                     </select>
                 </div>
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-on-surface">Nomor Kamar <span class="text-error">*</span></label>
-                    <input type="text" name="room_number" required class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="101, 201, A1">
+                    <label class="block text-sm font-medium text-on-surface">Nomor Kamar <span
+                            class="text-error">*</span></label>
+                    <input type="text" name="room_number" required
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="101, 201, A1">
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Lantai</label>
-                    <input type="text" name="floor" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="1, 2, Ground">
+                    <input type="text" name="floor"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="1, 2, Ground">
                 </div>
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-on-surface">Status <span class="text-error">*</span></label>
-                    <select name="status" required class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                    <label class="block text-sm font-medium text-on-surface">Status <span
+                            class="text-error">*</span></label>
+                    <select name="status" required
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
                         <option value="available">Available</option>
                         <option value="occupied">Occupied</option>
                         <option value="maintenance">Maintenance</option>
@@ -651,16 +795,21 @@
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Catatan</label>
-                    <textarea name="notes" rows="2" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Catatan tambahan"></textarea>
+                    <textarea name="notes" rows="2"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Catatan tambahan"></textarea>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="checkbox" name="is_active" id="room_is_active" checked class="rounded border-outline-variant text-primary focus:ring-primary">
+                    <input type="checkbox" name="is_active" id="room_is_active" checked
+                        class="rounded border-outline-variant text-primary focus:ring-primary">
                     <label for="room_is_active" class="text-sm font-medium text-on-surface">Aktif</label>
                 </div>
             </div>
             <div class="mt-6 flex justify-end gap-3">
-                <button type="button" onclick="document.getElementById('room-modal').classList.add('hidden')" class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
-                <button type="submit" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
+                <button type="button" onclick="document.getElementById('room-modal').classList.add('hidden')"
+                    class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
+                <button type="submit"
+                    class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
             </div>
         </form>
     </div>
@@ -670,10 +819,12 @@
 @allows('room_facilities.view')
 <!-- Facility Modal -->
 <div id="facility-modal" class="fi-modal fixed inset-0 z-50 hidden items-center justify-center bg-primary/50 p-4">
-    <div class="m-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
+    <div
+        class="m-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface-container-lowest p-6 shadow-card">
         <div class="mb-4 flex items-center justify-between">
             <h3 data-fi-modal-title class="text-lg font-semibold text-primary">Tambah Fasilitas Kamar</h3>
-            <button onclick="document.getElementById('facility-modal').classList.add('hidden')" class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
+            <button onclick="document.getElementById('facility-modal').classList.add('hidden')"
+                class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
@@ -681,25 +832,38 @@
             @csrf
             <div class="space-y-4">
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-on-surface">Nama <span class="text-error">*</span></label>
-                    <input type="text" name="name" required class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Nama fasilitas">
+                    <label class="block text-sm font-medium text-on-surface">Nama <span
+                            class="text-error">*</span></label>
+                    <input type="text" name="name" required
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Nama fasilitas">
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Icon</label>
-                    <input type="text" name="icon" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Material Icons name">
+                    <input type="text" name="icon"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Material Icons name">
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-on-surface">Deskripsi</label>
-                    <textarea name="description" rows="3" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Deskripsi fasilitas"></textarea>
+                    <textarea name="description" rows="3"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder="Deskripsi fasilitas"></textarea>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="checkbox" name="is_active" id="fac_is_active" checked class="rounded border-outline-variant text-primary focus:ring-primary">
+                    <input type="hidden" name="is_active" value="0">
+
+                    <input type="checkbox" name="is_active" id="fac_is_active" value="1" checked
+                        class="rounded border-outline-variant text-primary focus:ring-primary">
+
                     <label for="fac_is_active" class="text-sm font-medium text-on-surface">Aktif</label>
                 </div>
             </div>
             <div class="mt-6 flex justify-end gap-3">
-                <button type="button" onclick="document.getElementById('facility-modal').classList.add('hidden')" class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
-                <button type="submit" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
+                <button type="button" onclick="document.getElementById('facility-modal').classList.add('hidden')"
+                    class="rounded-xl border border-outline-variant px-5 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low">Batal</button>
+                <button type="submit"
+                    class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container">Simpan</button>
             </div>
         </form>
     </div>
@@ -707,25 +871,25 @@
 @endallows
 
 @push('scripts')
-<script>
-function switchTab(tabName) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-        btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
-    });
-    
-    document.getElementById('tab-' + tabName).classList.add('active');
-    const activeBtn = document.querySelector(`button[onclick="switchTab('${tabName}')"]`);
-    if (activeBtn) {
-        activeBtn.classList.add('active');
-        activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low');
-    }
-    
-    const url = new URL(window.location);
-    url.searchParams.set('tab', tabName);
-    window.history.replaceState({}, '', url);
-}
-</script>
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
+            });
+
+            document.getElementById('tab-' + tabName).classList.add('active');
+            const activeBtn = document.querySelector(`button[onclick="switchTab('${tabName}')"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low');
+            }
+
+            const url = new URL(window.location);
+            url.searchParams.set('tab', tabName);
+            window.history.replaceState({}, '', url);
+        }
+    </script>
 @endpush
 @endsection

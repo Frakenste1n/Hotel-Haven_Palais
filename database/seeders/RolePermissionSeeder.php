@@ -33,6 +33,7 @@ class RolePermissionSeeder extends Seeder
             'customers' => ['view', 'create', 'update', 'delete'],
             'guests' => ['view', 'create', 'update', 'delete'],
             'reservations' => ['view', 'create', 'update', 'delete'],
+            'facility_reservations' => ['view', 'create', 'update', 'delete'],
             'front_desk' => ['view', 'check_in', 'check_out'],
             'payment_methods' => ['view', 'create', 'update', 'delete'],
             'payments' => ['view', 'create', 'update', 'verify', 'refund'],

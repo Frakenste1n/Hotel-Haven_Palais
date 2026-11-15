@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\FacilityReservation;
 use App\Models\CustomerProfile;
 use App\Models\Guest;
 use App\Models\HousekeepingTask;
@@ -23,35 +24,53 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
+
 class BookingManagementController extends Controller
 {
     public function index(Request $request): View
     {
         $activeTab = $this->allowedTab($request, [
             'reservations' => 'reservations.view',
+            'facility-reservations' => 'facility_reservations.view',
             'customers' => 'customers.view',
             'guests' => 'guests.view',
             'front-desk' => 'front_desk.view',
         ], 'reservations');
         $user = $request->user();
 
-        $reservations = ! $user->allows('reservations.view')
+        $reservations = !$user->allows('reservations.view')
             ? $this->emptyPage()
             : Reservation::with(['user', 'guest', 'details.roomType'])
-            ->when($request->filled('status'), fn ($q) => $q->where('status', $request->status))
-            ->when($request->filled('q'), function ($q) use ($request) {
-                $term = '%' . $request->q . '%';
-                $q->where(function ($inner) use ($term) {
-                    $inner->where('booking_code', 'like', $term)
-                        ->orWhereHas('user', fn ($user) => $user->where('name', 'like', $term)->orWhere('email', 'like', $term))
-                        ->orWhereHas('guest', fn ($guest) => $guest->where('full_name', 'like', $term));
-                });
-            })
-            ->latest()
-            ->paginate(10);
+                ->when($request->filled('status'), fn($q) => $q->where('status', $request->status))
+                ->when($request->filled('q'), function ($q) use ($request) {
+                    $term = '%' . $request->q . '%';
+                    $q->where(function ($inner) use ($term) {
+                        $inner->where('booking_code', 'like', $term)
+                            ->orWhereHas('user', fn($user) => $user->where('name', 'like', $term)->orWhere('email', 'like', $term))
+                            ->orWhereHas('guest', fn($guest) => $guest->where('full_name', 'like', $term));
+                    });
+                })
+                ->latest()
+                ->paginate(10);
+        $facilityReservations = $user->allows('facility_reservations.view')
+            ? FacilityReservation::with('facility', 'user')
+                ->when($request->filled('status'), fn($q) => $q->where('status', $request->status))
+                ->when($request->filled('q'), function ($q) use ($request) {
+                    $term = '%' . $request->q . '%';
+
+                    $q->where(function ($inner) use ($term) {
+                        $inner->where('guest_name', 'like', $term)
+                            ->orWhere('guest_email', 'like', $term)
+                            ->orWhere('guest_phone', 'like', $term)
+                            ->orWhereHas('facility', fn($facility) => $facility->where('name', 'like', $term));
+                    });
+                })
+                ->latest()
+                ->paginate(10)
+            : $this->emptyPage();
 
         $customers = $user->allows('customers.view')
-            ? User::whereHas('roles', fn ($q) => $q->where('slug', 'customer'))
+            ? User::whereHas('roles', fn($q) => $q->where('slug', 'customer'))
                 ->with('customerProfile')
                 ->latest()
                 ->paginate(10)
@@ -92,8 +111,19 @@ class BookingManagementController extends Controller
         $roomTypeOptions = $canEditReservations ? RoomType::orderBy('name')->get(['id', 'name', 'base_price']) : collect();
 
         return view('backend.booking-management.index', compact(
-            'activeTab', 'reservations', 'customers', 'guests', 'arrivals', 'departures', 'inHouse',
-            'guestOptions', 'userOptions', 'promotionOptions', 'packageOptions', 'roomTypeOptions'
+            'activeTab',
+            'reservations',
+            'facilityReservations',
+            'customers',
+            'guests',
+            'arrivals',
+            'departures',
+            'inHouse',
+            'guestOptions',
+            'userOptions',
+            'promotionOptions',
+            'packageOptions',
+            'roomTypeOptions'
         ));
     }
 
@@ -243,7 +273,7 @@ class BookingManagementController extends Controller
                 'is_active' => $request->boolean('is_active', true),
             ]);
 
-            if (! empty($data['password'])) {
+            if (!empty($data['password'])) {
                 $customer->update(['password' => Hash::make($data['password'])]);
             }
 
@@ -337,7 +367,7 @@ class BookingManagementController extends Controller
             $reservation->load('details.room');
 
             foreach ($reservation->details as $detail) {
-                if (! $detail->room) {
+                if (!$detail->room) {
                     continue;
                 }
 
@@ -350,7 +380,7 @@ class BookingManagementController extends Controller
                     ->whereIn('status', ['pending', 'in_progress'])
                     ->exists();
 
-                if (! $exists) {
+                if (!$exists) {
                     HousekeepingTask::create([
                         'room_id' => $detail->room->id,
                         'reservation_id' => $reservation->id,
@@ -388,9 +418,17 @@ class BookingManagementController extends Controller
             'discount_amount' => ['nullable', 'numeric', 'min:0'],
             'tax_amount' => ['nullable', 'numeric', 'min:0'],
             'extra_fee' => ['nullable', 'numeric', 'min:0'],
-            'status' => ['nullable', Rule::in([
-                'pending_payment', 'confirmed', 'checked_in', 'checked_out', 'cancelled', 'expired',
-            ])],
+            'status' => [
+                'nullable',
+                Rule::in([
+                    'pending_payment',
+                    'confirmed',
+                    'checked_in',
+                    'checked_out',
+                    'cancelled',
+                    'expired',
+                ])
+            ],
             'special_requests' => ['nullable', 'string'],
             'details' => ['required', 'array', 'min:1'],
             'details.*.room_type_id' => ['required', 'exists:room_types,id'],
@@ -443,9 +481,9 @@ class BookingManagementController extends Controller
             $subtotal += $lineSubtotal;
             $roomId = $detail['room_id'] ?? null;
 
-            if (! $roomId && $existing) {
+            if (!$roomId && $existing) {
                 $match = $previous->first(function ($row) use ($detail, $usedPrevious) {
-                    return ! in_array($row->id, $usedPrevious, true)
+                    return !in_array($row->id, $usedPrevious, true)
                         && (int) $row->room_type_id === (int) $detail['room_type_id']
                         && $row->room_id;
                 });
@@ -517,9 +555,9 @@ class BookingManagementController extends Controller
         $taken = [];
 
         foreach ($details as $index => $detail) {
-            if (! empty($detail['room_id'])) {
+            if (!empty($detail['room_id'])) {
                 $room = Room::find($detail['room_id']);
-                if (! $room || ! $room->is_active || (int) $room->room_type_id !== (int) $detail['room_type_id'] || in_array($room->status, ['maintenance', 'out_of_order'], true)) {
+                if (!$room || !$room->is_active || (int) $room->room_type_id !== (int) $detail['room_type_id'] || in_array($room->status, ['maintenance', 'out_of_order'], true)) {
                     throw ValidationException::withMessages([
                         "details.$index.room_type_id" => 'Kamar yang dipilih tidak tersedia untuk tipe ini.',
                     ]);
@@ -534,7 +572,7 @@ class BookingManagementController extends Controller
             }
 
             $free = $this->freeRooms((int) $detail['room_type_id'], $checkIn, $checkOut, $ignoreReservationId)
-                ->reject(fn (Room $room) => in_array($room->id, $taken, true));
+                ->reject(fn(Room $room) => in_array($room->id, $taken, true));
 
             if ($free->count() < (int) $detail['quantity']) {
                 throw ValidationException::withMessages([
@@ -556,7 +594,7 @@ class BookingManagementController extends Controller
                 $query->whereNotIn('status', ['cancelled', 'expired'])
                     ->where('check_in', '<', $checkOut)
                     ->where('check_out', '>', $checkIn)
-                    ->when($ignoreReservationId, fn ($inner) => $inner->whereKeyNot($ignoreReservationId));
+                    ->when($ignoreReservationId, fn($inner) => $inner->whereKeyNot($ignoreReservationId));
             })
             ->exists();
     }
@@ -569,7 +607,7 @@ class BookingManagementController extends Controller
             ->whereNotIn('status', ['maintenance', 'out_of_order'])
             ->orderBy('room_number')
             ->get()
-            ->reject(fn (Room $room) => $this->roomIsBlocked($room->id, $checkIn, $checkOut, $ignoreReservationId))
+            ->reject(fn(Room $room) => $this->roomIsBlocked($room->id, $checkIn, $checkOut, $ignoreReservationId))
             ->values();
     }
 
@@ -591,16 +629,16 @@ class BookingManagementController extends Controller
             $usable = $room
                 && $room->is_active
                 && (int) $room->room_type_id === (int) $detail->room_type_id
-                && ! in_array($room->status, ['maintenance', 'out_of_order'], true)
-                && ! in_array($room->id, $taken, true)
-                && ! $this->roomIsBlocked($room->id, $checkIn, $checkOut, $reservation->id);
+                && !in_array($room->status, ['maintenance', 'out_of_order'], true)
+                && !in_array($room->id, $taken, true)
+                && !$this->roomIsBlocked($room->id, $checkIn, $checkOut, $reservation->id);
 
-            if (! $usable) {
+            if (!$usable) {
                 $room = $this->freeRooms((int) $detail->room_type_id, $checkIn, $checkOut, $reservation->id)
-                    ->first(fn (Room $candidate) => ! in_array($candidate->id, $taken, true));
+                    ->first(fn(Room $candidate) => !in_array($candidate->id, $taken, true));
             }
 
-            if (! $room) {
+            if (!$room) {
                 throw ValidationException::withMessages([
                     'status' => 'Tidak ada kamar kosong untuk check-in.',
                 ]);
@@ -620,10 +658,10 @@ class BookingManagementController extends Controller
         foreach (Room::whereIn('id', $roomIds)->get() as $room) {
             $stillInHouse = ReservationDetail::query()
                 ->where('room_id', $room->id)
-                ->whereHas('reservation', fn ($query) => $query->where('status', 'checked_in')->whereKeyNot($reservation->id))
+                ->whereHas('reservation', fn($query) => $query->where('status', 'checked_in')->whereKeyNot($reservation->id))
                 ->exists();
 
-            if (! $stillInHouse && $room->status === 'occupied') {
+            if (!$stillInHouse && $room->status === 'occupied') {
                 $room->update(['status' => 'available']);
             }
         }
@@ -647,14 +685,16 @@ class BookingManagementController extends Controller
         }
 
         $promotion = Promotion::find($data['promotion_id']);
-        if (! $promotion || ! $promotion->is_active) {
+        if (!$promotion || !$promotion->is_active) {
             throw ValidationException::withMessages([
                 'promotion_id' => 'Promo tidak aktif.',
             ]);
         }
 
-        if (($promotion->starts_at && $checkIn->lt($promotion->starts_at->copy()->startOfDay()))
-            || ($promotion->ends_at && $checkIn->gt($promotion->ends_at->copy()->endOfDay()))) {
+        if (
+            ($promotion->starts_at && $checkIn->lt($promotion->starts_at->copy()->startOfDay()))
+            || ($promotion->ends_at && $checkIn->gt($promotion->ends_at->copy()->endOfDay()))
+        ) {
             throw ValidationException::withMessages([
                 'promotion_id' => 'Promo tidak berlaku pada tanggal check-in.',
             ]);
@@ -662,7 +702,7 @@ class BookingManagementController extends Controller
 
         if ($promotion->min_nights && $nights < $promotion->min_nights) {
             throw ValidationException::withMessages([
-                'promotion_id' => 'Promo membutuhkan minimal '.$promotion->min_nights.' malam.',
+                'promotion_id' => 'Promo membutuhkan minimal ' . $promotion->min_nights . ' malam.',
             ]);
         }
 
@@ -676,7 +716,7 @@ class BookingManagementController extends Controller
             $uses = Reservation::query()
                 ->where('promotion_id', $promotion->id)
                 ->whereNotIn('status', ['cancelled', 'expired'])
-                ->when($ignoreReservationId, fn ($query) => $query->whereKeyNot($ignoreReservationId))
+                ->when($ignoreReservationId, fn($query) => $query->whereKeyNot($ignoreReservationId))
                 ->count();
 
             if ($uses >= $promotion->max_uses) {
@@ -711,14 +751,16 @@ class BookingManagementController extends Controller
         }
 
         $package = Package::with('roomTypes')->find($data['package_id']);
-        if (! $package || ! $package->is_active) {
+        if (!$package || !$package->is_active) {
             throw ValidationException::withMessages([
                 'package_id' => 'Paket tidak aktif.',
             ]);
         }
 
-        if (($package->starts_at && $checkIn->lt($package->starts_at->copy()->startOfDay()))
-            || ($package->ends_at && $checkIn->gt($package->ends_at->copy()->endOfDay()))) {
+        if (
+            ($package->starts_at && $checkIn->lt($package->starts_at->copy()->startOfDay()))
+            || ($package->ends_at && $checkIn->gt($package->ends_at->copy()->endOfDay()))
+        ) {
             throw ValidationException::withMessages([
                 'package_id' => 'Paket tidak berlaku pada tanggal check-in.',
             ]);
@@ -726,14 +768,14 @@ class BookingManagementController extends Controller
 
         if ($package->nights && $nights !== (int) $package->nights) {
             throw ValidationException::withMessages([
-                'package_id' => 'Paket ini berlaku untuk '.$package->nights.' malam.',
+                'package_id' => 'Paket ini berlaku untuk ' . $package->nights . ' malam.',
             ]);
         }
 
-        $allowed = $package->roomTypes->pluck('id')->map(fn ($id) => (int) $id);
+        $allowed = $package->roomTypes->pluck('id')->map(fn($id) => (int) $id);
         if ($allowed->isNotEmpty()) {
             foreach ($roomTypeIds as $roomTypeId) {
-                if (! $allowed->contains((int) $roomTypeId)) {
+                if (!$allowed->contains((int) $roomTypeId)) {
                     throw ValidationException::withMessages([
                         'package_id' => 'Tipe kamar tidak termasuk dalam paket.',
                     ]);
@@ -751,5 +793,20 @@ class BookingManagementController extends Controller
         } while (Reservation::withTrashed()->where('booking_code', $code)->exists());
 
         return $code;
+    }
+
+    public function updateFacilityReservationStatus(Request $request, FacilityReservation $facilityReservation): RedirectResponse
+    {
+        $validated = $request->validate([
+            'status' => ['required', 'in:confirmed,cancelled'],
+        ]);
+
+        $facilityReservation->update([
+            'status' => $validated['status'],
+        ]);
+
+        return redirect()
+            ->route('backend.booking-management.index', ['tab' => 'facility-reservations'])
+            ->with('success', 'Status reservasi fasilitas berhasil diperbarui.');
     }
 }

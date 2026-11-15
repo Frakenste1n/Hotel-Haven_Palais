@@ -8,7 +8,28 @@
 
 @section('content')
 
+@if (session('success'))
+    <div id="success-notification"
+        class="fixed top-24 right-6 z-[100] bg-green-600 text-white px-6 py-4 rounded-lg shadow-lg">
+        {{ session('success') }}
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const notification = document.getElementById('success-notification');
+
+            if (notification) {
+                notification.style.transition = 'opacity 0.5s ease';
+                notification.style.opacity = '0';
+
+                setTimeout(() => notification.remove(), 500);
+            }
+        }, 3000);
+    </script>
+@endif
+
 @endsection
+
 <head>
     <meta charset="utf-8" />
     @if($site->site_favicon)
@@ -287,527 +308,135 @@
                         </div>
                         <!-- Facilities Bento Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="facility-grid">
-                            <!-- 1. Infinity Horizon Pool (Wellness) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="wellness">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Infinity Horizon Cliff Pool"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Spectacular 75-meter infinity pool tier at edge of limestone cliff with turquoise clear water, floating luxury daybeds, and dramatic view of Indian Ocean waves crashing below during a sunny calm day in Bali."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAydjU7Gnd3PnDdafmmaP_DoWPjPaWO-HeMI5KaUDRRUsyzSmZxNnjA_nYWsk0_6JvCm-uXmMn-y4uy4EF3s8jb-CCW0hyfUJpTIvFgtwC76Xw-kJcVa3zwTfsiqFjPoJOPvX_g2NNFmUZeURa4JJ4PCIMZ9zHbYLl4KOU0PN1wBeoKZA_TxGCYhaooKASax_5Nii4pu4TBG-1EFtq39UNb9iJi3WrI2_Yp11uST2w" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Rekreasi
-                                            &amp; Wellness</span>
+
+                            @php
+                                $facilityMeta = [
+                                    'infinity-horizon-cliff-pool' => [
+                                        'icon' => 'schedule',
+                                        'label' => 'Tersedia untuk Tamu Resor',
+                                    ],
+                                    'serenity-spa-thalassotherapy' => [
+                                        'icon' => 'spa',
+                                        'label' => 'Perlu Reservasi Awal',
+                                    ],
+                                    'yoga-pavilion-fitness-sanctuary' => [
+                                        'icon' => 'fitness_center',
+                                        'label' => 'Termasuk Daily Class',
+                                    ],
+                                    'palais-haute-cuisine-degustation' => [
+                                        'icon' => 'restaurant',
+                                        'label' => 'Dress Code: Resort Chic',
+                                    ],
+                                    'oceanfront-starlight-cabana' => [
+                                        'icon' => 'favorite',
+                                        'label' => 'Slot Terbatas (2 Pasang/Malam)',
+                                    ],
+                                    'horizon-sunset-cocktail-lounge' => [
+                                        'icon' => 'wine_bar',
+                                        'label' => 'Live Saxophone Sunset',
+                                    ],
+                                    'private-open-air-amphitheatre' => [
+                                        'icon' => 'theater_comedy',
+                                        'label' => 'Tamu Menginap Gratis',
+                                    ],
+                                    'private-cove-beach-club-yacht' => [
+                                        'icon' => 'sailing',
+                                        'label' => 'Lift Akses Tebing Khusus',
+                                    ],
+                                    'cinepalais-private-cinema' => [
+                                        'icon' => 'movie',
+                                        'label' => 'Tersedia Private Screening',
+                                    ],
+                                    'private-helipad-fleet-maybach' => [
+                                        'icon' => 'flight_land',
+                                        'label' => 'Protokol Keamanan Ketat',
+                                    ],
+                                    'dedicated-butler-concierge' => [
+                                        'icon' => 'key',
+                                        'label' => 'Tersedia di Seluruh Suite & Villa',
+                                    ],
+                                ];
+                            @endphp
+
+                            @forelse ($facilities as $facility)
+                                @php
+                                    $meta = $facilityMeta[$facility->slug] ?? [
+                                        'icon' => 'schedule',
+                                        'label' => 'Tersedia untuk Tamu Resor',
+                                    ];
+
+                                    $primaryImage = $facility->images->first();
+
+                                    $filterCategory = match ($facility->category->slug) {
+                                        'rekreasi' => 'wellness',
+                                        'gastronomy' => 'gastronomy',
+                                        'hiburan-budaya' => 'experiences',
+                                        'vip-service' => 'vip',
+                                        default => $facility->category->slug,
+                                    };
+                                @endphp
+
+                                <article
+                                    class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
+                                    data-category="{{ $filterCategory }}">
+
+                                    <div class="relative h-64 overflow-hidden">
+                                        @if ($primaryImage)
+                                            <img alt="{{ $primaryImage->caption ?? $facility->name }}"
+                                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                                src="{{ $primaryImage->image_path }}" />
+                                        @endif
+
+                                        <div
+                                            class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
+                                            <span
+                                                class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">
+                                                {{ $facility->category->name }}
+                                            </span>
+                                        </div>
+
+                                        <div
+                                            class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
+                                            <span class="material-symbols-outlined text-[14px] text-secondary-fixed">
+                                                {{ $meta['icon'] }}
+                                            </span>
+                                            {{ $facility->operating_hours }}
+                                        </div>
                                     </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">schedule</span>
-                                        06:00 - 20:00 WITA
+
+                                    <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
+                                        <div>
+                                            <h3
+                                                class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
+                                                {{ $facility->name }}
+                                            </h3>
+
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                                                {{ $facility->description }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+                                            <span class="font-label-uppercase text-[11px] text-secondary font-semibold">
+                                                {{ $meta['label'] }}
+                                            </span>
+
+                                            <button
+                                                class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
+                                                onclick="openBookingModal({{ $facility->id }}, @js($facility->name))">
+                                                Detail
+                                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Infinity Horizon Cliff Pool
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Kolam renang bertingkat 75 meter menggantung di bibir tebing kapur dengan
-                                            panorama samudra lepas, sunbed terapung berlapis sutra mikro, dan poolside
-                                            juice bar segar.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-semibold">Tersedia
-                                            untuk Tamu Resor</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Infinity Horizon Cliff Pool')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 2. Serenity Spa (Wellness) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="wellness">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Serenity Spa &amp; Thalassotherapy"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Interior of Serenity Spa treatment room featuring cedarwood warm tones, natural stone soaking tub filled with herbal infused warm water, candlelight, and gentle steam overlooking coastal tropical garden."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8MxL-2BiI8WL_J_5A0i_TadqyqaSmQurD4ZVwQAY8c3jvzSu7zHtJ4bq3w-ldS_fK8zC1c2NE7MjytAMAseWQaE0oxmXhb3296qGRxDiw6691038EVPqdcNS6Qi31j5_bP_wNG3hvNiOXi2N6S_u8afOra5G6LshSLjMpXAqzUxSOLXqTod8iSn6Nfgm4f4D_yRnAt5g6GMiS6eAl4vMMMe-0pfbVR3aKRcQWtKY" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Rekreasi
-                                            &amp; Wellness</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">spa</span>
-                                        09:00 - 22:00 WITA
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Serenity Spa &amp; Thalassotherapy
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Paviliun spa privat dengan terapi herbal tradisional Bali, sauna aroma
-                                            cedarwood, hot &amp; cold vitality pools, serta perawatan holistik
-                                            bersertifikasi internasional.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-semibold">Perlu
-                                            Reservasi Awal</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Serenity Spa &amp; Thalassotherapy')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 3. Coastal Yoga & Fitness (Wellness) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="wellness">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Coastal Yoga &amp; Fitness Sanctuary"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Open-air wooden yoga deck perched on a cliff at golden sunrise overlooking the misty sea, with modern Technogym workout sanctuary pavilion adjacent to it with floor-to-ceiling glass in Bali."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxuUiLtVANa92zLf6J7aEbKwOKBVc0Jeho1dxnS54SIaeRAtXB2ChuOkdwU5giGlS_Vnpyy-R62DnmfuLPAot1ZrHDy5XxhCjeaiGrH_pK57MeEp4yDua3HlXl8CLaiJsS91hHrWJyYVuziaTTqZXYydeyI7odqPagR_ii2MGAVWvm278osiZis0JRpDzZW-Qe8W9QDGnNqURaD-7P9d_EurU2VRtrNp2fVJ4QssI" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Rekreasi
-                                            &amp; Wellness</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">fitness_center</span>
-                                        24 Jam Akses Tamu
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Yoga Pavilion &amp; Fitness Sanctuary
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Pusat kebugaran berteknologi Technogym terbaru dan dek yoga tepi tebing
-                                            berangin sejuk dengan kelas terpandu meditasi sunrise &amp; sunset setiap
-                                            hari.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-semibold">Termasuk
-                                            Daily Class</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Yoga Pavilion &amp; Fitness Sanctuary')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 4. Palais Haute Cuisine (Gastronomy) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="gastronomy">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Palais Haute Cuisine &amp; Degustation Room"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Fine dining table setting at Palais Haute Cuisine, featuring elegant crystal wine glasses, delicate porcelain dish with gastronomic food presentation, warm mood lighting, and temperature-controlled wine cellar wall in background."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnxoyfVtVsGCZSkSobRqSKUkZMLLes20KCyk90k4Uv0WT9E4pcze0a2sfG7CzwreKbActHqD-ggPRtpovxCcD6q-1EHi14B1F2kA9aiWuhM_o-iF5DnR1UN5H8h07E9nbfuKqeuieNOBa-m7BNiKWV7N32kLfcewjyqRn8mvvm2XUHitT3WCk3iPMEComR_RW_18Nl_aPKR5g4SBBqo0GAoiNkjBhKl66XjF5dKBc" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Gastronomy</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">restaurant</span>
-                                        18:00 - 23:00 WITA
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Palais Haute Cuisine &amp; Degustation
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Restoran fine dining kelas dunia dengan menu Prancis kontemporer berbalut
-                                            rempah lokal Nusantara, dan koleksi 2.500+ botol anggur langka dipandu Head
-                                            Sommelier.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-semibold">Dress
-                                            Code: Resort Chic</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Palais Haute Cuisine')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 5. Oceanfront Starlight Cabana (Gastronomy) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="gastronomy">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Oceanfront Starlight Cabana"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Intimate romantic cliffside cabana adorned with sheer linen drapes and warm glowing lanterns at twilight dusk over crashing waves, fine table set with candles and champagne in Uluwatu."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvhKk1M_HoNkeN6nTBOfh2yyVQiCjtYFI_e3sarWXC3WoyUvPtJltJDbrGNWyhnW9QmdEyHoDfWFacxi1o7YRvoaU5SrB9hbvoX8sutHWUX9ChYZwDbp8R276mrhzWSmKfbbpeU0FQIwVWPYeX05wzu1LjVA6Ewtr8qTG5jEek1BBAWwmcjMbmZvW0llFWQwRQ5xgbn7rz0b0oQIUOWebfClFt0nmV8OZjkVNVxlo" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Gastronomy</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">favorite</span>
-                                        Eksklusif Malam Hari
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Oceanfront Starlight Cabana
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Pengalaman bersantap malam romantis privat di anjungan tebing berbintang
-                                            dengan tata lilin estetik, deburan ombak magis, dan hidangan 7-course
-                                            tailor-made chef pribadi.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span class="font-label-uppercase text-[11px] text-secondary font-semibold">Slot
-                                            Terbatas (2 Pasang/Malam)</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Oceanfront Starlight Cabana')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 6. Horizon Sunset Lounge (Gastronomy) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="gastronomy">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Horizon Sunset Cocktail Lounge"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Rooftop open-air cocktail lounge overlooking a fiery crimson and gold sunset over the ocean, artisanal cocktails in cut-crystal glassware on marble bar top with chic patrons lounging."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN_wZGPFp1n-AIQybQ731osJvNSvKAnNv4pGVyYi0XLAhcozic0c6Q-4Vxtp5pKqRkp-K2_w3q5mPVjQmqCy9ANpSavsALFYqK2yQulzOTJ-O4l7vEkPA-c4vjmUPKEOQb3i2Awyfa-hWBFJ6TVybFHo9S12MoDV_n6Au737jseB7RZPyWbsMVOyRMoZBsxZNehBm8WJSCjkTpjf4l4Ql3z9YM-dngX1sWjUog2ZI" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Gastronomy</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">wine_bar</span>
-                                        16:30 - 00:00 WITA
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Horizon Sunset Cocktail Lounge
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Bar teras lantai atas menyajikan artisan mixology dengan infusi rempah
-                                            tropis, champagne vintage terkurasi, dan sajian canapé eksklusif ditemani
-                                            alunan lounge ritmis.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span class="font-label-uppercase text-[11px] text-secondary font-semibold">Live
-                                            Saxophone Sunset</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Horizon Sunset Cocktail Lounge')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 7. Open-Air Amphitheatre (Experiences) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="experiences">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Private Open-Air Amphitheatre"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Open-air amphitheatre with curved stone terraces illuminated by torches at dusk, traditional Balinese dancers performing in elaborate golden silk attire under starry sky with ocean backdrop."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFy3BNdhMSlsyDbcRf-nuGI7nJ81CLVjq0TuKC6L_8J8b22U4b98Ga5NGFUNwR85OGqeaISfuhCfsEFwO7_HntOLMHqgH-Xy6i7uKCdPQKMiF5i9Rk4ul5YHr2URnnBgygECDVZ5OcYGLYbjX19IGY7xgphBA4NWR7MPi9ZMBC6m77TWZwcgOTObu1rCGTl7zMAzNDXkbw3DvL5EP10NdVwHzyfCsyLcziUq9-7nw" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Hiburan
-                                            &amp; Budaya</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">theater_comedy</span>
-                                        Jadwal Mingguan
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Private Open-Air Amphitheatre
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Panggung seni teater bawah bintang menampilkan pertunjukan budaya tari
-                                            tradisional Bali, konser akustik intim, dan apresiasi sastra pesisir dalam
-                                            atmosfer sakral.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span class="font-label-uppercase text-[11px] text-secondary font-semibold">Tamu
-                                            Menginap Gratis</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Private Open-Air Amphitheatre')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 8. Beach Club & Water Sports (Experiences) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="experiences">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Private Cove Beach Club &amp; Water Sports"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Exclusive secluded white sand cove beach club with chic natural timber sunshades, crystal-clear turquoise shallow reef water, and sleek luxury motor yacht anchored off-shore."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpb8DXnwd3e9zjSxOTdVRNTmNF6fyBoUtNuCSOJuJZO5A6YTN9hvBjhUnhmnqfXwvvhz1aKWSOh7ckG12B6JchpYQ67rrRRN7bP0fRfq9N-llWKet3bdkkniCSfRVKnMVD8p9KmaXePZsKjfePc9wBJ0UB0zjZCmeeaF83KCZM8jqaCfIfL9Swo51Zoml8kwj4ogZ1YsCtItLAz1XW69yBT2mC4l4UgUlp_KIWvB0" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Hiburan
-                                            &amp; Budaya</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">sailing</span>
-                                        08:00 - 18:30 WITA
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Private Cove Beach Club &amp; Yacht
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Akses lift tebing privat menuju teluk pasir putih murni. Lengkap dengan
-                                            armada private yacht charter, paddleboard, dan pemanduan snorkeling terumbu
-                                            karang alami.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span class="font-label-uppercase text-[11px] text-secondary font-semibold">Lift
-                                            Akses Tebing Khusus</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Private Cove Beach Club')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 9. CinePalais Cinema (Experiences) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="experiences">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="CinePalais Private Cinema"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Intimate private luxury screening room cinema with plush deep navy velvet reclining armchairs, soft footlights, Bang and Olufsen acoustic wall panels, and large 4K cinema projection."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFAagg2yl7j6cVrsaTOYJw30d1SwFx-xZgV8-wHwliGRpUzWlwa4hvyfUAK4UZKYN5Ou73wrQpi2Z1a0AhcMy4qU2l0tSgf6L_Ew5bxUXXocP9SOzMr0Qf8KruxVknbteUpNob05bDWxBGtTcffrGuDvaHwMFsYCE6F4CVgVx-aArVOf-eNqclUTLs9w9weQp8uDKAwIZ7pF7-z6xZut_wPlWgZzcf_vl92RCJkkI" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">Hiburan
-                                            &amp; Budaya</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">movie</span>
-                                        Reservasi Sesi Privat
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            CinePalais Private Cinema
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Bioskop privat berkapasitas 14 tamu dengan sistem tata suara Bang &amp;
-                                            Olufsen, sofa kulit reclining kustom, kurasi film festival, dan gourmet
-                                            concession bar.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-semibold">Tersedia
-                                            Private Screening</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('CinePalais Private Cinema')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 10. Private Helipad & Chauffeur (VIP) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="vip">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Private Helipad &amp; Executive Chauffeur"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Helicopter landing pad on lush manicured cliff garden at Haven Palais resort, with luxury executive Maybach vehicle parked nearby and impeccably suited chauffeur awaiting arrival."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0PNaRrTJsFC4s4nD4f8EDPdRWFo60mxjj7cwJ2A2z1CmWNXICLC7QznV9lpWLkjjwjdlU3D64V7aHN2rv6Rtr9shpRdzxYb27rbTrbW2Gqc-ZZUknURBR0LfNCfo3dExIbkQSsk3KJol1Gst_Pz9N9Q54YEvKoCt7HhnKkac6TIuYhDIaGBkZVPeTbvTJMnjPyMSDaJ4goorf0VF6tGR41zqnI223qg1L7ts3BSc" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">VIP
-                                            Service</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">flight_land</span>
-                                        Siaga 24 Jam
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Private Helipad &amp; Fleet Maybach
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Pendaratan helikopter langsung di dalam area resor untuk transfer bandara
-                                            cepat 15 menit, didukung armada sedan Mercedes-Maybach berpemandu
-                                            bersertifikasi VIP.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-semibold">Protokol
-                                            Keamanan Ketat</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Helipad &amp; VIP Chauffeur')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            <!-- 11. Butler & Clefs d'Or Concierge (VIP) -->
-                            <article
-                                class="facility-card flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-                                data-category="vip">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img alt="Dedicated Butler &amp; Les Clefs d'Or Concierge"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        data-alt="Personal butler in tailored linen suit presenting bespoke welcome tea service on silver tray in opulent oceanfront villa lounge, warm sunlight streaming through teak shutters."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA10Wgx6pON__GHPVB9rlb2cLUkIVkdN_OMOgnWn6u63qbxD4ArkH8S-ESD549eEStazpBbc_WlP9auWfRG8Kf8mW9RE-yHVFbeutG_mgRl4CIFI0hDUZqU-BdIO8hQoIe8T5T0pz4EPZuF3Qzy42WBOVQPcBDhSxMC6xVhkUc6sl6OyQjlc7BL9tNs4E1Yc0s0LiYRH9rJyIbPJOk077X_6XwZ_OW23B4f7dj1rqo" />
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded">
-                                        <span
-                                            class="font-label-uppercase text-[10px] text-primary font-bold tracking-wider">VIP
-                                            Service</span>
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-primary-container/85 backdrop-blur-md text-on-primary px-3 py-1 rounded text-xs flex items-center gap-1.5 font-label-md">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary-fixed">key</span>
-                                        24/7 Dedicated
-                                    </div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-1 justify-between space-y-4">
-                                    <div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors">
-                                            Dedicated Butler &amp; Concierge
-                                        </h3>
-                                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                            Asisten pribadi yang mendedikasikan waktu penuh untuk menyusun itinerari
-                                            pribadi, penataan bagasi tanpa cela, hingga reservasi prioritas di restoran
-                                            terkemuka pulau Dewata.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
-                                        <span
-                                            class="font-label-uppercase text-[11px] text-secondary font-semibold">Tersedia
-                                            di Seluruh Suite &amp; Villa</span>
-                                        <button
-                                            class="flex items-center gap-1 font-label-uppercase text-label-uppercase text-primary hover:text-secondary transition-colors"
-                                            onclick="openBookingModal('Dedicated Butler &amp; Concierge')">
-                                            Detail
-                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
+                                </article>
+                            @empty
+                                <p class="col-span-full text-center text-on-surface-variant py-10">
+                                    Belum ada fasilitas yang tersedia.
+                                </p>
+                            @endforelse
+
                         </div>
                     </div>
                 </section>
@@ -1103,8 +732,10 @@
                                     <li><a class="hover:text-on-primary transition-colors text-secondary-fixed font-medium"
                                             href="#">Fasilitas Lengkap</a></li>
                                     <li><a class="hover:text-on-primary transition-colors" href="#">Galeri Foto</a></li>
-                                    <li><a class="hover:text-on-primary transition-colors" href="/ulasan">Ulasan Tamu</a></li>
-                                    <li><a class="hover:text-on-primary transition-colors" href="/tentang">Tentang Kami</a>
+                                    <li><a class="hover:text-on-primary transition-colors" href="/ulasan">Ulasan
+                                            Tamu</a></li>
+                                    <li><a class="hover:text-on-primary transition-colors" href="/tentang">Tentang
+                                            Kami</a>
                                     </li>
                                 </ul>
                             </div>
@@ -1187,13 +818,33 @@
                                 <span class="material-symbols-outlined text-[18px]">close</span>
                             </button>
                         </div>
-                        <form class="space-y-4" onsubmit="handleReservationSubmit(event)">
+                        <form class="space-y-4" action="{{ route('customer.facility-reservations.store') }}"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" name="resort_facility_id" id="booking-facility-id">
                             <div>
                                 <label class="block font-label-uppercase text-[11px] text-on-surface-variant mb-1">Nama
                                     Lengkap Tamu</label>
                                 <input
                                     class="w-full bg-surface-container-low px-3.5 py-2 rounded text-sm text-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                                    placeholder="Contoh: Raden Surya" required="" type="text" />
+                                    type="text" name="guest_name" placeholder="Contoh: Zidane Ramdhani" required />
+                            </div>
+                            <div>
+                                <label class="block font-label-uppercase text-[11px] text-on-surface-variant mb-1">
+                                    Email Tamu
+                                </label>
+                                <input
+                                    class="w-full bg-surface-container-low px-3.5 py-2 rounded text-sm text-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                                    type="email" name="guest_email" placeholder="nama@email.com" required />
+                            </div>
+
+                            <div>
+                                <label class="block font-label-uppercase text-[11px] text-on-surface-variant mb-1">
+                                    Nomor Telepon
+                                </label>
+                                <input
+                                    class="w-full bg-surface-container-low px-3.5 py-2 rounded text-sm text-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                                    type="tel" name="guest_phone" placeholder="08xxxxxxxxxx" required />
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
@@ -1201,18 +852,19 @@
                                         class="block font-label-uppercase text-[11px] text-on-surface-variant mb-1">Tanggal</label>
                                     <input
                                         class="w-full bg-surface-container-low px-3 py-2 rounded text-xs text-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                                        required="" type="date" />
+                                        type="date" name="reservation_date" min="{{ date('Y-m-d') }}" required />
                                 </div>
                                 <div>
                                     <label
                                         class="block font-label-uppercase text-[11px] text-on-surface-variant mb-1">Waktu
                                         / Sesi</label>
                                     <select
-                                        class="w-full bg-surface-container-low px-3 py-2 rounded text-xs text-primary focus:outline-none focus:ring-1 focus:ring-primary">
-                                        <option>Pagi (08:00 - 11:00)</option>
-                                        <option>Siang (12:00 - 15:00)</option>
-                                        <option>Sunset (16:30 - 19:00)</option>
-                                        <option>Malam (19:30 - 22:00)</option>
+                                        class="w-full bg-surface-container-low px-3 py-2 rounded text-xs text-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                                        name="session" required>
+                                        <option value="Pagi (08:00 - 11:00)">Pagi (08:00 - 11:00)</option>
+                                        <option value="Siang (12:00 - 15:00)">Siang (12:00 - 15:00)</option>
+                                        <option value="Sunset (16:30 - 19:00)">Sunset (16:30 - 19:00)</option>
+                                        <option value="Malam (19:30 - 22:00)">Malam (19:30 - 22:00)</option>
                                     </select>
                                 </div>
                             </div>
@@ -1222,12 +874,14 @@
                                     Tamu</label>
                                 <div class="flex items-center gap-4 text-xs text-on-surface pt-1">
                                     <label class="flex items-center gap-1.5 cursor-pointer">
-                                        <input checked="" class="text-primary" name="guest_type" type="radio" /> Tamu
-                                        Menginap di Villa
+                                        <input checked class="text-primary" name="guest_type" type="radio"
+                                            value="villa" />
+                                        Tamu Menginap di Villa
                                     </label>
+
                                     <label class="flex items-center gap-1.5 cursor-pointer">
-                                        <input class="text-primary" name="guest_type" type="radio" /> Tamu Harian (Day
-                                        Guest)
+                                        <input class="text-primary" name="guest_type" type="radio" value="day_guest" />
+                                        Tamu Harian (Day Guest)
                                     </label>
                                 </div>
                             </div>
@@ -1237,6 +891,7 @@
                                     Khusus / Alergi</label>
                                 <textarea
                                     class="w-full bg-surface-container-low px-3.5 py-2 rounded text-xs text-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                                    name="special_requests"
                                     placeholder="Informasi diet khusus, perayaan ulang tahun/anniversary..."
                                     rows="3"></textarea>
                             </div>
@@ -1273,8 +928,9 @@
                         });
                     }
 
-                    function openBookingModal(facilityName) {
+                    function openBookingModal(facilityId, facilityName) {
                         document.getElementById('modal-facility-title').innerText = facilityName;
+                        document.getElementById('booking-facility-id').value = facilityId;
                         document.getElementById('booking-modal').classList.remove('hidden');
                     }
 

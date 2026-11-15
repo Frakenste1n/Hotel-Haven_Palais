@@ -85,31 +85,67 @@
             </a>
 
             <!-- Tombol Aksi -->
-            <div class="flex items-center gap-3">
+            @if (auth()->check() && auth()->user()->hasRole('customer'))
+                <div class="relative group">
 
-                <a class="bg-primary-container text-on-primary px-6 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest hover:bg-primary transition-colors flex items-center gap-2 shadow-sm"
-                    href="/reservasi">
+                    <!-- Tombol Profil -->
+                    <button type="button" aria-label="Profil"
+                        class="border border-outline-variant/60 hover:border-primary text-primary px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 bg-surface-container shadow-sm">
 
-                    <span>Pesan Kamar</span>
+                        <span class="material-symbols-outlined text-[20px] text-secondary">
+                            account_circle
+                        </span>
 
-                    <span class="material-symbols-outlined text-[16px]">
-                        north_east
-                    </span>
+                        <span class="material-symbols-outlined text-[16px]">
+                            expand_more
+                        </span>
+                    </button>
 
-                </a>
+                    <!-- Dropdown -->
+                    <div
+                        class="absolute right-0 top-full pt-2 w-52 invisible opacity-0 translate-y-2 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50">
 
+                        <div
+                            class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg shadow-xl overflow-hidden">
+
+                            <a href="{{ route('customer.reservations.index') }}"
+                                class="flex items-center gap-3 px-4 py-3 text-sm text-primary hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">history</span>
+                                Riwayat
+                            </a>
+
+                            <a href="#"
+                                class="flex items-center gap-3 px-4 py-3 text-sm text-primary hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">settings</span>
+                                Pengaturan
+                            </a>
+
+                            <div class="border-t border-outline-variant/30"></div>
+
+                            <form action="{{ route('customer.logout') }}" method="POST">
+                                @csrf
+
+                                <button type="submit"
+                                    class="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                                    Logout
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            @else
                 <a class="border border-outline-variant/60 hover:border-primary text-primary px-5 py-2.5 rounded font-label-uppercase text-label-uppercase tracking-widest transition-all flex items-center gap-2 bg-surface-container-lowest/80 shadow-sm"
-                    href="/login">
+                    href="{{ route('customer.login') }}">
 
                     <span class="material-symbols-outlined text-[18px] text-secondary">
                         lock
                     </span>
 
                     <span>Masuk</span>
-
                 </a>
-
-            </div>
+            @endif
         </div>
     </div>
 </header>

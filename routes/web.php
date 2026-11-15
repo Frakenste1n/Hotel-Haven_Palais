@@ -1,6 +1,6 @@
-
 <?php
 
+use App\Models\RoomType;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\BookingManagementController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -17,6 +17,10 @@ use App\Http\Controllers\Backend\StaffAccessController;
 use App\Http\Controllers\Backend\WebsiteManagementController;
 use App\Http\Controllers\Frontend\CustomerAuthController;
 use App\Http\Controllers\Frontend\ReviewController;
+use App\Http\Controllers\Frontend\RoomController;
+use App\Http\Controllers\Frontend\CustomerReservationController;
+use App\Http\Controllers\Frontend\CustomerFacilityReservationController;
+use App\Http\Controllers\Frontend\FacilityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,16 +55,32 @@ Route::post('/logout', [CustomerAuthController::class, 'logout'])
     ->name('customer.logout');
 
 // Customer Pages
-Route::get('/kamar', function () {
-    return view('frontend.kamar.kamar');
-});
+Route::get('/kamar', [RoomController::class, 'index'])
+    ->name('kamar.index');
 
-Route::get('/fasilitas', function () {
-    return view('frontend.fasilitas.fasilitas');
-});
+Route::post('/reservasi', [CustomerReservationController::class, 'store'])
+    ->name('customer.booking.store');
+
+Route::get('/riwayat-reservasi', [CustomerReservationController::class, 'index'])
+    ->middleware('auth')
+    ->name('customer.reservations.index');
+
+Route::get('/riwayat-reservasi/{reservation}', [CustomerReservationController::class, 'show'])
+    ->middleware('auth')
+    ->name('customer.reservations.show');
+
+Route::get('/fasilitas', [FacilityController::class, 'index'])
+    ->name('frontend.facilities.index');
+
+Route::post('/reservasi-fasilitas', [CustomerFacilityReservationController::class, 'store'])
+    ->name('customer.facility-reservations.store');
 
 Route::get('/reservasi', function () {
-    return view('frontend.reservasi.reservasi');
+    $roomTypes = RoomType::with('images')
+        ->where('is_active', true)
+        ->get();
+
+    return view('frontend.reservasi.reservasi', compact('roomTypes'));
 });
 
 Route::get('/tentang', function () {
@@ -68,9 +88,41 @@ Route::get('/tentang', function () {
 });
 
 Route::get('/ulasan', function () {
-    return view('frontend.ulasan.ulasan');
-});
+    $approvedReviews = \App\Models\Review::approved()
+        ->with(['user', 'reservation'])
+        ->latest()
+        ->paginate(6);
 
+    $reviewCount = \App\Models\Review::approved()->count();
+
+    $averageRating = $reviewCount > 0
+        ? round(\App\Models\Review::approved()->avg('rating'), 1)
+        : 0;
+
+    $eligibleReservations = collect();
+
+    if (
+        auth()->check()
+        && auth()->user()->is_active
+        && auth()->user()->hasRole('customer')
+    ) {
+        $eligibleReservations = \App\Models\Reservation::query()
+            ->where('user_id', auth()->id())
+            ->where('status', 'checked_out')
+            ->whereDoesntHave('review', function ($query) {
+                $query->withTrashed();
+            })
+            ->latest('checked_out_at')
+            ->get();
+    }
+
+    return view('frontend.ulasan.ulasan', compact(
+        'approvedReviews',
+        'reviewCount',
+        'averageRating',
+        'eligibleReservations'
+    ));
+});
 // Additional Frontend Pages
 Route::get('/login/register', function () {
     return view('frontend.login.register');
@@ -319,6 +371,10 @@ Route::prefix('admin')->name('backend.')->group(function () {
         Route::get('booking-management', [BookingManagementController::class, 'index'])
             ->middleware('permission:reservations.view,customers.view,guests.view,front_desk.view')
             ->name('booking-management.index');
+
+        Route::put('booking-management/facility-reservations/{facilityReservation}/status', [BookingManagementController::class, 'updateFacilityReservationStatus'])
+            ->middleware('permission:facility_reservations.update')
+            ->name('booking-management.update-facility-reservation-status');
 
         Route::post('booking-management/reservations', [BookingManagementController::class, 'storeReservation'])
             ->middleware('permission:reservations.create')
