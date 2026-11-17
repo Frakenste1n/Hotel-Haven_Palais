@@ -92,7 +92,8 @@
                             <h1
                                 class="font-display-hero text-display-hero text-on-primary leading-tight tracking-tight mb-6">
                                 {{ $site->hero_title ?: 'Kemewahan Abadi' }} <br>
-                                <span class="italic font-normal text-secondary-fixed">{{ $site->hero_subtitle ?: 'di Tepi Samudra' }}</span>
+                                <span
+                                    class="italic font-normal text-secondary-fixed">{{ $site->hero_subtitle ?: 'di Tepi Samudra' }}</span>
                             </h1>
                             <p
                                 class="font-body-lg text-body-lg text-on-primary/85 max-w-2xl mb-10 leading-relaxed font-light">
@@ -119,8 +120,8 @@
                 <section class="relative z-20 w-full max-w-[1240px] mx-auto px-6 -mt-12">
                     <div
                         class="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_-4px_rgba(27,42,50,0.12)] p-4 lg:p-6">
-                        <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-center"
-                            onsubmit="event.preventDefault(); alert('Memeriksa ketersediaan suite Anda...');">
+                        <form action="{{ route('kamar.index') }}" method="GET"
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-center">
                             <!-- Check In -->
                             <div
                                 class="p-3 bg-surface-container-low rounded-lg transition-colors hover:bg-surface-container">
@@ -129,9 +130,9 @@
                                 <div class="flex items-center gap-2">
                                     <span
                                         class="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
-                                    <input
+                                    <input name="check_in"
                                         class="w-full bg-transparent font-title-editorial text-title-editorial text-primary focus:outline-none cursor-pointer"
-                                        type="date" value="2025-04-12">
+                                        type="date" min="{{ date('Y-m-d') }}" required>
                                 </div>
                             </div>
                             <!-- Check Out -->
@@ -141,25 +142,39 @@
                                     class="block font-label-uppercase text-label-uppercase text-secondary tracking-wider mb-1">Check-out</label>
                                 <div class="flex items-center gap-2">
                                     <span class="material-symbols-outlined text-primary text-[20px]">event</span>
-                                    <input
+                                    <input name="check_out"
                                         class="w-full bg-transparent font-title-editorial text-title-editorial text-primary focus:outline-none cursor-pointer"
-                                        type="date" value="2025-04-16">
+                                        type="date" min="{{ date('Y-m-d', strtotime('+1 day')) }}" required>
                                 </div>
                             </div>
                             <!-- Guests -->
                             <div
                                 class="p-3 bg-surface-container-low rounded-lg transition-colors hover:bg-surface-container">
                                 <label
-                                    class="block font-label-uppercase text-label-uppercase text-secondary tracking-wider mb-1">Jumlah
-                                    Tamu</label>
+                                    class="block font-label-uppercase text-label-uppercase text-secondary tracking-wider mb-1">
+                                    Jumlah Tamu
+                                </label>
+
                                 <div class="flex items-center gap-2">
                                     <span class="material-symbols-outlined text-primary text-[20px]">group</span>
-                                    <select
+
+                                    <select name="adults"
+                                        class="w-full bg-transparent font-body-md text-body-md text-primary font-medium focus:outline-none cursor-pointer"
+                                        required>
+                                        @foreach (range(1, 10) as $number)
+                                            <option value="{{ $number }}" {{ $number == 2 ? 'selected' : '' }}>
+                                                {{ $number }} Dewasa
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <select name="children"
                                         class="w-full bg-transparent font-body-md text-body-md text-primary font-medium focus:outline-none cursor-pointer">
-                                        <option>2 Dewasa, 0 Anak</option>
-                                        <option>2 Dewasa, 1 Anak</option>
-                                        <option>4 Dewasa (Family Suite)</option>
-                                        <option>VIP Private Sanctuary (6+ Tamu)</option>
+                                        @foreach (range(0, 10) as $number)
+                                            <option value="{{ $number }}" {{ $number == 0 ? 'selected' : '' }}>
+                                                {{ $number }} Anak
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -167,16 +182,22 @@
                             <div
                                 class="p-3 bg-surface-container-low rounded-lg transition-colors hover:bg-surface-container">
                                 <label
-                                    class="block font-label-uppercase text-label-uppercase text-secondary tracking-wider mb-1">Tipe
-                                    Kamar</label>
+                                    class="block font-label-uppercase text-label-uppercase text-secondary tracking-wider mb-1">
+                                    Tipe Kamar
+                                </label>
+
                                 <div class="flex items-center gap-2">
                                     <span class="material-symbols-outlined text-primary text-[20px]">bed</span>
-                                    <select
+
+                                    <select name="room_type_id"
                                         class="w-full bg-transparent font-body-md text-body-md text-primary font-medium focus:outline-none cursor-pointer">
-                                        <option>Semua Kategori</option>
-                                        <option>Deluxe Ocean Villa</option>
-                                        <option>Royal Penthouse Suite</option>
-                                        <option>Private Garden Bungalow</option>
+                                        <option value="">Semua Kategori</option>
+
+                                        @foreach ($activeRoomTypes as $roomType)
+                                            <option value="{{ $roomType->id }}">
+                                                {{ $roomType->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -230,206 +251,97 @@
                             <h2 class="font-headline-lg text-headline-lg text-primary">Kamar &amp; Suite Pilihan</h2>
                         </div>
                         <a class="mt-4 md:mt-0 font-label-uppercase text-label-uppercase text-primary hover:text-secondary flex items-center gap-2 transition-colors"
-                            href="/beranda/listkamar">
-                            <span class="">Lihat Semua 42 Kamar &amp; Suite</span>
+                            href="/kamar">
+                            <span class="">
+                                Lihat Semua {{ $activeRoomTypes->count() }} Kamar &amp; Suite
+                            </span>
                             <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                         </a>
                     </div>
                     <!-- 3 Luxury Room Cards -->
+
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Card 1: Deluxe Ocean Villa -->
-                        <article
-                            class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
-                            <div>
-                                <div class="relative w-full h-80 overflow-hidden bg-surface-container">
-                                    <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                                        data-alt="Luxury oceanfront villa bedroom with open glass walls facing infinite Indian ocean, teak wood flooring, ivory canopy bed, contemporary minimalist furniture, soft morning sunlight, architectural interior design"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCswoJ_SHQS9iUpzQrYfeCxZ4SXXHktqWf_b-dIsKAxDnu1H69F56dxvr3u0UI1mODCk-rU7uGFFb_EQHl0tPdq6bjJjMsbjNcDydXmcTzSKTriS3QvBbBkeP4JqMxwsA1GWOoUgAaTJWAOu9MXBJmBUelHoURp53pMrpeVWeuqioo3u1i_dmaWzyAQR5e7XsEMP754F5fCn7JYPAEMVUA4rXizRxJ-dSjA1SHR7VA')">
+                        @forelse ($featuredRoomTypes as $roomType)
+                            @php
+                                $roomImage = $roomType->images->first();
+                            @endphp
+
+                            <article
+                                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                                <div>
+                                    <div class="relative w-full h-80 overflow-hidden bg-surface-container">
+                                        @if ($roomImage)
+                                            <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                                                style="background-image: url('{{ asset('storage/' . $roomImage->image_path) }}')">
+                                            </div>
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center text-on-surface-variant">
+                                                Foto kamar belum tersedia
+                                            </div>
+                                        @endif
+
+                                        <div
+                                            class="absolute top-4 left-4 bg-primary/80 backdrop-blur-md px-3.5 py-1 rounded text-on-primary font-label-uppercase text-label-uppercase">
+                                            {{ $roomType->category->name ?? 'Pilihan Kamar' }}
+                                        </div>
+
+                                        <div
+                                            class="absolute bottom-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-1.5 rounded shadow-sm">
+                                            <span
+                                                class="font-label-uppercase text-label-uppercase text-secondary font-semibold">
+                                                {{ $roomType->name }}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div
-                                        class="absolute top-4 left-4 bg-primary/80 backdrop-blur-md px-3.5 py-1 rounded text-on-primary font-label-uppercase text-label-uppercase">
-                                        Best Seller
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-1.5 rounded shadow-sm">
-                                        <span
-                                            class="font-label-uppercase text-label-uppercase text-secondary font-semibold">220
-                                            m² • Ocean Cliff</span>
+
+                                    <div class="p-8">
+                                        <div class="flex items-center justify-between gap-4 mb-3">
+                                            <h3 class="font-headline-sm text-headline-sm text-primary">
+                                                {{ $roomType->name }}
+                                            </h3>
+
+                                            <span
+                                                class="font-title-editorial text-title-editorial text-secondary font-semibold whitespace-nowrap">
+                                                Rp {{ number_format($roomType->base_price, 0, ',', '.') }}
+                                                <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">
+                                                    / malam
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                        <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-2">
+                                            {{ $roomType->description ?: 'Nikmati pengalaman menginap yang nyaman bersama Haven Palais.' }}
+                                        </p>
+
+                                        <div class="flex flex-wrap gap-2 mb-6">
+                                            @foreach ($roomType->facilities->take(3) as $facility)
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
+                                                    <span class="material-symbols-outlined text-[16px] text-secondary">
+                                                        check_circle
+                                                    </span>
+                                                    {{ $facility->name }}
+                                                </span>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="p-8">
-                                    <div class="flex items-center justify-between gap-4 mb-3">
-                                        <h3 class="font-headline-sm text-headline-sm text-primary">Deluxe Ocean Villa
-                                        </h3>
-                                        <span
-                                            class="font-title-editorial text-title-editorial text-secondary font-semibold whitespace-nowrap">Rp
-                                            3.500.000 <span
-                                                class="font-body-sm text-body-sm text-on-surface-variant font-normal">/
-                                                malam</span></span>
-                                    </div>
-                                    <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-2">
-                                        Villa privat tepi tebing dengan teras jemur pribadi, pemandangan laut 180
-                                        derajat yang menawan, dan suara deburan ombak yang syahdu.
-                                    </p>
-                                    <div class="flex flex-wrap gap-2 mb-6">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">king_bed</span>
-                                            King Bed
-                                        </span>
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">hot_tub</span>
-                                            Private Jacuzzi
-                                        </span>
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">water</span>
-                                            Ocean View
-                                        </span>
-                                    </div>
+
+                                <div class="px-8 pb-8 pt-0">
+                                    <a href="{{ route('kamar.index', ['room_type_id' => $roomType->id]) }}"
+                                        class="w-full py-3.5 px-4 bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary rounded font-label-uppercase text-label-uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                                        <span>Detail &amp; Reservasi</span>
+                                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                    </a>
                                 </div>
-                            </div>
-                            <div class="px-8 pb-8 pt-0">
-                                <button
-                                    class="w-full py-3.5 px-4 bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary rounded font-label-uppercase text-label-uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-                                    <span class="">Detail &amp; Reservasi</span>
-                                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                                </button>
-                            </div>
-                        </article>
-                        <!-- Card 2: Royal Penthouse Suite -->
-                        <article
-                            class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
-                            <div>
-                                <div class="relative w-full h-80 overflow-hidden bg-surface-container">
-                                    <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                                        data-alt="Grand royal penthouse hotel living suite overlooking ocean sunset, expansive private marble terrace with infinity plunge pool, champagne on marble table, refined bespoke Italian furniture, warm twilight ambiance"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuALd1GXuqe2xxnMiUtWvMNzHXG2bGBQRJn-Jnn0Rpa6hoDTYzi6gX-M9_wMUZMgxWRB8RpvuUx-FBevW7iwJ6TLiUX8wHn6_vDaKkBpwd69M5D4_E6IiUFKNJ3vsE6FKwrhZABROW2DSIs5FBLqq-LbZ1Mjro2PfvHvr-KJ5eCawPXn_kYpQYWGg9QvFO_CAk01MsB88fLtX9T2GqEz_JstnEGbWzQS_u8-3boQSSo')">
-                                    </div>
-                                    <div
-                                        class="absolute top-4 left-4 bg-secondary-fixed text-on-secondary-fixed px-3.5 py-1 rounded font-label-uppercase text-label-uppercase font-semibold">
-                                        Signature Suite
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-1.5 rounded shadow-sm">
-                                        <span
-                                            class="font-label-uppercase text-label-uppercase text-secondary font-semibold">450
-                                            m² • Top Floor</span>
-                                    </div>
-                                </div>
-                                <div class="p-8">
-                                    <div class="flex items-center justify-between gap-4 mb-3">
-                                        <h3 class="font-headline-sm text-headline-sm text-primary">Royal Penthouse Suite
-                                        </h3>
-                                        <span
-                                            class="font-title-editorial text-title-editorial text-secondary font-semibold whitespace-nowrap">Rp
-                                            8.900.000 <span
-                                                class="font-body-sm text-body-sm text-on-surface-variant font-normal">/
-                                                malam</span></span>
-                                    </div>
-                                    <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-2">
-                                        Puncak kemewahan tertinggi Haven Palais. Terdiri dari 2 kamar tidur megah, ruang
-                                        makan privat, infinity plunge pool, dan butler bersertifikat.
-                                    </p>
-                                    <div class="flex flex-wrap gap-2 mb-6">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">pool</span>
-                                            Private Plunge Pool
-                                        </span>
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">room_service</span>
-                                            24h Butler
-                                        </span>
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">wine_bar</span>
-                                            Private Bar
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-8 pb-8 pt-0">
-                                <button
-                                    class="w-full py-3.5 px-4 bg-primary-container text-on-primary hover:bg-primary rounded font-label-uppercase text-label-uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-                                    <span class="">Detail &amp; Reservasi</span>
-                                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                                </button>
-                            </div>
-                        </article>
-                        <!-- Card 3: Private Garden Bungalow -->
-                        <article
-                            class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
-                            <div>
-                                <div class="relative w-full h-80 overflow-hidden bg-surface-container">
-                                    <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                                        data-alt="Intimate tropical luxury bungalow nestled in lush manicured botanical gardens, stone pathway, private outdoor shower, open pavilion lounge, soft dappled sunlight, tranquil Zen sanctuary atmosphere"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCU8aadbP61oTxIYN3kRhZFlQ-9oyvek6NhtH2UCwnvE61PZNbIv0iVRuqXuGQtrO4rk4g8v0coXR1SI2dONHBYyXYvSC29Yo7etmIuXQK8faFf7GAFLK5DYTfazLR9MEUnPi3-8vbdioyHTkCdXMf_i5U30bMPxDJPk1btP4n08w7myMDWUF4pS4RMLme6duZbu2kLa8ijBcNXxrOewnMb0MSUDHtNeW8Akpy0UoU')">
-                                    </div>
-                                    <div
-                                        class="absolute top-4 left-4 bg-surface-container-lowest/80 backdrop-blur-md px-3.5 py-1 rounded text-primary font-label-uppercase text-label-uppercase">
-                                        Zen Sanctuary
-                                    </div>
-                                    <div
-                                        class="absolute bottom-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-1.5 rounded shadow-sm">
-                                        <span
-                                            class="font-label-uppercase text-label-uppercase text-secondary font-semibold">180
-                                            m² • Botanical Flora</span>
-                                    </div>
-                                </div>
-                                <div class="p-8">
-                                    <div class="flex items-center justify-between gap-4 mb-3">
-                                        <h3 class="font-headline-sm text-headline-sm text-primary">Private Garden
-                                            Bungalow</h3>
-                                        <span
-                                            class="font-title-editorial text-title-editorial text-secondary font-semibold whitespace-nowrap">Rp
-                                            2.950.000 <span
-                                                class="font-body-sm text-body-sm text-on-surface-variant font-normal">/
-                                                malam</span></span>
-                                    </div>
-                                    <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-2">
-                                        Dikelilingi taman botani tropis rindang yang menenangkan jiwa, dilengkapi
-                                        paviliun meditasi pribadi dan outdoor rainforest shower.
-                                    </p>
-                                    <div class="flex flex-wrap gap-2 mb-6">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">nature_people</span>
-                                            Garden View
-                                        </span>
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">shower</span>
-                                            Outdoor Shower
-                                        </span>
-                                        <span
-                                            class="inline-flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-on-surface">
-                                            <span
-                                                class="material-symbols-outlined text-[16px] text-secondary">spa</span>
-                                            Yoga Pavilion
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-8 pb-8 pt-0">
-                                <button
-                                    class="w-full py-3.5 px-4 bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary rounded font-label-uppercase text-label-uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-                                    <span class="">Detail &amp; Reservasi</span>
-                                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                                </button>
-                            </div>
-                        </article>
+                            </article>
+                        @empty
+                            <p class="col-span-full text-center text-on-surface-variant py-8">
+                                Belum ada kamar yang tersedia.
+                            </p>
+                        @endforelse
                     </div>
+
                 </section>
                 <!-- FASILITAS ISTIMEWA (AMENITIES HIGHLIGHTS - INTERACTIVE BENTO GRID) -->
                 <section class="bg-surface-container-low py-24 my-8">
@@ -719,22 +631,17 @@
                             </button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="h-64 rounded-lg overflow-hidden bg-cover bg-center"
-                                data-alt="Sunrise view over private ocean villa terrace with calm reflections and distant coastal cliffs"
-                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWSxz9nB9lbvy7iGzP_4A5oLMG5CpobXNu-pBetnvnad8lRT5G9XZ_WW6gCr6It7YcqAwn8S0weJfaa4AN1nN8iQSuAS_PbsEc-t-OQLfywUhgP_1TGWHfcxBsjOKafpoasH1-y7-Rx3ZNfcb3dPgl2OzKVLSVYXqEhVvssxp_NcEh0pKs8dyrbfL9W6s8nsFYUDB5Q7yuSk-B-KHfs9gxdr7McCe-FQtMi0tRTFI')">
-                            </div>
-                            <div class="h-64 rounded-lg overflow-hidden bg-cover bg-center"
-                                data-alt="Intimate candlelit dining setting on private stone deck directly above gentle ocean waves"
-                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBIYpFn-oexvTH4lAjdW4ls4vmObG64B4qUXguMWV4LaepGlILjFRn_FCIBD56X05sYYh31_GBkRQLVdCcjsy1HXFwei2k__6Q_-HzzrSjs86ch8VWaCKdlIprzod4EtKprOQsU2wuHE3EowZsBTJzEMd8WXxDs6QUo_Ash1pKlutN2ZNS6xqS02Gz67BxgNIwM6kvBwIblTLK6WwpltU-AgEDY1xfZNoglF2RgX5A')">
-                            </div>
-                            <div class="h-64 rounded-lg overflow-hidden bg-cover bg-center"
-                                data-alt="Marble bathroom suite with freestanding bathtub looking out onto infinity blue sea"
-                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuANIjS_jDYuq-577H5zdNR2BuHqfIwm8qg1grb8dGfzLjtJKWSvM4EF3vx9lFRWAqrAaCDSLYo0w8zc2UH5ilZjly3udv7GzqYVlg_AVQUgpx3ed387FHWF1E3T7_dJE1z07qj0VsVwDrVUzwF8CEjdKvjTt5AApyajceN5gs_jNdJMhT63Dvf97RsLZos9Gkj9-13iHjv9MFdBNkl2CUJL5F0cMAnm_3GhksCseNE')">
-                            </div>
-                            <div class="h-64 rounded-lg overflow-hidden bg-cover bg-center"
-                                data-alt="Bespoke luxury yacht anchored in secluded turquoise bay near Bali coast under bright sky"
-                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgLIwpEJ6GtegUwywKu_o-RkNYAVoojlC1p3vR7G8Orp5c2oYxWg3cun-MbebsC1Cfi6gOy2Y-uIs1WeYYNH0lOZex1NDdrcvrZcTZFb_QQNtR7AEGL5RRca81aVL-m7l19XeLc5FFiAg4IefcDAQI6I9lyHKL1-9ryRH1PNnyMX43VFhtPbWCPKy-Oo1uErrMmA9u1TLIEoeOP5eWl0vBVJFE0yLybUCEiWY0uGE')">
-                            </div>
+                            @forelse ($galleryImages as $image)
+                                <div class="h-64 rounded-lg overflow-hidden bg-cover bg-center">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}"
+                                        alt="{{ $image->caption ?? 'Galeri Haven Palais' }}"
+                                        class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                            @empty
+                                <div class="col-span-2 text-center py-10 text-on-surface-variant">
+                                    Belum ada foto galeri yang tersedia.
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

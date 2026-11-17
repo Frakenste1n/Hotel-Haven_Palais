@@ -8,18 +8,60 @@ use Illuminate\View\View;
 use App\Models\RoomCategory;
 use App\Models\RoomFacility;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $roomTypes = RoomType::with([
+        $validated = $request->validate([
+            'check_in' => ['nullable', 'required_with:check_out', 'date', 'after_or_equal:today'],
+            'check_out' => ['nullable', 'required_with:check_in', 'date', 'after:check_in'],
+            'adults' => ['nullable', 'integer', 'min:1'],
+            'children' => ['nullable', 'integer', 'min:0'],
+            'room_type_id' => ['nullable', 'integer', 'exists:room_types,id'],
+        ]);
+
+        $checkIn = $validated['check_in'] ?? null;
+        $checkOut = $validated['check_out'] ?? null;
+        $adults = (int) ($validated['adults'] ?? 1);
+        $children = (int) ($validated['children'] ?? 0);
+        $roomTypeId = $validated['room_type_id'] ?? null;
+
+        $roomTypesQuery = RoomType::with([
             'images',
             'facilities',
             'category'
-        ])
-            ->where('is_active', true)
-            ->get();
+        ])->where('is_active', true);
+
+        if ($roomTypeId) {
+            $roomTypesQuery->where('id', $roomTypeId);
+        }
+
+        $roomTypesQuery
+            ->where('capacity_adults', '>=', $adults)
+            ->where('capacity_children', '>=', $children);
+
+        if ($checkIn && $checkOut) {
+            $roomTypesQuery->whereIn('id', function ($query) use ($checkIn, $checkOut) {
+                $query->select('rooms.room_type_id')
+                    ->from('rooms')
+                    ->where('rooms.is_active', true)
+                    ->whereNotIn('rooms.status', ['maintenance', 'out_of_order'])
+                    ->whereNotExists(function ($subQuery) use ($checkIn, $checkOut) {
+                        $subQuery->select(DB::raw(1))
+                            ->from('reservation_details')
+                            ->join('reservations', 'reservation_details.reservation_id', '=', 'reservations.id')
+                            ->whereColumn('reservation_details.room_id', 'rooms.id')
+                            ->whereNull('reservations.deleted_at')
+                            ->whereNotIn('reservations.status', ['cancelled', 'expired'])
+                            ->where('reservations.check_in', '<', $checkOut)
+                            ->where('reservations.check_out', '>', $checkIn);
+                    });
+            });
+        }
+
+        $roomTypes = $roomTypesQuery->get();
 
         $categories = RoomCategory::whereHas('roomTypes', function ($query) {
             $query->where('is_active', true);
@@ -71,7 +113,12 @@ class RoomController extends Controller
             'roomTypes',
             'categories',
             'facilities',
-            'featuredRoomType'
+            'featuredRoomType',
+            'checkIn',
+            'checkOut',
+            'adults',
+            'children',
+            'roomTypeId'
         ));
     }
 }

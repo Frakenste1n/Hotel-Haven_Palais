@@ -34,7 +34,34 @@ use Illuminate\Support\Facades\Route;
 // ==========================================
 
 Route::get('/', function () {
-    return view('frontend.beranda.index');
+    $activeRoomTypes = \App\Models\RoomType::with([
+        'images' => function ($query) {
+            $query->orderBy('sort_order');
+        }
+    ])
+        ->where('is_active', true)
+        ->get();
+
+    $featuredRoomTypes = \App\Models\RoomType::with([
+        'images' => function ($query) {
+            $query->orderBy('sort_order');
+        },
+        'facilities',
+        'category'
+    ])
+        ->where('is_active', true)
+        ->orderByDesc('is_featured')
+        ->orderBy('id')
+        ->limit(3)
+        ->get();
+
+    $galleryImages = $activeRoomTypes->flatMap->images;
+
+    return view('frontend.beranda.index', compact(
+        'galleryImages',
+        'activeRoomTypes',
+        'featuredRoomTypes'
+    ));
 })->name('home');
 
 // Customer Authentication

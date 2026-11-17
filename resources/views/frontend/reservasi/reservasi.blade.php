@@ -620,8 +620,8 @@
                                     <p class="font-body-sm text-[13px] text-on-surface-variant mt-0.5">Tim reservasi dan
                                         Concierge Kepala siap membantu preferensi Anda via WhatsApp 24/7.</p>
                                     <a class="font-label-uppercase text-[11px] text-primary hover:text-secondary font-bold tracking-widest mt-2 inline-flex items-center gap-1.5 transition-colors"
-                                        href="https://wa.me/623618800900" target="_blank">
-                                        <span>+62 361 8800 900</span>
+                                        href="https://wa.me/6281386932586" target="_blank">
+                                        <span>+62 813 8693 2586</span>
                                         <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
                                     </a>
                                 </div>
