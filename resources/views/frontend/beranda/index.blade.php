@@ -65,9 +65,10 @@
                 <section
                     class="relative w-full -mt-20 overflow-hidden bg-primary text-on-primary min-h-[92vh] flex flex-col justify-between">
                     <!-- Ambient Backdrop Image -->
-                    <div class="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-40 scale-105 transition-transform duration-1000 ease-out"
-                        data-alt="Ultra luxury cliffside oceanfront resort in Bali at golden hour" id="hero-bg"
-                        style="background-image: url({{ asset('images/hero.png') }});">
+                    <div id="hero-bg"
+                        class="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-40 scale-105 transition-transform duration-1000 ease-out"
+                        data-alt="Ultra luxury cliffside oceanfront resort in Bali at golden hour"
+                        style="background-image: url('{{ $banner ? asset('storage/' . $banner->image_path) : asset('images/hero.png') }}');">
                     </div>
                     <!-- Radiant Gradient Scrims -->
                     <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-primary/30"></div>
@@ -89,15 +90,16 @@
                                 <span class="font-label-uppercase text-label-uppercase text-on-primary/80">Est.
                                     1928</span>
                             </div>
-                            <h1
+                            <h1 id="hero-title"
                                 class="font-display-hero text-display-hero text-on-primary leading-tight tracking-tight mb-6">
-                                {{ $site->hero_title ?: 'Kemewahan Abadi' }} <br>
-                                <span
-                                    class="italic font-normal text-secondary-fixed">{{ $site->hero_subtitle ?: 'di Tepi Samudra' }}</span>
+                                {{ $banner?->title ?? $site->hero_title ?? 'Kemewahan Abadi' }} <br>
+                                <span id="hero-subtitle"
+                                    class="italic font-normal text-secondary-fixed">{{ $banner?->subtitle ?? $site->hero_subtitle ?? 'di Tepi Samudra' }}</span>
                             </h1>
-                            <p
+
+                            <p id="hero-description"
                                 class="font-body-lg text-body-lg text-on-primary/85 max-w-2xl mb-10 leading-relaxed font-light">
-                                {{ $site->hero_description ?: 'Nikmati ketenangan eksklusif, panorama pesisir spektakuler, dan keramahan kelas dunia bintang lima yang dipadukan dengan kemegahan arsitektur tropis kontemporer.' }}
+                                {{ $banner?->description ?? $site->hero_description ?? 'Nikmati ketenangan eksklusif, panorama pesisir spektakuler, dan keramahan kelas dunia bintang lima yang dipadukan dengan kemegahan arsitektur tropis kontemporer.' }}
                             </p>
                             <!-- CTA Cluster -->
                             <div class="flex flex-wrap items-center gap-5">
@@ -356,130 +358,286 @@
                                 setiap tamu terhormat.
                             </p>
                         </div>
+
                         <!-- Bento Grid Layout -->
                         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-6">
-                            <!-- 1. Infinity Horizon Pool (Large 7 cols) -->
-                            <div
-                                class="lg:col-span-7 bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm group relative flex flex-col justify-end min-h-[380px] p-8">
-                                <div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
-                                    data-alt="Massive cliffside multi-tier infinity horizon swimming pool seamlessly merging with ocean horizon at noon, crystal clear turquoise water, submerged sun loungers, minimalist stone edges"
-                                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCq_u0ME7SDxAeALQq2D7LnwDENSQ9gP34CgzVOb-c7PtzIlhWqeIehr7VN6IoIVgZ79KkfRLWt0sz9OcAT2172ssaDir7qc5XSndQVqV989HMWsKZhoYTJaMd9jKWUNveOcg5aMSVDBp0cAXZlKVpTJs_naUgqRL4kv1mwOltxP_tAQRuRqNzwCYyPv_4V5YD-xtmIwTFazxpM3GMYagCx7T7ybd63M5XJUWQ4NtY')">
-                                </div>
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent">
-                                </div>
-                                <div class="relative z-10 text-on-primary">
-                                    <span
-                                        class="inline-flex items-center gap-2 px-3 py-1 rounded bg-secondary text-on-secondary font-label-uppercase text-label-uppercase mb-3">
-                                        <span class="material-symbols-outlined text-[16px]">pool</span> Iconic Facility
-                                    </span>
-                                    <h3 class="font-headline-sm text-headline-sm text-on-primary mb-2">Infinity Horizon
-                                        Pool</h3>
-                                    <p class="font-body-md text-body-md text-on-primary/80 max-w-lg font-light">
-                                        Kolam renang tanpa batas sepanjang 75 meter menggantung di bibir tebing samudra,
-                                        menyajikan ilusi berenang langsung di atas batas cakrawala.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- 2. Palais Michelin Dining (5 cols) -->
-                            <div
-                                class="lg:col-span-5 bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm group relative flex flex-col justify-end min-h-[380px] p-8">
-                                <div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
-                                    data-alt="Exquisite fine dining restaurant interior with warm candlelight, linen tablecloths, crystal glassware, private culinary plating, ocean view through expansive arched windows at twilight"
-                                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjtBDkY3ESwvj9IMMJw7JhPUozV1DZap6vDm5HpW6DnDN-ule7aKZqdMYFboZuap7Utu7ORhNO1zet8UK5jdyVLj4wHMShRwJse2I-r6lY4tQdafTqfFH4fhE6k0nDeIaXuJAtDps_0c3Xw2OZtIijcMuyOIng6uSrirZ1R-qVHmypPqws93GpfLeXhclyJFVJe3hFdTn5kXA8SYsA5xTSOpn7h8TPzStGd0e4VO0')">
-                                </div>
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent">
-                                </div>
-                                <div class="relative z-10 text-on-primary">
-                                    <span
-                                        class="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface/20 backdrop-blur-sm text-on-primary font-label-uppercase text-label-uppercase mb-3">
-                                        <span class="material-symbols-outlined text-[16px]">restaurant</span> Michelin
-                                        Selected
-                                    </span>
-                                    <h3 class="font-headline-sm text-headline-sm text-on-primary mb-2">Palais Haute
-                                        Cuisine</h3>
-                                    <p class="font-body-md text-body-md text-on-primary/80 font-light">
-                                        Pengalaman kuliner adiboga kurasi Chef Étoilé dengan bahan laut segar kepulauan
-                                        Nusantara dan teknik klasik Prancis.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- 3. Serenity Spa & Wellness (4 cols) -->
-                            <div
-                                class="lg:col-span-4 bg-surface-container-lowest rounded-xl p-8 shadow-sm flex flex-col justify-between">
-                                <div>
+                            @forelse($facilities as $facility)
+                                @if($loop->index < 2)
                                     <div
-                                        class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary mb-6">
-                                        <span class="material-symbols-outlined text-[28px]">spa</span>
+                                        class="{{ $loop->index === 0 ? 'lg:col-span-7' : 'lg:col-span-5' }} bg-primary rounded-xl overflow-hidden shadow-sm relative flex flex-col justify-end min-h-[220px] p-6">
+
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-secondary/40">
+                                        </div>
+
+                                        <div class="relative z-10 text-on-primary">
+                                            <span
+                                                class="inline-flex items-center gap-2 px-3 py-1 rounded bg-secondary text-on-secondary font-label-uppercase text-label-uppercase mb-3">
+                                                <span class="material-symbols-outlined text-[16px]">
+                                                    {{ $facility->icon ?: 'hotel' }}
+                                                </span>
+                                                Fasilitas Haven Palais
+                                            </span>
+
+                                            <h3 class="font-headline-sm text-headline-sm text-on-primary mb-2">
+                                                {{ $facility->name }}
+                                            </h3>
+
+                                            <p class="font-body-md text-body-md text-on-primary/80 max-w-lg font-light">
+                                                {{ $facility->description }}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <h3 class="font-headline-sm text-headline-sm text-primary mb-3">Serenity Spa &amp;
-                                        Wellness</h3>
-                                    <p class="font-body-md text-body-md text-on-surface-variant font-light mb-6">
-                                        Terapi holistik berbasis rempah organik lokal, sauna aroma herbal, dan paviliun
-                                        suara relaksasi ombak yang memulihkan raga.
-                                    </p>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between pt-4 bg-surface-container-low px-4 py-3 rounded-lg">
-                                    <span
-                                        class="font-label-uppercase text-label-uppercase text-secondary font-semibold">Tersedia
-                                        12 Terapi Privat</span>
-                                    <span
-                                        class="material-symbols-outlined text-secondary text-[18px]">arrow_forward</span>
-                                </div>
-                            </div>
-                            <!-- 4. Private Beach Club (4 cols) -->
-                            <div
-                                class="lg:col-span-4 bg-surface-container-lowest rounded-xl p-8 shadow-sm flex flex-col justify-between">
-                                <div>
+                                @else
                                     <div
-                                        class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary mb-6">
-                                        <span class="material-symbols-outlined text-[28px]">beach_access</span>
+                                        class="lg:col-span-4 bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                                        <div>
+                                            <div
+                                                class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary mb-4">
+                                                <span class="material-symbols-outlined text-[28px]">
+                                                    {{ $facility->icon ?: 'hotel' }}
+                                                </span>
+                                            </div>
+
+                                            <h3 class="font-headline-sm text-headline-sm text-primary mb-3">
+                                                {{ $facility->name }}
+                                            </h3>
+
+                                            <p class="font-body-md text-body-md text-on-surface-variant font-light mb-6">
+                                                {{ $facility->description }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="flex items-center justify-between pt-4 bg-surface-container-low px-4 py-3 rounded-lg">
+                                            <span
+                                                class="font-label-uppercase text-label-uppercase text-secondary font-semibold">
+                                                Fasilitas Haven Palais
+                                            </span>
+                                            <span
+                                                class="material-symbols-outlined text-secondary text-[18px]">arrow_forward</span>
+                                        </div>
                                     </div>
-                                    <h3 class="font-headline-sm text-headline-sm text-primary mb-3">Private Cove Beach
-                                        Club</h3>
-                                    <p class="font-body-md text-body-md text-on-surface-variant font-light mb-6">
-                                        Akses khusus menuju teluk berpasir putih alami. Cabana eksklusif, pelayanan
-                                        koktail tepi laut, dan privasi tanpa gangguan publik.
+                                @endif
+                            @empty
+                                <div class="lg:col-span-12 text-center py-12">
+                                    <p class="font-body-md text-on-surface-variant">
+                                        Belum ada fasilitas yang tersedia.
                                     </p>
                                 </div>
-                                <div
-                                    class="flex items-center justify-between pt-4 bg-surface-container-low px-4 py-3 rounded-lg">
-                                    <span
-                                        class="font-label-uppercase text-label-uppercase text-secondary font-semibold">Eksklusif
-                                        Tamu Hotel</span>
-                                    <span
-                                        class="material-symbols-outlined text-secondary text-[18px]">arrow_forward</span>
-                                </div>
-                            </div>
-                            <!-- 5. Helipad & Yacht Charter (4 cols) -->
-                            <div
-                                class="lg:col-span-4 bg-surface-container-lowest rounded-xl p-8 shadow-sm flex flex-col justify-between">
-                                <div>
-                                    <div
-                                        class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary mb-6">
-                                        <span class="material-symbols-outlined text-[28px]">sailing</span>
-                                    </div>
-                                    <h3 class="font-headline-sm text-headline-sm text-primary mb-3">Helipad &amp; Yacht
-                                        Charter</h3>
-                                    <p class="font-body-md text-body-md text-on-surface-variant font-light mb-6">
-                                        Pendaratan helikopter pribadi di kompleks resor serta armada yacht 85-kaki siap
-                                        mengantar Anda menjelajahi pulau-pulau eksotis.
-                                    </p>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between pt-4 bg-surface-container-low px-4 py-3 rounded-lg">
-                                    <span
-                                        class="font-label-uppercase text-label-uppercase text-secondary font-semibold">Layanan
-                                        VIP On-Demand</span>
-                                    <span
-                                        class="material-symbols-outlined text-secondary text-[18px]">arrow_forward</span>
-                                </div>
-                            </div>
+                            @endforelse
                         </div>
+
                     </div>
                 </section>
+
+
+
+                <!-- HOTEL GALLERY CAROUSEL -->
+                <section class="py-24 my-8">
+                    <div class="max-w-[1320px] mx-auto px-8">
+
+                        <div class="max-w-2xl mb-12">
+                            <span
+                                class="font-label-uppercase text-label-uppercase text-secondary tracking-widest block mb-2">
+                                Galeri Haven Palais
+                            </span>
+
+                            <h2 class="font-headline-lg text-headline-lg text-primary">
+                                Mengabadikan Setiap Momen
+                            </h2>
+
+                            <p class="font-body-lg text-body-lg text-on-surface-variant font-light mt-3">
+                                Jelajahi keindahan dan pengalaman istimewa yang tersedia di Haven Palais.
+                            </p>
+                        </div>
+
+                        @if($galleries->isNotEmpty())
+                            <div class="relative">
+
+                                <div id="hotel-gallery-track"
+                                    class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth rounded-2xl shadow-lg"
+                                    style="scrollbar-width: none;">
+
+                                    @foreach($galleries as $gallery)
+                                        <div class="gallery-carousel-slide min-w-full snap-center bg-primary">
+                                            <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[350px]">
+
+                                                <div class="lg:col-span-8 h-[280px] lg:h-[480px] bg-black">
+                                                    @if($gallery->file_type === 'image')
+                                                        <img src="{{ asset('storage/' . $gallery->file_path) }}"
+                                                            alt="{{ $gallery->title }}" loading="lazy"
+                                                            class="w-full h-full object-cover">
+                                                    @else
+                                                        <video controls preload="metadata" class="w-full h-full object-cover">
+                                                            <source src="{{ asset('storage/' . $gallery->file_path) }}">
+                                                        </video>
+                                                    @endif
+                                                </div>
+
+                                                <div
+                                                    class="lg:col-span-4 flex flex-col justify-center p-8 lg:p-10 text-on-primary">
+                                                    @if($gallery->category)
+                                                        <span
+                                                            class="font-label-uppercase text-[10px] tracking-widest text-secondary mb-4">
+                                                            {{ $gallery->category->name }}
+                                                        </span>
+                                                    @endif
+
+                                                    <h3 class="font-headline-sm text-headline-sm mb-4">
+                                                        {{ $gallery->title }}
+                                                    </h3>
+
+                                                    @if($gallery->description)
+                                                        <p class="font-body-md text-on-primary/80 font-light leading-relaxed">
+                                                            {{ $gallery->description }}
+                                                        </p>
+                                                    @endif
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+
+                                <div class="flex justify-center gap-2 mt-6">
+                                    @foreach($galleries as $gallery)
+                                        <button type="button" data-gallery-dot="{{ $loop->index }}"
+                                            aria-label="Lihat slide {{ $loop->iteration }}"
+                                            class="w-2.5 h-2.5 rounded-full bg-outline-variant transition-all duration-300">
+                                        </button>
+                                    @endforeach
+                                </div>
+
+                            </div>
+                        @else
+                            <div class="text-center py-12">
+                                <p class="font-body-md text-on-surface-variant">
+                                    Belum ada foto atau video galeri yang tersedia.
+                                </p>
+                            </div>
+                        @endif
+
+                    </div>
+                </section>
+
+                @push('scripts')
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const track = document.getElementById('hotel-gallery-track');
+
+                            if (!track) return;
+
+                            const slides = track.querySelectorAll('.gallery-carousel-slide');
+                            const dots = document.querySelectorAll('[data-gallery-dot]');
+
+                            if (slides.length <= 1) return;
+
+                            let current = 0;
+                            let timer;
+                            let isInteracting = false;
+
+                            function updateDots() {
+                                dots.forEach((dot, index) => {
+                                    dot.classList.toggle('bg-primary', index === current);
+                                    dot.classList.toggle('bg-outline-variant', index !== current);
+                                    dot.classList.toggle('w-8', index === current);
+                                    dot.classList.toggle('w-2.5', index !== current);
+                                });
+                            }
+
+                            function goToSlide(index) {
+                                current = (index + slides.length) % slides.length;
+
+                                track.scrollTo({
+                                    left: slides[current].offsetLeft,
+                                    behavior: 'smooth'
+                                });
+
+                                updateDots();
+                                resetTimer();
+                            }
+
+                            function resetTimer() {
+                                clearInterval(timer);
+
+                                if (isInteracting) return;
+
+                                timer = setInterval(() => {
+                                    goToSlide(current + 1);
+                                }, 4000);
+                            }
+
+                            track.addEventListener('scroll', () => {
+                                const index = Math.round(track.scrollLeft / track.clientWidth);
+
+                                if (index >= 0 && index < slides.length) {
+                                    current = index;
+                                    updateDots();
+                                }
+                            });
+
+                            dots.forEach((dot, index) => {
+                                dot.addEventListener('click', () => goToSlide(index));
+                            });
+
+                            track.addEventListener('pointerdown', () => {
+                                isInteracting = true;
+                                clearInterval(timer);
+                            });
+
+                            ['pointerup', 'pointercancel'].forEach(event => {
+                                track.addEventListener(event, () => {
+                                    isInteracting = false;
+                                    resetTimer();
+                                });
+                            });
+
+                            track.addEventListener('mouseenter', () => {
+                                isInteracting = true;
+                                clearInterval(timer);
+                            });
+
+                            track.addEventListener('mouseleave', () => {
+                                isInteracting = false;
+                                resetTimer();
+                            });
+
+                            updateDots();
+                            resetTimer();
+                        });
+                    </script>
+                @endpush
+
+
+                @push('scripts')
+                    <script>
+                        document.querySelectorAll('[data-gallery-slideshow]').forEach(slideshow => {
+                            const slides = slideshow.querySelectorAll('[data-gallery-slide]');
+
+                            if (slides.length <= 1) return;
+
+                            let current = 0;
+
+                            function showSlide(index) {
+                                slides[current].classList.add('hidden');
+                                slides[current].classList.remove('block');
+
+                                current = (index + slides.length) % slides.length;
+
+                                slides[current].classList.remove('hidden');
+                                slides[current].classList.add('block');
+                            }
+
+                            setInterval(() => {
+                                showSlide(current + 1);
+                            }, 4000);
+                        });
+                    </script>
+                @endpush
+
+
                 <!-- TESTIMONI TAMU & PENGHARGAAN (AWARDS & VIP REVIEWS) -->
                 <section class="max-w-[1320px] mx-auto px-8 py-16 w-full">
                     <!-- Awards Ribbon -->
@@ -512,68 +670,49 @@
                     </div>
                     <!-- VIP Reviews -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Review 1 -->
-                        <div
-                            class="bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-sm relative flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-1 text-secondary mb-6">
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
+                        <!-- Review  -->
+                        @forelse($reviews as $review)
+                            <div
+                                class="bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-sm relative flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center gap-1 text-secondary mb-6">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <span class="material-symbols-outlined text-[18px]">
+                                                {{ $i <= $review->rating ? 'star' : 'star_outline' }}
+                                            </span>
+                                        @endfor
+                                    </div>
+
+                                    <p
+                                        class="font-title-editorial text-title-editorial text-primary italic mb-6 leading-relaxed">
+                                        “{{ $review->comment }}”
+                                    </p>
                                 </div>
-                                <p
-                                    class="font-title-editorial text-title-editorial text-primary italic mb-6 leading-relaxed">
-                                    “Pengalaman menginap paling magis yang pernah kami rasakan. Privasi di Deluxe Ocean
-                                    Villa sungguh tak tertandingi, dan staf menangani setiap detail itinerari
-                                    helikopter kami secara sempurna.”
+
+                                <div class="flex items-center gap-4 pt-6 bg-surface-container-low px-4 py-3 rounded-lg">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline-sm text-sm">
+                                        {{ strtoupper(substr($review->user->name ?? 'G', 0, 2)) }}
+                                    </div>
+
+                                    <div>
+                                        <span class="font-label-md text-label-md text-primary font-semibold block">
+                                            {{ $review->user->name ?? 'Guest' }}
+                                        </span>
+
+                                        <span class="font-body-sm text-body-sm text-on-surface-variant">
+                                            Tamu Haven Palais
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-span-full text-center py-10">
+                                <p class="font-body-md text-on-surface-variant">
+                                    Belum ada ulasan pelanggan.
                                 </p>
                             </div>
-                            <div class="flex items-center gap-4 pt-6 bg-surface-container-low px-4 py-3 rounded-lg">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline-sm text-sm">
-                                    AW
-                                </div>
-                                <div>
-                                    <span class="font-label-md text-label-md text-primary font-semibold block">Arthur
-                                        &amp; Vivienne Wellington</span>
-                                    <span class="font-body-sm text-body-sm text-on-surface-variant">Tamu Royal Penthouse
-                                        • London, UK</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Review 2 -->
-                        <div
-                            class="bg-surface-container-lowest p-8 lg:p-10 rounded-xl shadow-sm relative flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-1 text-secondary mb-6">
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
-                                </div>
-                                <p
-                                    class="font-title-editorial text-title-editorial text-primary italic mb-6 leading-relaxed">
-                                    “Haven Palais bukan sekadar resor, melainkan perlindungan jiwa dari hiruk-pikuk
-                                    dunia. Kolam renang tanpa batas dan sajian chef degustation-nya layak mendapatkan
-                                    predikat terbaik dunia.”
-                                </p>
-                            </div>
-                            <div class="flex items-center gap-4 pt-6 bg-surface-container-low px-4 py-3 rounded-lg">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-on-secondary font-headline-sm text-sm">
-                                    SL
-                                </div>
-                                <div>
-                                    <span class="font-label-md text-label-md text-primary font-semibold block">Stella
-                                        Linardi</span>
-                                    <span class="font-body-sm text-body-sm text-on-surface-variant">Tamu Deluxe Ocean
-                                        Villa • Jakarta, ID</span>
-                                </div>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
                 </section>
                 <!-- HAVEN PALAIS PRIVILEGE CLUB NEWSLETTER -->

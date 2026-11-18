@@ -19,18 +19,18 @@
 
             <a class="flex items-center gap-3" href="/">
 
-                <img alt="Haven Palais Luxury Hotel Logo" class="h-12 w-12 rounded-full object-cover"
-                    src="{{ asset('images/roundlogo.png') }}">
+                <img alt="{{ $site->site_name ?: 'Haven Palais' }} Logo" class="h-12 w-12 rounded-full object-cover"
+                    src="{{ $site->fileUrl('site_logo', asset('images/roundlogo.png')) }}">
 
                 <div class="flex flex-col">
 
                     <span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">
-                        Haven Palais
+                        {{ $site->site_name ?: 'Haven Palais' }}
                     </span>
 
                     <span
                         class="font-label-uppercase text-label-uppercase text-secondary tracking-widest text-[10px] mt-0.5">
-                        Resort &amp; Spa
+                        {{ $site->site_tagline ?: 'Resort & Spa' }}
                     </span>
 
                 </div>
@@ -41,13 +41,11 @@
         <div class="flex items-center gap-8">
 
             <nav class="hidden lg:flex items-center gap-6">
-
                 <a href="/tentang"
                     class="font-label-md text-label-md transition-colors
-                    {{ request()->is('tentang*') ? 'text-primary font-semibold' : 'text-on-surface-variant hover:text-on-surface' }}">
+        {{ request()->is('tentang*') ? 'text-primary font-semibold' : 'text-on-surface-variant hover:text-on-surface' }}">
                     Tentang Kami
                 </a>
-
             </nav>
 
             <!-- Pilihan Bahasa -->
@@ -167,16 +165,17 @@
                 <div class="flex items-center gap-3">
 
                     <img alt="Haven Palais Luxury Hotel Logo" class="h-8 w-auto object-contain"
-                        src="{{ asset('images/roundlogo.png') }}">
+                        src="{{ $site->fileUrl('site_logo', asset('images/roundlogo.png')) }}">
 
                     <div class="flex flex-col">
 
                         <span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">
-                            Haven Palais
+                            {{ $site->site_name ?: 'Haven Palais' }}
                         </span>
 
-                        <span class="font-label-uppercase text-label-uppercase text-secondary tracking-widest mt-1">
-                            Resort &amp; Spa
+                        <span
+                            class="font-label-uppercase text-label-uppercase text-secondary tracking-widest text-[10px] mt-0.5">
+                            {{ $site->site_tagline ?: 'Resort & Spa' }}
                         </span>
 
                     </div>
@@ -200,77 +199,54 @@
                 <!-- Home -->
                 <a aria-current="{{ request()->path() === '/' ? 'page' : 'false' }}" href="/"
                     class="flex items-center gap-3.5 px-4 py-3 transition-all rounded-lg
-                    {{ request()->path() === '/' ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
+        {{ request()->path() === '/' ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
 
-                    <span class="material-symbols-outlined text-[20px]">
-                        cottage
-                    </span>
-
+                    <span class="material-symbols-outlined text-[20px]">cottage</span>
                     Home
                 </a>
-
 
                 <!-- Kamar -->
                 <a href="/kamar"
                     class="flex items-center gap-3.5 px-4 py-3 transition-all rounded-lg
-                    {{ request()->is('kamar*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
+        {{ request()->is('kamar*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
 
-                    <span class="material-symbols-outlined text-[20px]">
-                        king_bed
-                    </span>
-
+                    <span class="material-symbols-outlined text-[20px]">king_bed</span>
                     Kamar &amp; Suites
                 </a>
-
 
                 <!-- Fasilitas -->
                 <a href="/fasilitas"
                     class="flex items-center gap-3.5 px-4 py-3 transition-all rounded-lg
-                    {{ request()->is('fasilitas*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
+        {{ request()->is('fasilitas*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
 
-                    <span class="material-symbols-outlined text-[20px]">
-                        pool
-                    </span>
-
+                    <span class="material-symbols-outlined text-[20px]">pool</span>
                     Fasilitas Resor
                 </a>
-
 
                 <!-- Reservasi -->
                 <a href="/reservasi"
                     class="flex items-center gap-3.5 px-4 py-3 transition-all rounded-lg
-                    {{ request()->is('reservasi*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
+        {{ request()->is('reservasi*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
 
-                    <span class="material-symbols-outlined text-[20px]">
-                        calendar_month
-                    </span>
-
+                    <span class="material-symbols-outlined text-[20px]">calendar_month</span>
                     Reservasi
                 </a>
-
 
                 <!-- Ulasan -->
                 <a href="/ulasan"
                     class="flex items-center gap-3.5 px-4 py-3 transition-all rounded-lg
-                    {{ request()->is('ulasan*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
+        {{ request()->is('ulasan*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
 
-                    <span class="material-symbols-outlined text-[20px]">
-                        star
-                    </span>
-
+                    <span class="material-symbols-outlined text-[20px]">star</span>
                     Ulasan Tamu
                 </a>
-
 
                 <!-- Tentang Kami -->
                 <a href="/tentang"
                     class="flex items-center gap-3.5 px-4 py-3 transition-all rounded-lg
-                    {{ request()->is('tentang*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
+        {{ request()->is('tentang*') ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}">
 
-                    <span class="material-symbols-outlined text-[20px]">
-                        info
-                    </span>
-
+                    <span class="material-symbols-outlined text-[20px]">info</span>
                     Tentang Kami
                 </a>
 
@@ -327,8 +303,8 @@
                 </p>
 
                 <a class="font-title-editorial text-title-editorial text-primary block mt-2 hover:text-secondary transition-colors"
-                    href="tel:+62218800900">
-                    +62 (021) 8800 900
+                    href="tel:{{ preg_replace('/[^0-9+]/', '', $site->site_phone ?: '+62 (021) 8800 900') }}">
+                    {{ $site->site_phone ?: '+62 (021) 8800 900' }}
                 </a>
 
             </div>
@@ -342,7 +318,7 @@
                 </span>
 
                 <span class="font-label-uppercase text-label-uppercase tracking-wider text-secondary">
-                    Bali • Indonesia
+                    {{ $site->site_address ?: 'Bali • Indonesia' }}
                 </span>
 
             </div>

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use App\Models\WebsiteMenu;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
@@ -31,6 +32,13 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer(['backend.*', 'frontend.*'], function ($view) {
             $view->with('site', Setting::current() ?? new Setting());
+
+            if (str_starts_with($view->getName(), 'frontend.')) {
+                $view->with('websiteMenus', WebsiteMenu::where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->get());
+            }
         });
 
         View::composer('backend.*', function ($view) {

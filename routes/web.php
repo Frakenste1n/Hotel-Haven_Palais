@@ -56,12 +56,35 @@ Route::get('/', function () {
         ->get();
 
     $galleryImages = $activeRoomTypes->flatMap->images;
+    $facilities = \App\Models\RoomFacility::where('is_active', true)
+        ->orderBy('id')
+        ->get();
 
-    return view('frontend.beranda.index', compact(
-        'galleryImages',
-        'activeRoomTypes',
-        'featuredRoomTypes'
-    ));
+    $banner = \App\Models\Banner::query()
+        ->where('is_active', true)
+        ->orderBy('sort_order')
+        ->first();
+
+    $reviews = \App\Models\Review::with('user')
+    ->where('status', 'approved')
+    ->latest()
+    ->limit(2)
+    ->get();
+
+    $galleries = \App\Models\Gallery::with('category')
+    ->where('is_published', true)
+    ->orderBy('sort_order')
+    ->get();
+
+return view('frontend.beranda.index', compact(
+    'galleryImages',
+    'activeRoomTypes',
+    'featuredRoomTypes',
+    'facilities',
+    'banner',
+    'reviews',
+    'galleries'
+));
 })->name('home');
 
 // Customer Authentication
@@ -111,8 +134,10 @@ Route::get('/reservasi', function () {
 });
 
 Route::get('/tentang', function () {
-    return view('frontend.tentang.tentang');
-});
+    $site = \App\Models\Setting::current();
+
+    return view('frontend.tentang.tentang', compact('site'));
+})->name('tentang');
 
 Route::get('/ulasan', function () {
     $approvedReviews = \App\Models\Review::approved()
@@ -212,6 +237,18 @@ Route::prefix('admin')->name('backend.')->group(function () {
         Route::delete('website-management/banners/{banner}', [WebsiteManagementController::class, 'destroyBanner'])
             ->middleware('permission:banners.delete')
             ->name('website-management.destroy-banner');
+
+        Route::post('website-management/menus', [WebsiteManagementController::class, 'storeMenu'])
+            ->middleware('permission:website_menus.create')
+            ->name('website-management.store-menu');
+
+        Route::put('website-management/menus/{websiteMenu}', [WebsiteManagementController::class, 'updateMenu'])
+            ->middleware('permission:website_menus.update')
+            ->name('website-management.update-menu');
+
+        Route::delete('website-management/menus/{websiteMenu}', [WebsiteManagementController::class, 'destroyMenu'])
+            ->middleware('permission:website_menus.delete')
+            ->name('website-management.destroy-menu');
 
         Route::post('website-management/page-contents', [WebsiteManagementController::class, 'storePageContent'])
             ->middleware('permission:page_contents.create')

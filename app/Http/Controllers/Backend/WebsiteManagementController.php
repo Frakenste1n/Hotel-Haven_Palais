@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use App\Models\WebsiteMenu;
 
 class WebsiteManagementController extends Controller
 {
@@ -18,15 +19,16 @@ class WebsiteManagementController extends Controller
         $setting = Setting::query()->first() ?? new Setting();
         $banners = Banner::orderBy('sort_order')->latest()->paginate(8, ['*'], 'banners_page')->withQueryString();
         $pageContents = PageContent::orderBy('page_key')->orderBy('sort_order')->paginate(8, ['*'], 'contents_page')->withQueryString();
+        $menus = WebsiteMenu::orderBy('sort_order')->paginate(10, ['*'], 'menus_page')->withQueryString();
 
-        return view('backend.website-management.index', compact('setting', 'banners', 'pageContents'));
+        return view('backend.website-management.index', compact('setting', 'banners', 'pageContents', 'menus'));
     }
 
     public function storeSettings(Request $request): RedirectResponse
     {
         $setting = Setting::query()->first();
 
-        if (! $setting) {
+        if (!$setting) {
             $setting = new Setting();
         }
 
@@ -35,7 +37,7 @@ class WebsiteManagementController extends Controller
         $setting->save();
 
         return redirect()
-            ->to(route('backend.website-management.index').'#pengaturan')
+            ->to(route('backend.website-management.index') . '#pengaturan')
             ->with('success', 'Pengaturan website berhasil disimpan.');
     }
 
@@ -70,7 +72,7 @@ class WebsiteManagementController extends Controller
         ]);
 
         return redirect()
-            ->to(route('backend.website-management.index').'#banner')
+            ->to(route('backend.website-management.index') . '#banner')
             ->with('success', 'Banner berhasil dibuat.');
     }
 
@@ -111,7 +113,7 @@ class WebsiteManagementController extends Controller
         $banner->update($payload);
 
         return redirect()
-            ->to(route('backend.website-management.index').'#banner')
+            ->to(route('backend.website-management.index') . '#banner')
             ->with('success', 'Banner berhasil diperbarui.');
     }
 
@@ -124,7 +126,7 @@ class WebsiteManagementController extends Controller
         $banner->delete();
 
         return redirect()
-            ->to(route('backend.website-management.index').'#banner')
+            ->to(route('backend.website-management.index') . '#banner')
             ->with('success', 'Banner berhasil dihapus.');
     }
 
@@ -138,7 +140,7 @@ class WebsiteManagementController extends Controller
         unset($data['image']);
         PageContent::create($data);
 
-        return redirect()->to(route('backend.website-management.index').'#konten')->with('success', 'Konten halaman berhasil dibuat.');
+        return redirect()->to(route('backend.website-management.index') . '#konten')->with('success', 'Konten halaman berhasil dibuat.');
     }
 
     public function updatePageContent(Request $request, PageContent $pageContent): RedirectResponse
@@ -154,7 +156,7 @@ class WebsiteManagementController extends Controller
         unset($data['image']);
         $pageContent->update($data);
 
-        return redirect()->to(route('backend.website-management.index').'#konten')->with('success', 'Konten halaman berhasil diperbarui.');
+        return redirect()->to(route('backend.website-management.index') . '#konten')->with('success', 'Konten halaman berhasil diperbarui.');
     }
 
     public function destroyPageContent(PageContent $pageContent): RedirectResponse
@@ -164,9 +166,53 @@ class WebsiteManagementController extends Controller
         }
         $pageContent->delete();
 
-        return redirect()->to(route('backend.website-management.index').'#konten')->with('success', 'Konten halaman berhasil dihapus.');
+        return redirect()->to(route('backend.website-management.index') . '#konten')->with('success', 'Konten halaman berhasil dihapus.');
+    }
+    public function storeMenu(Request $request)
+    {
+        $validated = $request->validate([
+            'label' => ['required', 'string', 'max:100'],
+            'url' => ['required', 'string', 'max:255'],
+            'icon' => ['nullable', 'string', 'max:100'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
+            'is_active' => ['nullable', 'boolean'],
+        ]);
+
+        $validated['sort_order'] = $validated['sort_order'] ?? 0;
+        $validated['is_active'] = $request->boolean('is_active');
+
+        WebsiteMenu::create($validated);
+
+        return redirect()->route('backend.website-management.index')
+            ->with('success', 'Menu berhasil ditambahkan.');
     }
 
+    public function updateMenu(Request $request, WebsiteMenu $websiteMenu)
+    {
+        $validated = $request->validate([
+            'label' => ['required', 'string', 'max:100'],
+            'url' => ['required', 'string', 'max:255'],
+            'icon' => ['nullable', 'string', 'max:100'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
+            'is_active' => ['nullable', 'boolean'],
+        ]);
+
+        $validated['sort_order'] = $validated['sort_order'] ?? 0;
+        $validated['is_active'] = $request->boolean('is_active');
+
+        $websiteMenu->update($validated);
+
+        return redirect()->route('backend.website-management.index')
+            ->with('success', 'Menu berhasil diperbarui.');
+    }
+
+    public function destroyMenu(WebsiteMenu $websiteMenu)
+    {
+        $websiteMenu->delete();
+
+        return redirect()->route('backend.website-management.index')
+            ->with('success', 'Menu berhasil dihapus.');
+    }
     private function validatedPageContent(Request $request, ?PageContent $pageContent = null): array
     {
         return $request->validate([
@@ -176,7 +222,7 @@ class WebsiteManagementController extends Controller
                 'string',
                 'max:100',
                 Rule::unique('page_contents')
-                    ->where(fn ($query) => $query->where('page_key', $request->page_key))
+                    ->where(fn($query) => $query->where('page_key', $request->page_key))
                     ->ignore($pageContent?->id),
             ],
             'title' => ['nullable', 'string', 'max:255'],
@@ -195,12 +241,12 @@ class WebsiteManagementController extends Controller
             foreach ($section['fields'] as $field) {
                 if ($field['type'] === 'image') {
                     $rules[$field['name']] = ['nullable', 'image', 'max:4096'];
-                    $rules['remove.'.$field['name']] = ['nullable', 'boolean'];
+                    $rules['remove.' . $field['name']] = ['nullable', 'boolean'];
                     continue;
                 }
 
                 $rule = ['nullable', 'string'];
-                if (! empty($field['required'])) {
+                if (!empty($field['required'])) {
                     $rule = ['required', 'string', 'max:255'];
                 } elseif ($field['type'] === 'email') {
                     $rule = ['nullable', 'email', 'max:255'];
@@ -225,7 +271,7 @@ class WebsiteManagementController extends Controller
     private function syncImages(Request $request, Setting $setting): void
     {
         foreach (Setting::IMAGE_COLUMNS as $column) {
-            if ($request->boolean('remove.'.$column) || $request->hasFile($column)) {
+            if ($request->boolean('remove.' . $column) || $request->hasFile($column)) {
                 $setting->deleteImage($column);
                 $setting->{$column} = null;
             }

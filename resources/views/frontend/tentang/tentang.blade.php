@@ -258,6 +258,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Founder's Quote Card -->
                         <div
                             class="relative bg-surface-container-lowest p-8 md:p-14 rounded-2xl shadow-lg overflow-hidden">
@@ -265,33 +266,65 @@
                                 class="absolute -right-8 -bottom-8 opacity-5 text-primary pointer-events-none select-none">
                                 <span class="font-title-editorial text-[220px] leading-none">“</span>
                             </div>
-                            <div class="max-w-4xl relative z-10 flex flex-col gap-6">
-                                <div class="flex items-center gap-2 text-secondary">
-                                    <span class="material-symbols-outlined text-[24px]">format_quote</span>
-                                    <span
-                                        class="font-label-uppercase text-label-uppercase tracking-widest text-[11px] font-semibold">Pesan
-                                        Pendiri</span>
-                                </div>
-                                <blockquote
-                                    class="font-title-editorial text-title-editorial md:text-headline-md text-primary italic font-normal leading-relaxed">
-                                    “Kami tidak sekadar membangun resor; kami menghadirkan suaka di mana waktu melambat,
-                                    setiap hembusan angin laut membawa ketenangan, dan setiap tamu disambut layaknya
-                                    bangsawan yang pulang ke kediamannya.”
-                                </blockquote>
-                                <div class="flex items-center gap-4 pt-2">
-                                    <div
-                                        class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-secondary font-title-editorial text-title-editorial font-bold shadow-sm">
-                                        ZR
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <span class="font-headline-sm text-body-lg text-primary font-bold">Zidane
-                                            Ramdhani S.Si. M.Kom</span>
+
+                            <div class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+
+                                <!-- Pesan Pendiri -->
+                                <div class="md:col-span-8 flex flex-col gap-6">
+                                    <div class="flex items-center gap-2 text-secondary">
+                                        <span class="material-symbols-outlined text-[24px]">format_quote</span>
                                         <span
-                                            class="font-label-uppercase text-[11px] text-secondary tracking-wider">{{ $site->founder_position ?: 'Co-Founder & Principal Architect' }}</span>
+                                            class="font-label-uppercase text-label-uppercase tracking-widest text-[11px] font-semibold">
+                                            Pesan Pendiri
+                                        </span>
+                                    </div>
+
+                                    <blockquote
+                                        class="font-title-editorial text-title-editorial md:text-headline-md text-primary italic font-normal leading-relaxed">
+                                        “Kami tidak sekadar membangun resor; kami menghadirkan suaka di mana waktu
+                                        melambat,
+                                        setiap hembusan angin laut membawa ketenangan, dan setiap tamu disambut layaknya
+                                        bangsawan yang pulang ke kediamannya.”
+                                    </blockquote>
+
+                                    <div class="flex items-center gap-4 pt-2">
+                                        <div class="flex flex-col">
+                                            <span class="font-headline-sm text-body-lg text-primary font-bold">
+                                                {{ $site?->founder_name ?: 'Nama Pendiri' }}
+                                            </span>
+                                            <span
+                                                class="font-label-uppercase text-[11px] text-secondary tracking-wider">
+                                                {{ $site?->founder_position ?: 'Co-Founder & Principal Architect' }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Foto Pendiri -->
+                                <div class="md:col-span-4 flex justify-center md:justify-end">
+                                    <div class="w-full max-w-[260px]">
+                                        <div
+                                            class="aspect-[3/4] rounded-xl overflow-hidden shadow-xl bg-surface-container">
+                                            <img src="{{ $site?->fileUrl('founder_image', \App\Models\Setting::DEFAULT_ABOUT) }}"
+                                                alt="{{ $site?->founder_name ?: 'Tokoh Pendiri Haven Palais' }}"
+                                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                                        </div>
+
+                                        <div class="mt-4 text-center">
+                                            <p class="font-title-editorial text-title-editorial text-primary">
+                                                {{ $site?->founder_name ?: 'Nama Pendiri' }}
+                                            </p>
+                                            <p
+                                                class="font-label-uppercase text-[10px] text-secondary tracking-widest mt-1">
+                                                Founder Haven Palais
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
                     </div>
                 </section>
                 <!-- TIGA PILAR FILOSOFI HAVEN PALAIS -->
@@ -554,7 +587,7 @@
                                 <div class="h-72 w-full overflow-hidden bg-surface-container relative">
                                     <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                         data-alt="Editorial portrait of Antoine de Montmirail, distinguished General Manager in tailored linen blazer overlooking coastal resort, sophisticated luxury hospitality professional with calm demeanor."
-                                        src="{{ asset('images/adscut.jpeg') }} "/>
+                                        src="{{ asset('images/adscut.jpeg') }} " />
                                     <div
                                         class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded text-[10px] font-label-uppercase tracking-wider text-primary font-bold">
                                         GM
@@ -587,7 +620,7 @@
                                 <div class="h-72 w-full overflow-hidden bg-surface-container relative">
                                     <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                         data-alt="Editorial portrait of Ni Kadek Wardani, Balinese Director of Guest Experience with Les Clefs d'Or golden crossed keys badge on collar, warm elegant smile, natural soft lighting."
-                                        src="{{ asset('images/dapa.jpeg') }}"/>
+                                        src="{{ asset('images/dapa.jpeg') }}" />
                                     <div
                                         class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded text-[10px] font-label-uppercase tracking-wider text-secondary font-bold">
                                         Clefs d'Or
@@ -595,7 +628,8 @@
                                 </div>
                                 <div class="p-6 flex flex-col flex-1 justify-between gap-4">
                                     <div>
-                                        <h3 class="font-headline-sm text-title-editorial text-primary font-semibold">el-daffa
+                                        <h3 class="font-headline-sm text-title-editorial text-primary font-semibold">
+                                            el-daffa
                                             el-kahfi</h3>
                                         <span
                                             class="font-label-uppercase text-[11px] text-secondary tracking-wider block mt-0.5">Dir.
@@ -620,7 +654,7 @@
                                 <div class="h-72 w-full overflow-hidden bg-surface-container relative">
                                     <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                         data-alt="Editorial culinary portrait of Chef Julien Moreau in crisp minimalist chef jacket inspecting organic fresh herbs in Uluwatu garden kitchen, artistic gastronomy lighting."
-                                        src="{{ asset('images/glng.jpeg') }}"/>
+                                        src="{{ asset('images/glng.jpeg') }}" />
                                     <div
                                         class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded text-[10px] font-label-uppercase tracking-wider text-primary font-bold">
                                         Haute Cuisine
@@ -914,9 +948,11 @@
                                 <ul class="flex flex-col gap-2.5 font-body-sm text-body-sm text-on-primary-container">
                                     <li><a class="hover:text-on-primary transition-colors" href="/kamar">Les Clefs d'Or
                                             Concierge</a></li>
-                                    <li><a class="hover:text-on-primary transition-colors" href="/kamar">Konservasi Penyu
+                                    <li><a class="hover:text-on-primary transition-colors" href="/kamar">Konservasi
+                                            Penyu
                                             &amp; Terumbu Karang</a></li>
-                                    <li><a class="hover:text-on-primary transition-colors" href="/kamar">Helipad &amp; VIP
+                                    <li><a class="hover:text-on-primary transition-colors" href="/kamar">Helipad &amp;
+                                            VIP
                                             Chauffeur</a></li>
                                     <li><a class="hover:text-on-primary transition-colors" href="/kamar">Laporan Ekologi
                                             2024</a></li>
@@ -933,13 +969,15 @@
                                     <div class="flex items-start gap-2.5">
                                         <span
                                             class="material-symbols-outlined text-secondary-fixed text-[18px] mt-0.5">location_on</span>
-                                        <span>Jl. Merdeka No.168, RT.01/RW.05, Ciwaringin, Kecamatan Bogor Tengah, Kota Bogor, Jawa Barat 16124</span>
+                                        <span>Jl. Merdeka No.168, RT.01/RW.05, Ciwaringin, Kecamatan Bogor Tengah, Kota
+                                            Bogor, Jawa Barat 16124</span>
                                     </div>
                                     <div class="flex items-center gap-2.5">
                                         <span
                                             class="material-symbols-outlined text-secondary-fixed text-[18px]">call</span>
-                                        <a class="hover:text-on-primary transition-colors" href="https://wa.me/6281386932586">+62
-                                         8138 6932 586</a>
+                                        <a class="hover:text-on-primary transition-colors"
+                                            href="https://wa.me/6281386932586">+62
+                                            8138 6932 586</a>
                                     </div>
                                     <div class="flex items-center gap-2.5">
                                         <span
