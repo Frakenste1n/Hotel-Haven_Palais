@@ -56,38 +56,7 @@
 <body
     class="min-h-screen bg-[#faf9f7] text-brand-navy flex flex-col justify-between selection:bg-[#c5a880] selection:text-white antialiased">
     <!-- Header Ringkas / Top Minimal Bar -->
-    <header
-        class="w-full border-b border-brand-border/60 bg-[#faf9f7]/90 backdrop-blur-md px-6 lg:px-12 py-4 flex items-center justify-between z-20">
-        <a class="flex items-center gap-3 group" href="#">
-            <div
-                class="w-9 h-9 rounded-full bg-brand-navy text-[#c5a880] flex items-center justify-center font-editorial font-bold text-lg shadow-sm transition-transform group-hover:scale-105">
-                HP
-            </div>
-            <div class="flex flex-col">
-                <span
-                    class="font-editorial text-lg tracking-[0.2em] font-semibold uppercase leading-tight text-brand-navy">Haven
-                    Palais</span>
-                <span class="text-[9px] tracking-[0.25em] uppercase text-brand-muted font-medium">Resort &amp; Spa •
-                    Uluwatu</span>
-            </div>
-        </a>
-        <div class="flex items-center gap-6 text-xs text-brand-muted">
-            <span class="hidden sm:inline-flex items-center gap-1.5 text-brand-navy/70">
-                <svg class="w-3.5 h-3.5 text-brand-gold" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                    <path
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                </svg>
-                Sesi Enkripsi Tamu 256-Bit
-            </span>
-            <a class="text-brand-navy hover:text-brand-gold transition-colors font-medium flex items-center gap-1"
-                href="#">
-                <a href="/" class="cursor-pointer">
-                    ← Kembali ke Beranda
-                </a>
-            </a>
-        </div>
-    </header>
+    @include('partials.navlogreg')
     <!-- Konten Utama: Split Minimalist Card Layout -->
     <main class="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-10 my-auto">
         <div
@@ -182,8 +151,7 @@
                                 </div>
                                 <input
                                     class="w-full pl-10 pr-4 py-3 bg-[#faf9f7] border border-brand-border rounded-lg text-sm text-brand-navy placeholder:text-brand-muted/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold transition-all"
-                                    id="email" name="email" value="{{ old('email') }}"
-                                    placeholder="contoh: raden.arya@havenpalais.com" required type="email" />
+                                    id="email" name="email" value="{{ old('email') }}"/>
                             </div>
                         </div>
                         <!-- Kata Sandi -->
@@ -209,7 +177,7 @@
                                 </div>
                                 <input
                                     class="w-full pl-10 pr-10 py-3 bg-[#faf9f7] border border-brand-border rounded-lg text-sm text-brand-navy placeholder:text-brand-muted/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold transition-all"
-                                    id="password" name="password" placeholder="Masukkan kata sandi akun Anda"
+                                    id="password" name="password"
                                     required="" type="password" />
                                 <button
                                     class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-brand-muted hover:text-brand-navy"
@@ -244,36 +212,13 @@
                                     stroke-width="2"></path>
                             </svg>
                         </button>
-                        <!-- Divider -->
-                        <div class="relative my-6">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="w-full border-t border-brand-border"></div>
-                            </div>
-                            <div
-                                class="relative flex justify-center text-[11px] uppercase tracking-wider text-brand-muted">
-                                <span class="bg-white px-3 font-medium">atau masuk dengan kode booking</span>
-                            </div>
-                        </div>
-                        <!-- Alternatif: Cek Reservasi via Booking Reference -->
-                        <button
-                            class="w-full py-3 px-6 rounded-lg border border-brand-border hover:border-brand-navy/50 bg-[#faf9f7] hover:bg-white text-brand-navy text-xs font-semibold tracking-wider uppercase transition-colors flex items-center justify-center gap-2"
-                            type="button">
-                            <svg class="w-3.5 h-3.5 text-brand-gold" fill="none" stroke="currentColor"
-                                viewbox="0 0 24 24">
-                                <path
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                            </svg>
-                            <span>Masuk Cepat dengan Kode Booking / E-Ticket</span>
-                        </button>
                     </form>
                     <!-- Footer Akun Baru / Bantuan -->
                     <div class="mt-8 text-center text-xs text-brand-muted">
                         Belum memiliki keanggotaan Haven Privilege?
                         <a class="font-semibold text-brand-navy hover:text-brand-gold underline decoration-brand-border hover:decoration-brand-gold transition-colors ml-1"
                             href="{{ route('customer.register') }}">
-                        </a>
-                            Daftar Sekarang
+                             Daftar Sekarang
                         </a>
                     </div>
                 </div>

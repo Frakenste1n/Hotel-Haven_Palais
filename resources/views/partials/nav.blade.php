@@ -1,3 +1,4 @@
+<!-- Header -->
 <header class="fixed top-0 right-0 h-20 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] left-0">
     <div class="w-full h-full px-8 flex items-center justify-between">
 
